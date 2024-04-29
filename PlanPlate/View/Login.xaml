@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:PlanPlate.ViewModels"
+             x:DataType="viewmodel:LoginViewModel"
+             x:Class="PlanPlate.View.Login"  
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             ios:Page.UseSafeArea="True"
+             Shell.NavBarIsVisible="false">
+    
+    <VerticalStackLayout Padding ="16"
+                         Spacing="10">
+
+        <Label 
+            Text="Plan Plate"
+            Style="{StaticResource Headline}"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"/>
+        
+        <Image Source="Resources/Images/login.svg"
+               WidthRequest="300"
+               HeightRequest="300"/>
+
+        <Label 
+            Text="Log in"
+            Style="{StaticResource SubHeadline}"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"/>
+
+        <Entry 
+            Placeholder="Email"
+            Text="{Binding Email}"
+            Keyboard="Email"
+            Margin="0,16,0,0"
+            Style="{StaticResource LoginEntry}"
+            IsEnabled="True" 
+            IsTextPredictionEnabled="True"/>
+
+        <Entry 
+            Text="{Binding Password}"
+            IsPassword="True"
+            Style="{StaticResource LoginEntry}" 
+            IsEnabled="True"
+            Placeholder="Password"/>
+
+        <Button
+            Command="{Binding LoginCommand}"
+            Style="{StaticResource ButtonStyle}"
+            Margin="20,40,20,0"
+            Text="Log in" 
+            IsEnabled="True"
+            />
+
+        <Label HorizontalOptions="Center" VerticalOptions="Center"  Margin="0,16,0,0">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Don't have an account? " />
+                    <Span Text="Sign Up" TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" >
+                        <Span.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoToSignupCommand}"/>
+                        </Span.GestureRecognizers>
+                    </Span>
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+
+    </VerticalStackLayout>
+</ContentPage>
