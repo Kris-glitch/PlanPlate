@@ -1,14 +1,14 @@
-﻿using PlanPlate.Data.Model;
-using PlanPlate.Utils;
+﻿using Firebase.Auth;
+
 
 namespace PlanPlate.Network
 {
     public interface IUser
     {
-        Task<DataOrException<MyUser, Exception>> SignUpAsync(string email, string password);
-        Task<DataOrException<MyUser, Exception>> LogInAsync(string email, string password);
-        DataOrException<bool, Exception> LogOut();
-        DataOrException<MyUser, Exception> IsLoggedIn();
+        Task<User> SignUpAsync(string email, string password, string username);
+        Task<User> LogInAsync(string email, string password);
+        bool LogOut();
+        User IsLoggedIn();
         
     }
 }

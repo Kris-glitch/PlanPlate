@@ -4,6 +4,40 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
+    <Style TargetType="TabBar" x:Key="TabBarStyle">
+        <Setter Property="Shell.TabBarBackgroundColor"
+            Value="{AppThemeBinding Light={StaticResource Background}, Dark={StaticResource BackgroundDark}}" />
+        <Setter Property="Shell.TabBarTitleColor"
+            Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
+        <Setter Property="Shell.TabBarUnselectedColor"
+            Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource SecondaryDark}}" />
+    </Style>
+
+    <Style TargetType="SearchBar" x:Key="SearchBarStyle">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}" />
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="FontFamily" Value="OutfitRegular"/>
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="MinimumHeightRequest" Value="44"/>
+    </Style>
+
+    <Style x:Key="RecipeeCard" TargetType="Frame">
+        <Setter Property="HasShadow" Value="{OnPlatform Android=true, iOS=false, Default=true}"/>
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource SurfaceDark}, Light={StaticResource Surface}}"/>
+    </Style>
+
+    <Style x:Key="CategoryCard" TargetType="Frame">
+        <Setter Property="HasShadow" Value="{OnPlatform Android=true, iOS=false, Default=true}"/>
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="MinimumHeightRequest" Value="20"/>
+        <Setter Property="MinimumWidthRequest" Value="150"/>
+        <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource SurfaceDark}, Light={StaticResource Surface}}"/>
+    </Style>
+
+
     <Style TargetType="Button" x:Key="ButtonStyle">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}" />
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Button}, Dark={StaticResource ButtonDark}}" />

@@ -1,0 +1,14 @@
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:PlanPlate.Data.Model"
+             x:DataType="model:MyCategory"
+             x:Class="PlanPlate.View.CategoriesCardView">
+    
+    <Frame Style="{StaticResource CategoryCard}" Padding="10">
+        
+        <Label Style="{StaticResource SubHeadline}"
+               Text="{Binding Name}"
+               VerticalOptions="Center" 
+               HorizontalOptions="Center"/>
+    </Frame>
+</ContentView>

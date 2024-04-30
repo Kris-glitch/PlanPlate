@@ -1,6 +1,5 @@
 ﻿using Firebase.Auth;
 using PlanPlate.Data.Model;
-using System;
 namespace PlanPlate.Utils
 {
     public static class UserMapper
@@ -11,7 +10,7 @@ namespace PlanPlate.Utils
             {
                 Id = user.Uid,
                 Email = user.Info.Email,
-                Name = user.Info.FirstName
+                Name = user.Info.DisplayName
             };
             return myUser;
         }

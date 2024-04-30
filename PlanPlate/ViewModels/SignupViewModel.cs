@@ -1,23 +1,22 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using PlanPlate.Data.Model;
-using PlanPlate.Network;
+using PlanPlate.Data;
 using PlanPlate.View;
 
 namespace PlanPlate.ViewModels
 {
     public partial class SignupViewModel : BaseViewModel
-    {
-        private readonly IUser repository;
-
-        public SignupViewModel(IUser repository)
+    {       
+        public SignupViewModel(IUserRepository repository): base(repository)
         {
-            this.repository = repository;
             SetShowErrorAction(DisplayError);
         }
 
         [ObservableProperty]
         string? email;
+
+        [ObservableProperty]
+        string? username;
 
         [ObservableProperty]
         string? password;
@@ -35,9 +34,10 @@ namespace PlanPlate.ViewModels
         [RelayCommand]
         async Task Signup()
         {
-            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password) || string.IsNullOrWhiteSpace(ConfirmPassword))
+            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password) 
+                || string.IsNullOrWhiteSpace(ConfirmPassword) || string.IsNullOrWhiteSpace(Username))
             {
-                DisplayError("Email and password are required.");
+                DisplayError("Username, email and password are required.");
                 return;
             }
 
@@ -47,7 +47,7 @@ namespace PlanPlate.ViewModels
                 return;
             }
 
-            var response = await repository.SignUpAsync(Email, Password);
+            var response = await repository.SignUpUserAsync(Email, Password, Username);
 
             if (response.Exception != null)
             {
@@ -60,10 +60,7 @@ namespace PlanPlate.ViewModels
 
                 if (user != null)
                 {
-                    await Shell.Current.GoToAsync(nameof(MainPage), new Dictionary<string, object>
-                    {
-                        { nameof(MyUser), user },
-                    });
+                    await Shell.Current.GoToAsync($"//{nameof(Home)}");
                 }
                 else
                 {

@@ -10,7 +10,7 @@ namespace PlanPlate
 
             Routing.RegisterRoute(nameof(Signup), typeof(Signup));
             Routing.RegisterRoute(nameof(Login), typeof(Login));
-            Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
+            Routing.RegisterRoute(nameof(Home), typeof(Home));
         }
     }
 }

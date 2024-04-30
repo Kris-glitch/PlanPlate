@@ -12,4 +12,19 @@
         ContentTemplate="{DataTemplate view:Login}"
         Route="Login" />
 
+    <TabBar Route="Home">
+        <Tab Title="Home" Icon="home.svg" Style="{StaticResource TabBarStyle}">
+            <ShellContent ContentTemplate="{DataTemplate view:Home}"/>
+        </Tab>
+        <Tab Title="Cookbook" Icon="cookbook.svg" Style="{StaticResource TabBarStyle}">
+            <ShellContent ContentTemplate="{DataTemplate view:Cookbook}"/>
+        </Tab>
+        <Tab Title="Plan" Icon="plan.svg" Style="{StaticResource TabBarStyle}">
+            <ShellContent ContentTemplate="{DataTemplate view:Plan}"/>
+        </Tab>
+        <Tab Title="Settings" Icon="settings.svg" Style="{StaticResource TabBarStyle}">
+            <ShellContent ContentTemplate="{DataTemplate view:Settings}"/>
+        </Tab>
+    </TabBar>
+
 </Shell>

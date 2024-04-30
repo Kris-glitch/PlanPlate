@@ -1,34 +1,24 @@
 ﻿using PlanPlate.Network;
-using Firebase.Auth;
 using PlanPlate.Data.Model;
 using PlanPlate.Utils;
-using static Google.Apis.Auth.OAuth2.Web.AuthorizationCodeWebApp;
-
 
 
 namespace PlanPlate.Data
 {
-    class UserRepository : IUser
+    class UserRepository (IUser userApi) : IUserRepository
     {
+        protected readonly IUser _userApi = userApi;
 
-        private readonly FirebaseAuthClient _authClient;
-
-        public UserRepository(FirebaseAuthClient authClient)
-        {
-            _authClient = authClient;
-        }
-
-        public DataOrException<MyUser, Exception> IsLoggedIn()
+        public DataOrException<MyUser, Exception> IsUserLoggedIn()
         {
             DataOrException<MyUser, Exception> result = new();
 
             try
-            {
-                var firebaseUser = _authClient.User;
+            {            
+                var firebaseUser = _userApi.IsLoggedIn();
                 if (firebaseUser == null)
                 {
                     throw new Exception("No logged user");
-
                 }
                 else
                 {
@@ -37,22 +27,30 @@ namespace PlanPlate.Data
                 }
             } catch (Exception ex)
             {
-                result.Exception = new Exception("Error while checking login status.", ex);
+                result.Exception = ex;
             }
 
             return result;
             
         }
 
-        public async Task<DataOrException<MyUser, Exception>> LogInAsync(string email, string password)
+        public async Task<DataOrException<MyUser, Exception>> LogInUserAsync(string email, string password)
         {
             DataOrException<MyUser, Exception> result = new();
 
             try
             {
-                var authResult = await _authClient.SignInWithEmailAndPasswordAsync(email, password);
-                var user = UserMapper.MapfirebaseUserToMyUser(authResult.User);
-                result.Data = user;
+                var authResult = await _userApi.LogInAsync(email, password);
+
+                if (authResult == null)
+                {
+                    throw new Exception("Log in error");
+                } 
+                else
+                {
+                    var user = UserMapper.MapfirebaseUserToMyUser(authResult);
+                    result.Data = user;
+                } 
             }
             catch (Exception ex)
             {
@@ -62,13 +60,13 @@ namespace PlanPlate.Data
             return result;
         }
 
-        public DataOrException<bool, Exception> LogOut()
+        public DataOrException<bool, Exception> LogOutUser()
         {
             DataOrException<bool, Exception> result = new();
 
             try
             {
-                _authClient.SignOut();
+                _userApi.LogOut();
                 result.Data = true;
 
             } catch (Exception ex)
@@ -78,15 +76,22 @@ namespace PlanPlate.Data
             return result;  
         }
 
-        public async Task<DataOrException<MyUser, Exception>> SignUpAsync(string email, string password)
+        public async Task<DataOrException<MyUser, Exception>> SignUpUserAsync(string email, string password, string username)
         {
             DataOrException<MyUser, Exception> result = new();
 
             try
             {
-                var authResult = await _authClient.CreateUserWithEmailAndPasswordAsync(email, password);
-                var user = UserMapper.MapfirebaseUserToMyUser(authResult.User);
-                result.Data = user;
+                var authResult = await _userApi.SignUpAsync(email, password, username);
+                if (authResult == null)
+                {
+                    throw new Exception("Sign up error");
+                } 
+                else
+                {
+                    var user = UserMapper.MapfirebaseUserToMyUser(authResult);
+                    result.Data = user;
+                }               
             }
             catch (Exception ex)
             {

@@ -1,10 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using PlanPlate.Data;
 
 namespace PlanPlate.ViewModels
 
 {
-    public partial class BaseViewModel : ObservableObject
+    public partial class BaseViewModel(IUserRepository repository) : ObservableObject
     {
+        protected readonly IUserRepository repository = repository;
+
         private Action<string>? ShowAlert { get; set; }
         private Action<string>? ShowError { get; set; }
 

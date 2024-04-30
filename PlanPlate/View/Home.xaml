@@ -1,0 +1,45 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:PlanPlate.Data.Model"
+             xmlns:viewmodel="clr-namespace:PlanPlate.ViewModels"
+             x:DataType ="viewmodel:HomeViewModel"
+             xmlns:views="clr-namespace:PlanPlate.View"
+             x:Class="PlanPlate.View.Home"
+             Title="Home">
+    <VerticalStackLayout Padding="16">
+        
+        <SearchBar
+            Style="{StaticResource SearchBarStyle}"
+            Margin="0,0,20,0"
+            Placeholder="Look up a recipe"
+            IsEnabled="True" 
+            IsSpellCheckEnabled="True" 
+            IsTextPredictionEnabled="True" 
+            IsVisible="True"
+            Keyboard="Text"
+            SearchCommand="{Binding PerformSearchCommand}">
+        </SearchBar>
+
+        <CollectionView 
+            Margin="0,20,0,20"
+            ItemsSource="{Binding Categories.Data}" 
+            ItemsLayout="HorizontalList">
+            
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:MyCategory">
+                    <views:CategoriesCardView/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <CollectionView ItemsSource="{Binding Meals}" 
+                        ItemsLayout="VerticalList">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:MyMeal">
+                    <views:RecipeCardView/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        
+    </VerticalStackLayout>
+</ContentPage>

@@ -41,6 +41,9 @@
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\ppicon.svg" ForegroundFile="Resources\AppIcon\ppappiconfig.svg" Color="#FFFFFF" />
+		<EmbeddedResource Include="Resources\Fonts\Font Awesome 6 Brands-Regular-400.otf" />
+		<EmbeddedResource Include="Resources\Fonts\Font Awesome 6 Free-Regular-400.otf" />
+		<EmbeddedResource Include="Resources\Fonts\Font Awesome 6 Free-Solid-900.otf" />
 		
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\ppsplash.svg" Color="#91AB82" />
@@ -56,12 +59,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiFont Remove="Resources\Fonts\Font Awesome 6 Brands-Regular-400.otf" />
+	  <MauiFont Remove="Resources\Fonts\Font Awesome 6 Free-Regular-400.otf" />
+	  <MauiFont Remove="Resources\Fonts\Font Awesome 6 Free-Solid-900.otf" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="Resources\AppIcon\ppappiconfig.svg" />
 	  <None Remove="Resources\AppIcon\ppicon.svg" />
+	  <None Remove="Resources\Fonts\Font Awesome 6 Brands-Regular-400.otf" />
+	  <None Remove="Resources\Fonts\Font Awesome 6 Free-Regular-400.otf" />
+	  <None Remove="Resources\Fonts\Font Awesome 6 Free-Solid-900.otf" />
 	  <None Remove="Resources\Fonts\Outfit-Bold.ttf" />
 	  <None Remove="Resources\Fonts\Outfit-Regular.ttf" />
 	  <None Remove="Resources\Fonts\Outfit-VariableFont.ttf" />
+	  <None Remove="Resources\Images\cookbook.svg" />
+	  <None Remove="Resources\Images\home.svg" />
 	  <None Remove="Resources\Images\login.svg" />
+	  <None Remove="Resources\Images\plan.svg" />
+	  <None Remove="Resources\Images\settings.svg" />
 	  <None Remove="Resources\Splash\ppsplash.svg" />
 	</ItemGroup>
 
@@ -80,13 +96,34 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="View\RecipeCardVIew.xaml.cs">
+	    <DependentUpon>RecipeCardView.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="View\Login.xaml.cs">
 	    <DependentUpon>Login.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="View\CategoriesCardView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\Cookbook.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\Home.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\RecipeCardView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\Login.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\Plan.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\Settings.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\Signup.xaml">

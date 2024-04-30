@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using PlanPlate.Data.Model;
-using PlanPlate.Network;
+using PlanPlate.Data;
 using PlanPlate.View;
 
 
@@ -9,7 +8,6 @@ namespace PlanPlate.ViewModels
 {
     public partial class LoginViewModel : BaseViewModel
     {
-        private readonly IUser repository;
 
         [ObservableProperty]
         string? email;
@@ -17,9 +15,8 @@ namespace PlanPlate.ViewModels
         [ObservableProperty]
         string? password;
 
-        public LoginViewModel(IUser repository)
+        public LoginViewModel(IUserRepository repository) : base(repository)
         {
-            this.repository = repository;
             SetShowErrorAction(DisplayError);
         }
 
@@ -38,7 +35,7 @@ namespace PlanPlate.ViewModels
                 return;
             }
 
-            var response = await repository.LogInAsync(Email, Password);
+            var response = await repository.LogInUserAsync(Email, Password);
 
             if (response.Exception != null)
             {
@@ -49,10 +46,7 @@ namespace PlanPlate.ViewModels
                 var user = response.Data;
                 if (user!= null)
                 {
-                    await Shell.Current.GoToAsync(nameof(MainPage), new Dictionary<string, object>
-                    {
-                        { nameof(MyUser), user },
-                    });
+                    await Shell.Current.GoToAsync($"//{nameof(Home)}");
                 } else
                 {
                     DisplayError("Something went wrong. Please try again later.");
