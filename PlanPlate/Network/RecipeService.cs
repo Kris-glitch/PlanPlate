@@ -7,21 +7,26 @@ namespace PlanPlate.Network
     {
         
         protected readonly IHttpFactory _httpClientFactory = httpClientFactory;
+        static readonly string BaseUrl = @"https://www.themealdb.com/api/json/v1/1";
 
         public async Task<IEnumerable<Category>?> GetCategories()
         {
-            using var httpClient = new HttpClient();
-            string baseUrl = "https://www.themealdb.com/api/json/v1/1";
-            httpClient.BaseAddress = new Uri(baseUrl);
-
-            var response = await httpClient.GetAsync("categories.php");
+            using var httpClient = _httpClientFactory.CreateHttpClient();
+            var response = await httpClient.GetAsync($"{BaseUrl}/categories.php");
             response.EnsureSuccessStatusCode();
 
+            var jsonString = await response.Content.ReadAsStringAsync();
 
-            var jsonStream = await response.Content.ReadAsStreamAsync();
-            var categoriesResponse = await JsonSerializer.DeserializeAsync<IEnumerable<Category>>(jsonStream);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true 
+            };
 
-            return categoriesResponse;
+            var myObject = JsonSerializer.Deserialize<RootCategoty>(jsonString, options);
+
+            return myObject?.Categories;
+
+            
         }
 
         public async Task<Recipe?> GetRecipeDetails(string recipeId)

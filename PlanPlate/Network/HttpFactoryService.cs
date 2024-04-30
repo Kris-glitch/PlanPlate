@@ -1,19 +1,27 @@
 ﻿
+using System.Net.Http.Headers;
+
 namespace PlanPlate.Network
 {
     public class HttpFactoryService : IHttpFactory
     {
 
-        static readonly string BaseUrl = "https://www.themealdb.com/api/json/v1/1";
+        private readonly Lazy<HttpClient> _httpClient;
 
-        private readonly HttpClient _httpClient = new()
+        public HttpFactoryService()
         {
-            BaseAddress = new Uri(BaseUrl)
-        };
+           
+            _httpClient = new Lazy<HttpClient>(() =>
+            {
+                var httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                return httpClient;
+            }, LazyThreadSafetyMode.ExecutionAndPublication);
+        }
 
         public HttpClient CreateHttpClient()
         {
-            return _httpClient;
+            return _httpClient.Value;
         }
     }
 }

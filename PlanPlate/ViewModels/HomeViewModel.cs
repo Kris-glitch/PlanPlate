@@ -1,5 +1,4 @@
-﻿
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using PlanPlate.Data.Model;
 using PlanPlate.Data;
 using PlanPlate.Utils;
@@ -10,7 +9,7 @@ namespace PlanPlate.ViewModels
     public partial class HomeViewModel(IUserRepository userRepository, IRecipeRepository recipeRepository) : BaseViewModel(userRepository)
     {
         private readonly IRecipeRepository _recipeRepository = recipeRepository;
-
+ 
         [ObservableProperty]
         public DataOrException<IEnumerable<MyCategory>, Exception>? categories;
 
