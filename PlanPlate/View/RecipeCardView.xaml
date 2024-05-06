@@ -3,13 +3,24 @@
              xmlns:model="clr-namespace:PlanPlate.Data.Model"
              x:DataType="model:MyMeal"
              x:Class="PlanPlate.View.RecipeCardView">
-    
-    <StackLayout Orientation="Horizontal" Padding="10">
-        <Image Source="{Binding Uri}" WidthRequest="60" HeightRequest="60"/>
-        <Label VerticalOptions="Center"
+
+    <Frame Style="{StaticResource RecipeeCard}" Padding="20" Margin="0,16,0,0">
+        <StackLayout Orientation="Horizontal">
+            <Frame CornerRadius="20" 
+               HeightRequest="60" 
+               WidthRequest="60" 
+               HorizontalOptions="Start"
+               VerticalOptions="Center">
+                <Image Source="{Binding Uri}" Aspect="Fill" HeightRequest="60" WidthRequest="60"/>
+            </Frame>
+            <Label VerticalOptions="Center"
                Margin="16,0,0,0"
                Text="{Binding Name}"
+               TextColor="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
                Style="{StaticResource SubHeadline}"
-               HorizontalOptions="Center"/>
-    </StackLayout>
+               LineBreakMode="WordWrap"
+               HorizontalOptions="FillAndExpand"
+               VerticalTextAlignment="Center"/>
+        </StackLayout>
+    </Frame>
 </ContentView>

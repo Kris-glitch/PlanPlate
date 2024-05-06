@@ -20,8 +20,8 @@ namespace PlanPlate.Utils
             return meals.Select(meal => new MyMeal
             {
                 Name = meal.StrMeal,
-                Id = meal.IidMeal,
-                Uri = meal.StrMealThumb
+                Id = meal.IdMeal,
+                Uri = meal.StrMealThumb?.Trim()
             });
         }
 

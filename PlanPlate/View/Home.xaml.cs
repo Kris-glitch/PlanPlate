@@ -18,7 +18,11 @@ public partial class Home : ContentPage
     {
         base.OnAppearing();
 
-        await _viewModel.GetCategories();
-        await _viewModel.SearchMealsByCategory("Breakfast");
+        if (!_viewModel.InitPerformed)
+        {
+            await _viewModel.GetCategories();
+            await _viewModel.SearchMealsByCategory("breakfast");
+            _viewModel.InitPerformed = true;
+        }
     }
 }

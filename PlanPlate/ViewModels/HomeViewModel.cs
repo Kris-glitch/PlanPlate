@@ -3,13 +3,34 @@ using PlanPlate.Data.Model;
 using PlanPlate.Data;
 using PlanPlate.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
+using PlanPlate.View;
 
 namespace PlanPlate.ViewModels
 {
-    public partial class HomeViewModel(IUserRepository userRepository, IRecipeRepository recipeRepository) : BaseViewModel(userRepository)
+    public partial class HomeViewModel : BaseViewModel
     {
-        private readonly IRecipeRepository _recipeRepository = recipeRepository;
- 
+        private readonly IRecipeRepository _recipeRepository;
+
+        public HomeViewModel(IUserRepository userRepository, IRecipeRepository recipeRepository) : base(userRepository)
+        {
+            _recipeRepository = recipeRepository;
+        }
+
+        private bool initPerformed = false;
+
+        public bool InitPerformed
+        {
+            get { return initPerformed; }
+            set
+            {
+                if (initPerformed != value)
+                {
+                    initPerformed = value;
+                    OnPropertyChanged(nameof(InitPerformed));
+                }
+            }
+        }
+
         [ObservableProperty]
         public DataOrException<IEnumerable<MyCategory>, Exception>? categories;
 
@@ -40,9 +61,11 @@ namespace PlanPlate.ViewModels
                 Categories.Data = response.Data;
                 Categories.Exception = response.Exception;
             }
+
             finally
             {
                 Categories.Loading = false;
+                OnPropertyChanged(nameof(Categories));
             }
 
         }
@@ -50,7 +73,7 @@ namespace PlanPlate.ViewModels
         [RelayCommand]
         public async Task SearchMealsByCategory(string category)
         {
-            var Meals = new DataOrException<IEnumerable<MyMeal>, Exception>
+            Meals = new DataOrException<IEnumerable<MyMeal>, Exception>
             {
                 Data = null,
                 Loading = true,
@@ -72,11 +95,18 @@ namespace PlanPlate.ViewModels
                 finally
                 {
                     Meals.Loading = false;
+                    OnPropertyChanged(nameof(Meals));
                 }
             }
-
         }
 
-
+        [RelayCommand]
+        private void GoToRecipeDetails(string recipeId)
+        {
+            if (recipeId != null)
+            {
+                Shell.Current.GoToAsync($"{nameof(RecipeDetails)}?recipeId={recipeId}");
+            }
+        }
     }
 }

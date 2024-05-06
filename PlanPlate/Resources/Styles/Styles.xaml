@@ -18,7 +18,7 @@
         <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="OutfitRegular"/>
-        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontSize" Value="22" />
         <Setter Property="MinimumHeightRequest" Value="44"/>
     </Style>
 
@@ -31,8 +31,8 @@
     <Style x:Key="CategoryCard" TargetType="Frame">
         <Setter Property="HasShadow" Value="{OnPlatform Android=true, iOS=false, Default=true}"/>
         <Setter Property="CornerRadius" Value="20"/>
-        <Setter Property="MinimumHeightRequest" Value="20"/>
-        <Setter Property="MinimumWidthRequest" Value="150"/>
+        <Setter Property="MinimumHeightRequest" Value="16"/>
+        <Setter Property="MinimumWidthRequest" Value="100"/>
         <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource SurfaceDark}, Light={StaticResource Surface}}"/>
     </Style>
@@ -64,7 +64,7 @@
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="OutfitRegular" />
-        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontSize" Value="20" />
     </Style>
 
     <Style TargetType="Label" x:Key="Headline">
@@ -78,7 +78,7 @@
 
     <Style TargetType="Label" x:Key="SubHeadline">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
-        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontSize" Value="22" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="FontFamily" Value="OutfitBold" />
        

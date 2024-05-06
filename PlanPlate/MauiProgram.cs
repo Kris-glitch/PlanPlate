@@ -1,6 +1,5 @@
 ﻿using Firebase.Auth;
 using Firebase.Auth.Providers;
-using Google.Apis.Http;
 using Microsoft.Extensions.Logging;
 using PlanPlate.Data;
 using PlanPlate.Network;
@@ -53,6 +52,8 @@ namespace PlanPlate
             builder.Services.AddSingleton<Signup>();
             builder.Services.AddSingleton<HomeViewModel>();
             builder.Services.AddSingleton<Home>();
+            builder.Services.AddTransient<RecipeDetailsViewModel>();
+            builder.Services.AddTransient<RecipeDetails>();
 
 
             return builder.Build();

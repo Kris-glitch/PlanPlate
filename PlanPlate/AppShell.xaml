@@ -8,8 +8,8 @@
     Title="PlanPlate">
 
     <ShellContent
-        Title="Login"
-        ContentTemplate="{DataTemplate view:Login}"
+        Title="Home"
+        ContentTemplate="{DataTemplate view:Home}"
         Route="Login" />
 
     <TabBar Route="Home">

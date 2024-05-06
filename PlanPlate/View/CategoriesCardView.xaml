@@ -3,8 +3,9 @@
              xmlns:model="clr-namespace:PlanPlate.Data.Model"
              x:DataType="model:MyCategory"
              x:Class="PlanPlate.View.CategoriesCardView">
-    
-    <Frame Style="{StaticResource CategoryCard}" Padding="10">
+
+    <Frame Style="{StaticResource CategoryCard}"  
+           Margin="10,0,0,0">
         
         <Label Style="{StaticResource SubHeadline}"
                Text="{Binding Name}"
