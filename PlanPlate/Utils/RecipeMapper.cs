@@ -21,21 +21,17 @@ namespace PlanPlate.Utils
             {
                 Name = meal.StrMeal,
                 Id = meal.IdMeal,
-                Uri = meal.StrMealThumb?.Trim()
+                Uri = meal.StrMealThumb
             });
         }
 
-        public static IEnumerable<MyRecipe> MapApiRecipesToMyRecipes(IEnumerable<Recipe> recipes)
+        public static IEnumerable<MyMeal> MapApiRecipesToMyMeals(IEnumerable<Recipe> recipes)
         {
-            return recipes.Select(recipe => new MyRecipe
+            return recipes.Select(recipe => new MyMeal
             {
                 Id = recipe.IdMeal,
                 Name = recipe.StrMeal,
-                Category = recipe.StrCategory,
-                Instructions = recipe.StrInstructions,
-                Image = recipe.StrMealThumb,
-                Tags = recipe.StrTags,
-                Ingredients = GetIngredients(recipe)
+                Uri =  recipe.StrMealThumb
             });
         }
         public static MyRecipe MapApiRecipeToMyRecipe(Recipe recipe)

@@ -32,16 +32,40 @@ namespace PlanPlate.ViewModels
         }
 
         [ObservableProperty]
-        public DataOrException<IEnumerable<MyCategory>, Exception>? categories;
+        string? searchQuery;
 
         [ObservableProperty]
-        public DataOrException<IEnumerable<MyMeal>, Exception>? meals;
-        
+        DataOrException<IEnumerable<MyCategory>, Exception>? categories;
+
+        [ObservableProperty]
+        DataOrException<IEnumerable<MyMeal>, Exception>? meals;
 
         [RelayCommand]
-        void PerformSearch()
+        async Task PerformSearch()
         {
+            if (!string.IsNullOrWhiteSpace(SearchQuery))
+            {
+                Meals = new DataOrException<IEnumerable<MyMeal>, Exception>
+                {
+                    Data = null,
+                    Loading = true,
+                    Exception = null
 
+                };
+
+                try
+                {
+                    var response = await _recipeRepository.SearchRecipe(SearchQuery);
+                    Meals.Data = response.Data;
+                    Meals.Exception = response.Exception;
+                }
+                finally
+                {
+                    Meals.Loading = false;
+                    OnPropertyChanged(nameof(Meals));
+                }
+            }
+            
         }
 
         [RelayCommand]
@@ -67,7 +91,6 @@ namespace PlanPlate.ViewModels
                 Categories.Loading = false;
                 OnPropertyChanged(nameof(Categories));
             }
-
         }
 
         [RelayCommand]

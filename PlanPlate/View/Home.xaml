@@ -12,6 +12,7 @@
             Style="{StaticResource SearchBarStyle}"
             Margin="0,0,20,0"
             Placeholder="Look up a recipe"
+            Text="{Binding SearchQuery, Mode=TwoWay}"
             IsEnabled="True" 
             IsSpellCheckEnabled="True" 
             IsTextPredictionEnabled="True" 
@@ -59,6 +60,7 @@
         <CollectionView ItemsSource="{Binding Meals.Data}"
                         IsVisible="{Binding Meals.Data, Converter={StaticResource VisibilityConverter}}"
                         ItemsLayout="VerticalList"
+                        VerticalOptions="FillAndExpand"
                         Margin="0,0,0,0">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:MyMeal">

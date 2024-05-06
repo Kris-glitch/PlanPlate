@@ -82,9 +82,9 @@ namespace PlanPlate.Data
             return result;
         }
 
-        public async Task<DataOrException<IEnumerable<MyRecipe>, Exception>> SearchRecipe(string name)
+        public async Task<DataOrException<IEnumerable<MyMeal>, Exception>> SearchRecipe(string name)
         {
-            DataOrException<IEnumerable<MyRecipe>, Exception> result = new();
+            DataOrException<IEnumerable<MyMeal>, Exception> result = new();
 
             try
             {
@@ -95,7 +95,7 @@ namespace PlanPlate.Data
                 }
                 else
                 {
-                    var recipes = RecipeMapper.MapApiRecipesToMyRecipes(recipesResponse);
+                    var recipes = RecipeMapper.MapApiRecipesToMyMeals(recipesResponse);
                     result.Data = recipes;
                 }
             }
