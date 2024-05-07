@@ -7,10 +7,10 @@
     Shell.FlyoutBehavior="Disabled"
     Title="PlanPlate">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate view:Home}"
-        Route="Login" />
+    <!-- <ShellContent-->
+     <!--   Title="Login"-->
+     <!--   ContentTemplate="{DataTemplate view:Login}"-->
+     <!--   Route="Login" /> -->
 
     <TabBar Route="Home">
         <Tab Title="Home" Icon="home.svg" Style="{StaticResource TabBarStyle}">

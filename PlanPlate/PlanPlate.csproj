@@ -104,6 +104,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="View\AddRecipe.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\CategoriesCardView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

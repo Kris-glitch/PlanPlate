@@ -21,12 +21,10 @@
             SearchCommand="{Binding PerformSearchCommand}">
         </SearchBar>
 
-        <CollectionView 
-            
+        <CollectionView  
             Margin="0,30,0,10"
             ItemsSource="{Binding Categories.Data}" 
             ItemsLayout="HorizontalList">
-            
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:MyCategory">
                     <Frame Style="{StaticResource CategoryCard}" Margin="10,0,0,0">

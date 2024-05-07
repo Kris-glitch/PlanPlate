@@ -12,6 +12,7 @@ namespace PlanPlate
             Routing.RegisterRoute(nameof(Login), typeof(Login));
             Routing.RegisterRoute(nameof(Home), typeof(Home));
             Routing.RegisterRoute(nameof(RecipeDetails), typeof(RecipeDetails));
+            Routing.RegisterRoute(nameof(AddRecipe), typeof(AddRecipe));
         }
     }
 }
