@@ -16,26 +16,26 @@ namespace PlanPlate
         protected override void OnStart()
         {
             base.OnStart();
-            /*var isLoggedIn = CheckLoginStatus();
+            var isLoggedIn = CheckLoginStatus();
 
             if (isLoggedIn)
             {
                 Task.Run(GoToMain).Wait();
                 return;
             }
-            Task.Run(GoToLogin).Wait();*/
+            Task.Run(GoToLogin).Wait();
         }
 
         protected override void OnResume()
         {
             base.OnResume();
-           /* var isLoggedIn = CheckLoginStatus();
+            var isLoggedIn = CheckLoginStatus();
 
             if (isLoggedIn)
             {
                 return;
             }
-            Task.Run(GoToLogin).Wait();*/
+            Task.Run(GoToLogin).Wait();
            
         }
 
