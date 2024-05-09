@@ -5,13 +5,8 @@ using PlanPlate.View;
 
 namespace PlanPlate.ViewModels
 {
-    public partial class SignupViewModel : BaseViewModel
-    {       
-        public SignupViewModel(IUserRepository repository): base(repository)
-        {
-            SetShowErrorAction(DisplayError);
-        }
-
+    public partial class SignupViewModel(IUserRepository repository) : BaseViewModel(repository)
+    {
         [ObservableProperty]
         string? email;
 
@@ -37,13 +32,13 @@ namespace PlanPlate.ViewModels
             if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password) 
                 || string.IsNullOrWhiteSpace(ConfirmPassword) || string.IsNullOrWhiteSpace(Username))
             {
-                DisplayError("Username, email and password are required.");
+                OnShowError("Username, email and password are required.");
                 return;
             }
 
             if (Password != ConfirmPassword)
             {
-                DisplayError("Password doesn't match.");
+                OnShowError("Password doesn't match.");
                 return;
             }
 
@@ -51,7 +46,7 @@ namespace PlanPlate.ViewModels
 
             if (response.Exception != null)
             {
-                DisplayError(response.Exception.Message);
+                OnShowError(response.Exception.Message);
                 return;
             }
             else
@@ -60,15 +55,26 @@ namespace PlanPlate.ViewModels
 
                 if (user != null)
                 {
-                    await Shell.Current.GoToAsync($"//{nameof(Home)}");
+                    await Shell.Current.GoToAsync($"//{nameof(Discover)}");
                 }
                 else
                 {
-                    DisplayError("Something went wrong. Please try again later.");
+                    OnShowError("Something went wrong. Please try again later.");
                     return;
                 }
                 
             }
         }
+
+        public void SubscribeToErrorEvents(Action<string> errorHandler)
+        {
+            ShowError += errorHandler;
+        }
+        public void UnsubscribeFromErrorEvents(Action<string> errorHandler)
+        {
+            ShowError -= errorHandler;
+        }
+
+
     }
 }

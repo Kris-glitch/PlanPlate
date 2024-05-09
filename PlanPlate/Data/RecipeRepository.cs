@@ -43,7 +43,7 @@ namespace PlanPlate.Data
                 var recipeResponse = await _recipeService.GetRecipeDetails(recipeId);
                 if (recipeResponse == null)
                 {
-                    throw new Exception("Something went wrong.Recipe is not avaliable");
+                    result.Data = null;
                 }
                 else
                 {

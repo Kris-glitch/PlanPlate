@@ -2,15 +2,17 @@ using PlanPlate.ViewModels;
 
 namespace PlanPlate.View;
 
-public partial class Cookbook : ContentPage
+public partial class Discover : ContentPage
 {
-    private readonly CookbookViewModel _viewModel;
-    public Cookbook(CookbookViewModel viewModel)
+    private readonly DiscoverViewModel _viewModel;
+
+    public Discover(DiscoverViewModel viewModel)
     {
         InitializeComponent();
         _viewModel = viewModel;
         BindingContext = viewModel;
     }
+
 
     protected override async void OnAppearing()
     {
@@ -19,10 +21,9 @@ public partial class Cookbook : ContentPage
         if (!_viewModel.InitPerformed)
         {
             await _viewModel.GetCategories();
-            await _viewModel.GetAllRecipesFromCookbook();
-
+            await _viewModel.SearchMealsByCategory("breakfast");
             _viewModel.InitPerformed = true;
-        }        
+        }
     }
 
     private void OnCheckedChanged(object sender, CheckedChangedEventArgs e)
@@ -39,6 +40,9 @@ public partial class Cookbook : ContentPage
 
     private async Task HandleRadioButtonCheckedAsync(string category)
     {
-        await _viewModel.GetRecipesByCategoryFromCookbook(category);
+        
+        await _viewModel.SearchMealsByCategory(category);
     }
+
+
 }

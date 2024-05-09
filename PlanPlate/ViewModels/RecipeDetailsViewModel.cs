@@ -11,28 +11,36 @@ namespace PlanPlate.ViewModels
         Ingredients,
         Instructions
     }
+    public enum RecipeFrom
+    {
+        Cookbook,
+        OnlineApi
+    }
 
     [QueryProperty("RecipeId", "recipeId")]
     public partial class RecipeDetailsViewModel : BaseViewModel
     {
         private readonly IRecipeRepository _recipeRepository;
-
-        public RecipeDetailsViewModel(IUserRepository userRepository, IRecipeRepository recipeRepository) : base(userRepository)
+        private readonly ICookbookRepository _cookbookRepository;
+        private readonly IUserRepository _userRepository;
+        public RecipeDetailsViewModel(IUserRepository userRepository, ICookbookRepository cookbookRepository, IRecipeRepository recipeRepository) : base(userRepository)
         {
             _recipeRepository = recipeRepository;
+            _cookbookRepository = cookbookRepository;
+            _userRepository = userRepository;
         }
 
         [ObservableProperty]
         private ActionType? listType;
 
         [ObservableProperty]
+        private RecipeFrom? recipeType;
+
+        [ObservableProperty]
         public DataOrException<MyRecipe, Exception>? recipe;
 
         [ObservableProperty]
         string? recipeId;
-
-        [ObservableProperty]
-        string? recipeName;
 
         [RelayCommand]
         public async Task GetDetails()
@@ -48,20 +56,31 @@ namespace PlanPlate.ViewModels
             {
                 try
                 {
+                    RecipeType = RecipeFrom.OnlineApi;
+
                     var response = await _recipeRepository.GetRecipeDetails(RecipeId);
+
+                    if (response.Data == null && response.Exception == null)
+                    {
+                        var userId = GetUserId();
+                        if (userId == null) return;
+
+                        RecipeType = RecipeFrom.Cookbook;
+
+                        response = await _cookbookRepository.SearchRecipeByIdFromCookbookAsync(userId, RecipeId);
+                    }
 
                     Recipe.Data = response.Data;
                     Recipe.Exception = response.Exception;
-
                 }
                 finally
                 {
                     Recipe.Loading = false;
                     OnPropertyChanged(nameof(Recipe));
-
+                    OnPropertyChanged(nameof(RecipeType));
                 }
-
             }
+
         }
 
         [RelayCommand]
@@ -86,6 +105,18 @@ namespace PlanPlate.ViewModels
 
         }
 
+        private string? GetUserId()
+        {
+            var user = _userRepository.IsUserLoggedIn().Data;
+
+            if (user == null)
+            {
+                OnShowError("Something went wrong. Please try again later");
+                return null;
+            }
+            return user.Id;
+
+        }
     }
 
 }

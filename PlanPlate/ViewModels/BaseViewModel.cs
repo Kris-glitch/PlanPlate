@@ -8,25 +8,18 @@ namespace PlanPlate.ViewModels
     {
         protected readonly IUserRepository repository = repository;
 
-        private Action<string>? ShowAlert { get; set; }
-        private Action<string>? ShowError { get; set; }
+        protected Action<string>? ShowError { get; set; }
+        protected Action<string, Action<bool>>? ShowAlert { get; set; }
 
-        protected void DisplayError(string errorMessage)
+        protected void OnShowError(string errorMessage)
         {
             ShowError?.Invoke(errorMessage);
         }
-        protected void DisplayAlert(string errorMessage)
+
+        protected void OnShowAlert(string errorMessage, Action<bool> callback)
         {
-            ShowAlert?.Invoke(errorMessage);
+            ShowAlert?.Invoke(errorMessage, callback);
         }
 
-        public void SetShowAlertAction(Action<string> showAlertAction)
-        {
-            ShowAlert = showAlertAction;
-        }
-        public void SetShowErrorAction(Action<string> showErrorAction)
-        {
-            ShowError = showErrorAction;
-        }
     }
 }

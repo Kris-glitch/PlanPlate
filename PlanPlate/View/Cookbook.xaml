@@ -2,107 +2,266 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:model="clr-namespace:PlanPlate.Data.Model"
              xmlns:viewmodel="clr-namespace:PlanPlate.ViewModels"
-             x:DataType ="viewmodel:CookbookViewModel"
+             x:DataType="viewmodel:CookbookViewModel"
              xmlns:views="clr-namespace:PlanPlate.View"
+             xmlns:local="clr-namespace:PlanPlate.Converters"
              x:Class="PlanPlate.View.Cookbook"
              Title="My Recipes">
-    <VerticalStackLayout Padding="16">
+
+    <ContentPage.Resources>
+        <local:InvertedVisibilityConverter x:Key="InvertedVisibilityConverter" />
+        <ControlTemplate x:Key="FrameRadioTemplate">
+            <Border Stroke="Transparent"
+                    MinimumHeightRequest="30"
+                    MinimumWidthRequest="50"
+                    Padding="10"
+                    Margin="5,0,0,0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CheckedStates">
+                        <VisualState x:Name="Checked">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+                            </VisualState.Setters>
+                        </VisualState>
+
+                        <VisualState x:Name="Unchecked">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Dark={StaticResource SurfaceDark}, Light={StaticResource Surface}}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+
+                <HorizontalStackLayout>
+                    <Label x:Name="TextLabel"
+                           Style="{StaticResource SubHeadline}"
+                           Text="{TemplateBinding Content}"
+                           TextColor="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center">
+
+                    </Label>
+                </HorizontalStackLayout>
+            </Border>
+        </ControlTemplate>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IsEnabled="True"
+                     Command="{Binding GoToAddRecipeCommand}"
+                     Order="Primary"
+                     Priority="0">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FAR"
+                                 Glyph="{StaticResource plus}"
+                                 Color="White"
+                                 Size="80" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <RefreshView Command="{Binding RefreshCommand}" 
+                 IsRefreshing="{Binding IsRefreshing}"
+                 RefreshColor="{AppThemeBinding Dark={StaticResource PrimaryDark}, Light={StaticResource Primary}}">
         
-        <SearchBar
-             Style="{StaticResource SearchBarStyle}"
-             Margin="0,0,20,0"
-             Placeholder="Look up a recipe"
-             Text="{Binding SearchQuery, Mode=TwoWay}"
-             IsEnabled="True" 
-             IsSpellCheckEnabled="True" 
-             IsTextPredictionEnabled="True" 
-             IsVisible="True"
-             Keyboard="Text"
-             SearchCommand="{Binding PerformSearchCommand}">
-        </SearchBar>
+        <Grid Padding="16"
+              ColumnDefinitions="*"
+              RowDefinitions="Auto,Auto,Auto,Auto,*">
 
-        <Label Text="Recently added"
-               Style="{StaticResource SubHeadline}"
-               VerticalOptions="Center"
-               HorizontalOptions="Start"/>
+            <Label Grid.Row="0"
+                   Text="My Recipe Collection"
+                   Style="{StaticResource Headline}"
+                   VerticalOptions="Start"
+                   HorizontalOptions="Start" />
 
-        <CollectionView  
-            Margin="0,30,0,10"
-            ItemsSource="{Binding Categories.Data}" 
-            ItemsLayout="HorizontalList">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:MyCategory">
-                    <Frame Style="{StaticResource CategoryCard}" Margin="10,0,0,0">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer 
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:HomeViewModel}}, Path=SearchMealsByCategoryCommand}"
-                                CommandParameter="{Binding Name}"/>
-                        </Frame.GestureRecognizers>
-                        <Label Style="{StaticResource SubHeadline}"
-                               Text="{Binding Name}"
-                               VerticalOptions="Center" 
-                               HorizontalOptions="Center"/>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+            <SearchBar Grid.Row="1"
+                       Style="{StaticResource SearchBarStyle}"
+                       Margin="0,20,20,0"
+                       Placeholder="Look up a recipe"
+                       Text="{Binding SearchQuery, Mode=TwoWay}"
+                       IsEnabled="True"
+                       IsSpellCheckEnabled="True"
+                       IsTextPredictionEnabled="True"
+                       IsVisible="True"
+                       Keyboard="Text"
+                       SearchCommand="{Binding SearchRecipeFromCookbookCommand}">
+            </SearchBar>
 
-        <ActivityIndicator 
-               IsRunning="{Binding Meals.Loading}"
-               IsVisible="{Binding Meals.Loading}"
-               Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
-               VerticalOptions="Center"
-               HorizontalOptions="Center"/>
-        <Label 
-            Text="{Binding Meals.Exception.Message}"
-            IsVisible="{Binding Meals.Exception, Converter={StaticResource VisibilityConverter}}"
-            TextColor="{AppThemeBinding Dark={StaticResource ErrorDark}, Light={StaticResource Error}}"
-            VerticalOptions="Center"
-            HorizontalOptions="Center"/>
+            <Label Text="Categories"
+                   Grid.Row="2"
+                   Margin="0,25,0,0"
+                   Style="{StaticResource SubHeadline}"
+                   TextColor="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
+                   VerticalOptions="Start"
+                   HorizontalOptions="Start" />
 
-        <CollectionView ItemsSource="{Binding Meals.Data}"
-                IsVisible="{Binding Meals.Data, Converter={StaticResource VisibilityConverter}}"
-                ItemsLayout="VerticalList"
-                VerticalOptions="FillAndExpand"
-                Margin="0,0,0,0">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="model:MyMeal">
-                    <Frame Style="{StaticResource RecipeeCard}" Padding="0" Margin="0,10,0,0">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer 
-                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:HomeViewModel}}, Path=GoToRecipeDetailsCommand}"
-                        CommandParameter="{Binding Id}"/>
-                        </Frame.GestureRecognizers>
-                        <StackLayout Orientation="Horizontal">
-                            <Frame CornerRadius="20" 
-                               HeightRequest="120" 
-                               WidthRequest="120" 
-                               HorizontalOptions="Start"
-                               VerticalOptions="Center">
-                                <Image Source="{Binding Uri}" Aspect="AspectFill" HeightRequest="120" WidthRequest="120"/>
+            <ScrollView Orientation="Horizontal"
+                        Grid.Row="3"
+                        HorizontalScrollBarVisibility="Never">
+                <HorizontalStackLayout Margin="0,10,0,10"
+                                       Spacing="10"
+                                       BindableLayout.ItemsSource="{Binding Categories.Data}">
+                    <HorizontalStackLayout.Resources>
+                        <Style TargetType="RadioButton">
+                            <Setter Property="ControlTemplate"
+                                    Value="{StaticResource FrameRadioTemplate}" />
+                        </Style>
+                    </HorizontalStackLayout.Resources>
+
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="model:MyCategory">
+                            <RadioButton Content="{Binding Name}"
+                                         CheckedChanged="OnCheckedChanged" />
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </HorizontalStackLayout>
+            </ScrollView>
+
+
+            <ActivityIndicator Grid.Row="4"
+                               IsRunning="{Binding Recipes.Loading}"
+                               IsVisible="{Binding Recipes.Loading}"
+                               Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center" />
+            <Label Grid.Row="4"
+                   Text="{Binding Recipes.Exception.Message}"
+                   IsVisible="{Binding Recipes.Exception, Converter={StaticResource VisibilityConverter}}"
+                   TextColor="{AppThemeBinding Dark={StaticResource ErrorDark}, Light={StaticResource Error}}"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center" />
+
+            <Label Grid.Row="4"
+                   Text="There are no recipes in your cookbook yet. Add a recipe."
+                   IsVisible="{Binding Recipes.Data, Converter={StaticResource InvertedVisibilityConverter}}"
+                   TextColor="{AppThemeBinding Dark={StaticResource SecondaryDark}, Light={StaticResource Secondary}}"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center" />
+
+            <CollectionView Grid.Row="4"
+                            ItemsSource="{Binding Recipes.Data}"
+                            IsVisible="{Binding Recipes.Data, Converter={StaticResource VisibilityConverter}}"
+                            ItemsLayout="VerticalList"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            Margin="0,0,0,0">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:MyRecipe">
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItem Text="Delete"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CookbookViewModel}}, Path=DeleteRecipeCommand}"
+                                           CommandParameter="{Binding Id}">
+                                    <SwipeItem.IconImageSource>
+                                        <FontImageSource FontFamily="FAS"
+                                                         Glyph="{StaticResource trash}"
+                                                         Color="{AppThemeBinding Light={StaticResource Button}, Dark={StaticResource ButtonDark}}"
+                                                         Size="24" />
+                                    </SwipeItem.IconImageSource>
+                                </SwipeItem>
+                            </SwipeView.RightItems>
+
+                            <Frame Style="{StaticResource RecipeeCard}"
+                                   Padding="0"
+                                   WidthRequest="350"
+                                   Margin="0,16,0,16"
+                                   CornerRadius="20">
+
+                                <Grid ColumnDefinitions="*,*"
+                                      RowDefinitions="250,120">
+                                    <Frame Grid.Row="0"
+                                           BackgroundColor="{AppThemeBinding Dark={StaticResource SurfaceDark}, Light={StaticResource Surface}}"
+                                           Grid.ColumnSpan="2"
+                                           Padding="0"
+                                           HorizontalOptions="FillAndExpand"
+                                           VerticalOptions="Center">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CookbookViewModel}}, Path=GoToRecipeDetailsCommand}"
+                                                                  CommandParameter="{Binding Id}" />
+                                        </Frame.GestureRecognizers>
+                                        <Image Source="{Binding Image}"
+                                               Aspect="AspectFill" />
+                                    </Frame>
+
+
+                                    <Frame Grid.Row="1"
+                                           Grid.ColumnSpan="2"
+                                           BackgroundColor="{AppThemeBinding Dark={StaticResource SurfaceDark}, Light={StaticResource Surface}}"
+                                           HeightRequest="150"
+                                           VerticalOptions="FillAndExpand"
+                                           HorizontalOptions="FillAndExpand">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CookbookViewModel}}, Path=GoToRecipeDetailsCommand}"
+                                                                  CommandParameter="{Binding Id}" />
+                                        </Frame.GestureRecognizers>
+
+                                        <StackLayout Orientation="Vertical">
+                                            <Label VerticalOptions="Start"
+                                                   Margin="0,0,0,0"
+                                                   Text="{Binding Name}"
+                                                   TextColor="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
+                                                   Style="{StaticResource SubHeadline}"
+                                                   LineBreakMode="WordWrap"
+                                                   HorizontalOptions="FillAndExpand"
+                                                   VerticalTextAlignment="Center" />
+
+                                            <Label VerticalOptions="Start"
+                                                   Margin="0,10,0,0"
+                                                   Text="{Binding Category, StringFormat='Category: {0}'}"
+                                                   TextColor="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
+                                                   Style="{StaticResource LabelStyle}"
+                                                   LineBreakMode="WordWrap"
+                                                   HorizontalOptions="FillAndExpand"
+                                                   VerticalTextAlignment="Center" />
+
+                                            <Label VerticalOptions="Start"
+                                                   Margin="0,0,0,0"
+                                                   Text="{Binding RecipeBy, StringFormat='Recipe by: {0}'}"
+                                                   TextColor="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
+                                                   Style="{StaticResource LabelStyle}"
+                                                   LineBreakMode="WordWrap"
+                                                   HorizontalOptions="FillAndExpand"
+                                                   VerticalTextAlignment="Center" />
+                                        </StackLayout>
+                                    </Frame>
+
+                                    <Frame Grid.Row="1"
+                                           Grid.Column="1"
+                                           HorizontalOptions="End"
+                                           VerticalOptions="End"
+                                           IsVisible="True"
+                                           HasShadow="True"
+                                           Padding="0"
+                                           Margin="0,0,20,20"
+                                           HeightRequest="50"
+                                           WidthRequest="50"
+                                           IsClippedToBounds="True"
+                                           BackgroundColor="{AppThemeBinding Light={StaticResource Background}, Dark={StaticResource BackgroundDark}}"
+                                           CornerRadius="70"
+                                           BorderColor="{AppThemeBinding Light={StaticResource Button}, Dark={StaticResource ButtonDark}}">
+                                        <Image>
+                                            <Image.Source>
+                                                <FontImageSource FontFamily="FAS"
+                                                                 Glyph="{StaticResource calendar}"
+                                                                 Color="{AppThemeBinding Light={StaticResource Button}, Dark={StaticResource ButtonDark}}"
+                                                                 Size="24" />
+                                            </Image.Source>
+                                        </Image>
+                                    </Frame>
+                                </Grid>
                             </Frame>
-                            <Label VerticalOptions="Center"
-                               Margin="16,0,0,0"
-                               Text="{Binding Name}"
-                               TextColor="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
-                               Style="{StaticResource SubHeadline}"
-                               LineBreakMode="WordWrap"
-                               HorizontalOptions="FillAndExpand"
-                               VerticalTextAlignment="Center"/>
-                        </StackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                        </SwipeView>
 
-        <Button
-            Command="{Binding GoToAddRecipeCommand}"
-            Style="{StaticResource ButtonStyle}"
-            Margin="20,40,20,0"
-            Text="Add new recipe" 
-            IsEnabled="True"
-            />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </RefreshView>
 
 
-    </VerticalStackLayout>
 </ContentPage>

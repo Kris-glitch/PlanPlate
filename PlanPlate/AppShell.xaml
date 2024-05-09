@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+
 <Shell
     x:Class="PlanPlate.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -7,14 +7,14 @@
     Shell.FlyoutBehavior="Disabled"
     Title="PlanPlate">
 
-    <!-- <ShellContent-->
-     <!--   Title="Login"-->
-     <!--   ContentTemplate="{DataTemplate view:Login}"-->
-     <!--   Route="Login" /> -->
+    <ShellContent
+     Title="Login"
+     ContentTemplate="{DataTemplate view:Login}"
+     Route="Login" />
 
-    <TabBar Route="Home">
-        <Tab Title="Home" Icon="home.svg" Style="{StaticResource TabBarStyle}">
-            <ShellContent ContentTemplate="{DataTemplate view:Home}"/>
+    <TabBar Route="Discover">
+        <Tab Title="Discover" Icon="discover.svg" Style="{StaticResource TabBarStyle}">
+            <ShellContent ContentTemplate="{DataTemplate view:Discover}"/>
         </Tab>
         <Tab Title="Cookbook" Icon="cookbook.svg" Style="{StaticResource TabBarStyle}">
             <ShellContent ContentTemplate="{DataTemplate view:Cookbook}"/>
@@ -26,5 +26,7 @@
             <ShellContent ContentTemplate="{DataTemplate view:Settings}"/>
         </Tab>
     </TabBar>
+
+    <ShellContent ContentTemplate="{DataTemplate view:AddRecipe}" Route="AddRecipe"/>
 
 </Shell>

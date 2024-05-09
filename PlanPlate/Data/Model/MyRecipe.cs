@@ -9,6 +9,7 @@ namespace PlanPlate.Data.Model
         public string? Instructions { get; set; }
         public string? Image { get; set; }
         public string? Tags { get; set; }
+        public string? RecipeBy { get; set; }
         public List<Ingredient>? Ingredients { get; set; }
        
 

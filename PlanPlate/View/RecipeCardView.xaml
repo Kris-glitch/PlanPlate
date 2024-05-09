@@ -1,26 +1,34 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:model="clr-namespace:PlanPlate.Data.Model"
+             xmlns:viewmodel="clr-namespace:PlanPlate.ViewModels"
              x:DataType="model:MyMeal"
              x:Class="PlanPlate.View.RecipeCardView">
 
-    <Frame Style="{StaticResource RecipeeCard}" Padding="20" Margin="0,16,0,0">
+    <Frame Style="{StaticResource RecipeeCard}" Padding="0" Margin="0,10,0,0">
+        <Frame.GestureRecognizers>
+            <TapGestureRecognizer 
+            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DiscoverViewModel}}, Path=GoToRecipeDetailsCommand}"
+            CommandParameter="{Binding Id}"/>
+        </Frame.GestureRecognizers>
         <StackLayout Orientation="Horizontal">
-            <Frame CornerRadius="20" 
-               HeightRequest="60" 
-               WidthRequest="60" 
-               HorizontalOptions="Start"
-               VerticalOptions="Center">
-                <Image Source="{Binding Uri}" Aspect="Fill" HeightRequest="60" WidthRequest="60"/>
+            <Frame 
+            CornerRadius="20" 
+            HeightRequest="120" 
+            WidthRequest="120" 
+            HorizontalOptions="Start"
+            VerticalOptions="Center">
+                <Image Source="{Binding Uri}" Aspect="AspectFill" HeightRequest="120" WidthRequest="120"/>
             </Frame>
-            <Label VerticalOptions="Center"
-               Margin="16,0,0,0"
-               Text="{Binding Name}"
-               TextColor="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
-               Style="{StaticResource SubHeadline}"
-               LineBreakMode="WordWrap"
-               HorizontalOptions="FillAndExpand"
-               VerticalTextAlignment="Center"/>
+            <Label 
+            VerticalOptions="Center"
+            Margin="16,0,0,0"
+            Text="{Binding Name}"
+            TextColor="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
+            Style="{StaticResource SubHeadline}"
+            LineBreakMode="WordWrap"
+            HorizontalOptions="FillAndExpand"
+            VerticalTextAlignment="Center"/>
         </StackLayout>
     </Frame>
 </ContentView>

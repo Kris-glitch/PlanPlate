@@ -29,7 +29,7 @@ namespace PlanPlate
         protected override void OnResume()
         {
             base.OnResume();
-            var isLoggedIn = CheckLoginStatus();
+           var isLoggedIn = CheckLoginStatus();
 
             if (isLoggedIn)
             {
@@ -59,7 +59,7 @@ namespace PlanPlate
 
         private async Task GoToMain()
         {
-            await Shell.Current.GoToAsync($"//{nameof(Home)}");
+            await Shell.Current.GoToAsync($"//{nameof(Discover)}");
         }
     }
 

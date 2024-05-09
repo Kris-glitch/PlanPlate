@@ -2,14 +2,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:model="clr-namespace:PlanPlate.Data.Model"
              x:DataType="model:MyCategory"
+             xmlns:viewmodel="clr-namespace:PlanPlate.ViewModels"
              x:Class="PlanPlate.View.CategoriesCardView">
 
-    <Frame Style="{StaticResource CategoryCard}"  
-           Margin="10,0,0,0">
-        
+    <Frame Style="{StaticResource CategoryCard}" Margin="10,0,0,0">
+        <Frame.GestureRecognizers>
+            <TapGestureRecognizer 
+                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DiscoverViewModel}}, Path=SearchMealsByCategoryCommand}"
+                CommandParameter="{Binding Name}"/>
+        </Frame.GestureRecognizers>
         <Label Style="{StaticResource SubHeadline}"
-               Text="{Binding Name}"
-               VerticalOptions="Center" 
-               HorizontalOptions="Center"/>
+           Text="{Binding Name}"
+           VerticalOptions="Center" 
+           HorizontalOptions="Center"/>
     </Frame>
 </ContentView>

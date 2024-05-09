@@ -9,6 +9,7 @@ public partial class RecipeDetails : ContentPage
     public RecipeDetails(RecipeDetailsViewModel viewModel)
 	{
         InitializeComponent();
+        Shell.SetTabBarIsVisible(this, false);
         _viewModel = viewModel;
 		BindingContext = viewModel;
 	}

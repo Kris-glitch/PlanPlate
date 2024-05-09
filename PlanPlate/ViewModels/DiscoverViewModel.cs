@@ -5,15 +5,18 @@ using PlanPlate.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using PlanPlate.View;
 
+
+
 namespace PlanPlate.ViewModels
 {
-    public partial class HomeViewModel : BaseViewModel
+    public partial class DiscoverViewModel : BaseViewModel
     {
         private readonly IRecipeRepository _recipeRepository;
 
-        public HomeViewModel(IUserRepository userRepository, IRecipeRepository recipeRepository) : base(userRepository)
+        public DiscoverViewModel(IUserRepository userRepository, IRecipeRepository recipeRepository) : base(userRepository)
         {
             _recipeRepository = recipeRepository;
+            
         }
 
         private bool initPerformed = false;
@@ -32,6 +35,9 @@ namespace PlanPlate.ViewModels
         }
 
         [ObservableProperty]
+        bool isRefreshing;
+
+        [ObservableProperty]
         string? searchQuery;
 
         [ObservableProperty]
@@ -39,6 +45,19 @@ namespace PlanPlate.ViewModels
 
         [ObservableProperty]
         DataOrException<IEnumerable<MyMeal>, Exception>? meals;
+
+        [RelayCommand]
+        async Task Refresh()
+        {
+            IsRefreshing = true;
+            OnPropertyChanged(nameof(IsRefreshing));
+
+            await GetCategories();
+            await SearchMealsByCategory("breakfast");
+
+            IsRefreshing = false;
+            OnPropertyChanged(nameof(IsRefreshing));
+        }
 
         [RelayCommand]
         async Task PerformSearch()
@@ -65,7 +84,7 @@ namespace PlanPlate.ViewModels
                     OnPropertyChanged(nameof(Meals));
                 }
             }
-            
+
         }
 
         [RelayCommand]
@@ -101,7 +120,7 @@ namespace PlanPlate.ViewModels
                 Data = null,
                 Loading = true,
                 Exception = null
-                
+
             };
 
             if (Meals != null)
@@ -124,11 +143,11 @@ namespace PlanPlate.ViewModels
         }
 
         [RelayCommand]
-        private void GoToRecipeDetails(string recipeId)
+        private async Task GoToRecipeDetails(string recipeId)
         {
             if (recipeId != null)
             {
-                Shell.Current.GoToAsync($"{nameof(RecipeDetails)}?recipeId={recipeId}");
+                await Shell.Current.GoToAsync($"{nameof(RecipeDetails)}?recipeId={recipeId}");
             }
         }
     }

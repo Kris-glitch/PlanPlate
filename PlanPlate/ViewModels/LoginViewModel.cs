@@ -6,7 +6,7 @@ using PlanPlate.View;
 
 namespace PlanPlate.ViewModels
 {
-    public partial class LoginViewModel : BaseViewModel
+    public partial class LoginViewModel(IUserRepository repository) : BaseViewModel(repository)
     {
 
         [ObservableProperty]
@@ -14,11 +14,6 @@ namespace PlanPlate.ViewModels
 
         [ObservableProperty]
         string? password;
-
-        public LoginViewModel(IUserRepository repository) : base(repository)
-        {
-            SetShowErrorAction(DisplayError);
-        }
 
         [RelayCommand]
         async Task GoToSignup()
@@ -31,7 +26,7 @@ namespace PlanPlate.ViewModels
         {
             if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
             {
-                DisplayError("Email and password are required.");
+                OnShowError("Email and password are required.");
                 return;
             }
 
@@ -39,24 +34,35 @@ namespace PlanPlate.ViewModels
 
             if (response.Exception != null)
             {
-                DisplayError(response.Exception.Message);
+                OnShowError(response.Exception.Message);
                 return;
-            } else
+            }
+            else
             {
                 var user = response.Data;
-                if (user!= null)
+                if (user != null)
                 {
-                    await Shell.Current.GoToAsync($"//{nameof(Home)}");
-                } else
+                    await Shell.Current.GoToAsync($"//{nameof(Discover)}");
+                }
+                else
                 {
-                    DisplayError("Something went wrong. Please try again later.");
+                    OnShowError("Something went wrong. Please try again later.");
                     return;
                 }
-                
+
             }
 
         }
 
-       
+        public void SubscribeToErrorEvents(Action<string> errorHandler)
+        {
+            ShowError += errorHandler;
+        }
+        public void UnsubscribeFromErrorEvents(Action<string> errorHandler)
+        {
+            ShowError -= errorHandler;
+        }
+
+
     }
 }

@@ -6,6 +6,15 @@ namespace PlanPlate.Utils
 {
     public static class RecipeMapper
     {
+
+        public static IEnumerable<MyCategory> MapCookbookCategoriesToMyCategory(List<string> categories)
+        {
+            return categories.Select(category => new MyCategory
+            {
+                CategoryId = null,
+                Name = category
+            });
+        }
         public static IEnumerable<MyCategory> MapApiCategoriesToMyCategories(IEnumerable<Category> categories)
         {
             return categories.Select(category => new MyCategory

@@ -4,12 +4,29 @@ namespace PlanPlate.View;
 
 public partial class Login : ContentPage
 {
-	public Login(LoginViewModel viewModel)
+
+    private readonly LoginViewModel _viewModel;
+    public Login(LoginViewModel viewModel)
 	{
 		InitializeComponent();
 		BindingContext = viewModel;
+        _viewModel = viewModel;
+        _viewModel.SubscribeToErrorEvents(OnShowError);
 
-        viewModel.SetShowErrorAction(message => DisplayAlert("Error", message, "OK"));
+	}
+
+    private async void OnShowError(string errorMessage)
+    {
+        await DisplayAlert("Error", errorMessage, "OK");
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+
+        _viewModel.UnsubscribeFromErrorEvents(OnShowError);
 
     }
+
 }

@@ -1,10 +1,10 @@
-﻿using Firebase.Auth;
+﻿using CommunityToolkit.Maui;
+using Firebase.Auth;
 using Firebase.Auth.Providers;
 using Firebase.Database;
 using Microsoft.Extensions.Logging;
 using PlanPlate.Data;
 using PlanPlate.Network;
-using PlanPlate.Network.Model;
 using PlanPlate.View;
 using PlanPlate.ViewModels;
 
@@ -17,14 +17,15 @@ namespace PlanPlate
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("Outfit-VariableFont.ttf", "OutfitVariableFont");
                     fonts.AddFont("Outfit-Bold.ttf", "OutfitBold");
                     fonts.AddFont("Outfit-Regular.ttf", "OutfitRegular");
-                    fonts.AddFont("Font Awesome 6 Brands-Regular-400.ttf", "FAB");
-                    fonts.AddFont("Font Awesome 6 Free-Regular-400.ttf", "FAR");
-                    fonts.AddFont("Font Awesome 6 Free-Solid-900.ttf", "FAS");
+                    fonts.AddFont("Font Awesome 6 Brands-Regular-400.otf", "FAB");
+                    fonts.AddFont("Font Awesome 6 Free-Regular-400.otf", "FAR");
+                    fonts.AddFont("Font Awesome 6 Free-Solid-900.otf", "FAS");
                 });
 
 #if DEBUG
@@ -52,7 +53,7 @@ namespace PlanPlate
             builder.Services.AddSingleton<IRecipeService, RecipeService>();
             builder.Services.AddSingleton<IRecipeRepository, RecipeRepository>();
 
-            builder.Services.AddSingleton<IRecipesDatabase, RecipeDatabaseService>();
+            builder.Services.AddSingleton<ICookbookService, CookbookService>();
             builder.Services.AddSingleton<ICookbookRepository, CookbookRepository>();
 
             builder.Services.AddSingleton<BaseViewModel>();
@@ -60,14 +61,14 @@ namespace PlanPlate
             builder.Services.AddSingleton<SignupViewModel>();
             builder.Services.AddSingleton<Login>();
             builder.Services.AddSingleton<Signup>();
-            builder.Services.AddSingleton<HomeViewModel>();
-            builder.Services.AddSingleton<Home>();
+            builder.Services.AddSingleton<DiscoverViewModel>();
+            builder.Services.AddSingleton<Discover>();
             builder.Services.AddTransient<RecipeDetailsViewModel>();
             builder.Services.AddTransient<RecipeDetails>();
             builder.Services.AddSingleton<CookbookViewModel>();
             builder.Services.AddSingleton<Cookbook>();
-            builder.Services.AddSingleton<AddRecipeViewModel>();
-            builder.Services.AddSingleton<AddRecipe>();
+            builder.Services.AddTransient<AddRecipeViewModel>();
+            builder.Services.AddTransient<AddRecipe>();
 
 
             return builder.Build();

@@ -1,0 +1,156 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:PlanPlate.Data.Model"
+             xmlns:viewmodel="clr-namespace:PlanPlate.ViewModels"
+             x:DataType="viewmodel:DiscoverViewModel"
+             x:Class="PlanPlate.View.Discover"
+             Title="Discover">
+
+    <ContentPage.Resources>
+        <ControlTemplate x:Key="FrameRadioTemplate">
+            <Border Stroke="Transparent"
+                    MinimumHeightRequest="30"
+                    MinimumWidthRequest="50"
+                    Padding="10"
+                    Margin="5,0,0,0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CheckedStates">
+                        <VisualState x:Name="Checked">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+                            </VisualState.Setters>
+                        </VisualState>
+
+                        <VisualState x:Name="Unchecked">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="{AppThemeBinding Dark={StaticResource SurfaceDark}, Light={StaticResource Surface}}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+
+                <HorizontalStackLayout>
+                    <Label x:Name="TextLabel"
+                           Style="{StaticResource SubHeadline}"
+                           Text="{TemplateBinding Content}"
+                           TextColor="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center">
+
+                    </Label>
+                </HorizontalStackLayout>
+            </Border>
+        </ControlTemplate>
+    </ContentPage.Resources>
+
+    <RefreshView Command="{Binding RefreshCommand}"
+                 IsRefreshing="{Binding IsRefreshing}"
+                 RefreshColor="{AppThemeBinding Dark={StaticResource PrimaryDark}, Light={StaticResource Primary}}">
+
+        <StackLayout Padding="16"
+                     Orientation="Vertical">
+
+            <Label Text="Discover Recipes"
+                   Style="{StaticResource Headline}"
+                   VerticalOptions="Start"
+                   HorizontalOptions="Start" />
+
+            <SearchBar Style="{StaticResource SearchBarStyle}"
+                       Margin="0,20,20,0"
+                       Placeholder="Look up a recipe"
+                       Text="{Binding SearchQuery, Mode=TwoWay}"
+                       IsEnabled="True"
+                       IsSpellCheckEnabled="True"
+                       IsTextPredictionEnabled="True"
+                       IsVisible="True"
+                       Keyboard="Text"
+                       SearchCommand="{Binding PerformSearchCommand}">
+            </SearchBar>
+
+            <Label Text="Categories"
+                   Margin="0,25,0,0"
+                   Style="{StaticResource SubHeadline}"
+                   TextColor="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
+                   VerticalOptions="Start"
+                   HorizontalOptions="Start" />
+
+            <ScrollView Orientation="Horizontal"
+                        HorizontalScrollBarVisibility="Never">
+                <HorizontalStackLayout Margin="0,10,0,10"
+                                       Spacing="10"
+                                       BindableLayout.ItemsSource="{Binding Categories.Data}">
+                    <HorizontalStackLayout.Resources>
+                        <Style TargetType="RadioButton">
+                            <Setter Property="ControlTemplate"
+                                    Value="{StaticResource FrameRadioTemplate}" />
+                        </Style>
+                    </HorizontalStackLayout.Resources>
+
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="model:MyCategory">
+                            <RadioButton Content="{Binding Name}"
+                                         CheckedChanged="OnCheckedChanged" />
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </HorizontalStackLayout>
+            </ScrollView>
+
+            <ActivityIndicator IsRunning="{Binding Meals.Loading}"
+                               IsVisible="{Binding Meals.Loading}"
+                               Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center" />
+            <Label Text="{Binding Meals.Exception.Message}"
+                   IsVisible="{Binding Meals.Exception, Converter={StaticResource VisibilityConverter}}"
+                   TextColor="{AppThemeBinding Dark={StaticResource ErrorDark}, Light={StaticResource Error}}"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center" />
+
+            <CollectionView ItemsSource="{Binding Meals.Data}"
+                            IsVisible="{Binding Meals.Data, Converter={StaticResource VisibilityConverter}}"
+                            ItemsLayout="VerticalList"
+                            VerticalOptions="FillAndExpand"
+                            Margin="0,0,0,0">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:MyMeal">
+                        <Frame Style="{StaticResource RecipeeCard}"
+                               Padding="0"
+                               Margin="0,10,0,0">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DiscoverViewModel}}, Path=GoToRecipeDetailsCommand}"
+                                                      CommandParameter="{Binding Id}" />
+                            </Frame.GestureRecognizers>
+                            <StackLayout Orientation="Horizontal">
+                                <Frame CornerRadius="20"
+                                       HeightRequest="120"
+                                       WidthRequest="120"
+                                       HorizontalOptions="Start"
+                                       VerticalOptions="Center">
+                                    <Image Source="{Binding Uri}"
+                                           Aspect="AspectFill"
+                                           HeightRequest="120"
+                                           WidthRequest="120" />
+                                </Frame>
+                                <Label VerticalOptions="Center"
+                                       Margin="16,0,0,0"
+                                       Text="{Binding Name}"
+                                       TextColor="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
+                                       Style="{StaticResource SubHeadline}"
+                                       LineBreakMode="WordWrap"
+                                       HorizontalOptions="FillAndExpand"
+                                       VerticalTextAlignment="Center" />
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </StackLayout>
+
+    </RefreshView>
+</ContentPage>
