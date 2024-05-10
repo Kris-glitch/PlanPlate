@@ -1,9 +1,12 @@
+using PlanPlate.ViewModels;
+
 namespace PlanPlate.View;
 
 public partial class Plan : ContentPage
 {
-	public Plan()
+	public Plan(PlanViewModel viewModel)
 	{
 		InitializeComponent();
+		BindingContext=viewModel;
 	}
 }

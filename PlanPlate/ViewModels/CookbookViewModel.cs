@@ -201,7 +201,7 @@ namespace PlanPlate.ViewModels
 
             try
             {
-                await _cookbookRepository.DeleteCookbookRecipe(userId, recipeId);
+                await _cookbookRepository.DeleteCookbookRecipe(recipeId, userId);
             }
             catch (Exception ex) 
             {

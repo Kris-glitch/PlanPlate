@@ -11,7 +11,6 @@ namespace PlanPlate.Data.Model
         public string? Tags { get; set; }
         public string? RecipeBy { get; set; }
         public List<Ingredient>? Ingredients { get; set; }
-       
-
+ 
     }
 }

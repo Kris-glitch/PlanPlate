@@ -26,18 +26,9 @@
                 VerticalOptions="Center"
                 BackgroundColor="{AppThemeBinding Dark={StaticResource SurfaceDark}, Light={StaticResource Surface}}">
                 <Grid>
-                    <Image Source="{Binding RecipeImageUri}"
-                           Aspect="AspectFill"
-                           HeightRequest="300"
-                           WidthRequest="300">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding AddImageCommand}" />
-                        </Image.GestureRecognizers>
-                    </Image>
-                    <StackLayout 
-                        VerticalOptions="Center" 
-                        HorizontalOptions="Center" 
-                        Opacity="0.6">
+                    <StackLayout VerticalOptions="Center"
+                                 HorizontalOptions="Center"
+                                 Opacity="0.6">
                         <Label IsVisible="{Binding RecipeImageUri, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}"
                                Text="Add Image"
                                Style="{StaticResource SubHeadline}"
@@ -46,29 +37,35 @@
                                 <TapGestureRecognizer Command="{Binding AddImageCommand}" />
                             </Label.GestureRecognizers>
                         </Label>
-                        <Frame
-                            IsVisible="{Binding RecipeImageUri, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}"
-                            HasShadow="True"
-                            Margin="20,20,20,0"
-                            Padding="0"
-                            HeightRequest="60"
-                            WidthRequest="60"
-                            HorizontalOptions="Center"
-                            IsClippedToBounds="True"
-                            BackgroundColor="Transparent" 
-                            CornerRadius="70" 
-                            BorderColor="{AppThemeBinding Light={StaticResource Button}, Dark={StaticResource ButtonDark}}">
+                        <Frame IsVisible="{Binding RecipeImageUri, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}"
+                               HasShadow="True"
+                               Margin="20,20,20,0"
+                               Padding="0"
+                               HeightRequest="60"
+                               WidthRequest="60"
+                               HorizontalOptions="Center"
+                               IsClippedToBounds="True"
+                               BackgroundColor="Transparent"
+                               CornerRadius="70"
+                               BorderColor="{AppThemeBinding Light={StaticResource Button}, Dark={StaticResource ButtonDark}}">
                             <Image>
                                 <Image.Source>
-                                    <FontImageSource
-                                        FontFamily="FAS"
-                                        Glyph="{StaticResource plus}"
-                                        Color="{AppThemeBinding Light={StaticResource Button}, Dark={StaticResource ButtonDark}}"
-                                        Size="24"/>
+                                    <FontImageSource FontFamily="FAS"
+                                                     Glyph="{StaticResource plus}"
+                                                     Color="{AppThemeBinding Light={StaticResource Button}, Dark={StaticResource ButtonDark}}"
+                                                     Size="24" />
                                 </Image.Source>
                             </Image>
                         </Frame>
                     </StackLayout>
+                    <Image Source="{Binding RecipeImageUri}"
+                           Aspect="AspectFill"
+                           HeightRequest="300"
+                           WidthRequest="300">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AddImageCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
                 </Grid>
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer

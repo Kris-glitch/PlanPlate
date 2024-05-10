@@ -80,8 +80,9 @@
                    HorizontalOptions="Start" />
 
             <SearchBar Grid.Row="1"
+                       HorizontalOptions="Center"
                        Style="{StaticResource SearchBarStyle}"
-                       Margin="0,20,20,0"
+                       Margin="20,20,20,0"
                        Placeholder="Look up a recipe"
                        Text="{Binding SearchQuery, Mode=TwoWay}"
                        IsEnabled="True"
@@ -136,13 +137,6 @@
                    VerticalOptions="Center"
                    HorizontalOptions="Center" />
 
-            <Label Grid.Row="4"
-                   Text="There are no recipes in your cookbook yet. Add a recipe."
-                   IsVisible="{Binding Recipes.Data, Converter={StaticResource InvertedVisibilityConverter}}"
-                   TextColor="{AppThemeBinding Dark={StaticResource SecondaryDark}, Light={StaticResource Secondary}}"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Center" />
-
             <CollectionView Grid.Row="4"
                             ItemsSource="{Binding Recipes.Data}"
                             IsVisible="{Binding Recipes.Data, Converter={StaticResource VisibilityConverter}}"
@@ -150,6 +144,13 @@
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             Margin="0,0,0,0">
+                <CollectionView.EmptyView>
+                    <Label Grid.Row="4"
+                           Text="There are no recipes in your cookbook yet. Add a recipe."
+                           TextColor="{AppThemeBinding Dark={StaticResource SecondaryDark}, Light={StaticResource Secondary}}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
+                </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:MyRecipe">
                         <SwipeView>
@@ -179,7 +180,7 @@
                                            Grid.ColumnSpan="2"
                                            Padding="0"
                                            HorizontalOptions="FillAndExpand"
-                                           VerticalOptions="Center">
+                                           VerticalOptions="FillAndExpand">
                                         <Frame.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CookbookViewModel}}, Path=GoToRecipeDetailsCommand}"
                                                                   CommandParameter="{Binding Id}" />

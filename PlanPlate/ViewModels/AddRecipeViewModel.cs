@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using PlanPlate.Data;
 using PlanPlate.Data.Model;
+using PlanPlate.Utils;
 using System.Collections.ObjectModel;
 
 namespace PlanPlate.ViewModels
@@ -18,6 +19,8 @@ namespace PlanPlate.ViewModels
             _cookbookRepository = cookbookRepository;
             IngredientsList = [new Ingredient()];
         }
+
+        private FileResult? PhotoFromGallery { get; set; }
 
         [ObservableProperty]
         string? recipeCategory;
@@ -65,19 +68,18 @@ namespace PlanPlate.ViewModels
 
             if (photo != null)
             {
+                PhotoFromGallery = photo;
+
                 var stream = await photo.OpenReadAsync();
 
-                using (MemoryStream ms = new MemoryStream())
+                if (stream != null)
                 {
-                    await stream.CopyToAsync(ms);
-                    byte[] imageBytes = ms.ToArray();
+                    
 
-
-                    string base64Image = Convert.ToBase64String(imageBytes);
-
-                    RecipeImageUri = $"data:image/png;base64,{base64Image}";
+                    RecipeImageUri = await StreamToImage.ConvertStreamToImage(stream);
                     OnPropertyChanged(nameof(RecipeImageUri));
                 }
+
             }
         }
 
@@ -104,20 +106,29 @@ namespace PlanPlate.ViewModels
                 var user = _userRepository.IsUserLoggedIn().Data;
                 var userId = user?.Id;
 
-                var recipeToSave = new MyRecipe
-                {
-                    Category = RecipeCategory,
-                    Name = RecipeName,
-                    Image = RecipeImageUri,
-                    Ingredients = IngredientsList?.ToList(),
-                    Instructions = RecipeInstructions,
-                    RecipeBy = RecipeBy
-                };
+                string? generatedUri = null;
 
                 if (userId != null)
-                {
+                {  
+                    if (PhotoFromGallery != null)
+                    {
+                        generatedUri = await _cookbookRepository.SaveRecipeImageToStorage(userId, PhotoFromGallery);
+                    }
+
+                    var imageUri = generatedUri ?? RecipeImageUri;
+                    var recipeToSave = new MyRecipe
+                    {
+                        Category = RecipeCategory,
+                        Name = RecipeName,
+                        Image = imageUri,
+                        Ingredients = IngredientsList?.ToList(),
+                        Instructions = RecipeInstructions,
+                        RecipeBy = RecipeBy
+                    };
+
                     await _cookbookRepository.SaveCookbookRecipe(recipeToSave, userId);
                     await AddRecipeViewModel.GoToCookbook();
+
                 }
             }
             catch (Exception ex)

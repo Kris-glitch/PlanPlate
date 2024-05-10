@@ -1,34 +1,39 @@
 ﻿using Firebase.Database;
 using Firebase.Database.Query;
+using Firebase.Storage;
 using PlanPlate.Data.Model;
 
 namespace PlanPlate.Network
 {
-    class CookbookService : ICookbookService
+    class CookbookService : ICookbookService, IStorageService
     {
         protected readonly FirebaseClient _firebaseClient;
-        
-        public CookbookService(FirebaseClient firebaseClient)
+
+        protected readonly FirebaseStorage _firebaseStorage;
+
+        public CookbookService(FirebaseClient firebaseClient, FirebaseStorage firebaseStorage)
         {
             _firebaseClient = firebaseClient;
+            _firebaseStorage = firebaseStorage;
            
         }
 
         public async Task SaveCookbookRecipeAsync(MyRecipe recipe, string userId)
         {
             var cookbookRef = _firebaseClient.Child("cookbook").Child(userId);
-            var result = await cookbookRef.PostAsync(recipe) ?? throw new Exception("Something went wrong. Please try again later");
+            _ = await cookbookRef.PostAsync(recipe) ?? throw new Exception("Something went wrong. Please try again later");
         }
 
         public async Task DeleteCookbookRecipeAsync(string recipeId, string userId)
-        {
-            var userCookbookRef = _firebaseClient.Child($"cookbook/{userId}");
+        {           
+            var userCookbookRef = _firebaseClient.Child("cookbook").Child(userId);
             await userCookbookRef.Child(recipeId).DeleteAsync();
+           
         }
 
         public async Task UpdateCookbookRecipeAsync(MyRecipe updatedRecipe, string recipeId, string userId)
         {
-            var userCookbookRef = _firebaseClient.Child($"cookbook/{userId}");
+            var userCookbookRef = _firebaseClient.Child("cookbook").Child(userId);
             await userCookbookRef.Child(recipeId).PutAsync(updatedRecipe);
         }
 
@@ -115,5 +120,22 @@ namespace PlanPlate.Network
             return categoriesSet.ToList();
         }
 
+        public async Task<string?> SaveRecipeImageAsync(string userId, FileResult photo)
+        {            
+            var storagePath = $"{userId}/{Guid.NewGuid()}"; 
+
+            await _firebaseStorage.Child(storagePath).PutAsync(await photo.OpenReadAsync());
+
+            var downloadUrl = await _firebaseStorage.Child(storagePath).GetDownloadUrlAsync();
+
+            return downloadUrl;
+        }
+
+        public async Task DeleteRecipeImageAsync(string storagePath)
+        {
+            await _firebaseStorage.Child(storagePath).DeleteAsync();
+        }
+
+      
     }
 }

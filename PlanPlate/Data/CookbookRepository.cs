@@ -4,9 +4,11 @@ using PlanPlate.Utils;
 
 namespace PlanPlate.Data
 {
-    class CookbookRepository(ICookbookService cookbookService) : ICookbookRepository
+    class CookbookRepository(ICookbookService cookbookService, IStorageService storageService) : ICookbookRepository
     {
         protected readonly ICookbookService _cookbookService = cookbookService;
+
+        protected readonly IStorageService _storageService = storageService;
 
         public async Task<DataOrException<IEnumerable<MyCategory>, Exception>> GetAllCategories(string userId)
         {
@@ -43,6 +45,7 @@ namespace PlanPlate.Data
 
                 if (recipesResponse != null)
                 {
+
                     result.Data = recipesResponse;
                 }
                 else
@@ -172,6 +175,32 @@ namespace PlanPlate.Data
             }
 
             return result;
+        }
+
+        public async Task<string?> SaveRecipeImageToStorage(string userId, FileResult photo)
+        {
+            try
+            {
+                return await _storageService.SaveRecipeImageAsync(userId, photo);
+
+            } catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while saving image to storage: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task DeleteRecipeImageFromStorage(string storagePath)
+        {
+            try
+            {
+                await _storageService.DeleteRecipeImageAsync(storagePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while saving image to storage: {ex.Message}");
+                throw;
+            }
         }
     }
 }

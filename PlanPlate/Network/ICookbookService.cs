@@ -12,5 +12,7 @@ namespace PlanPlate.Network
         Task<List<MyRecipe>?> SearchRecipeFromCookbookAsync(string userId, string name);
         Task<MyRecipe?> SearchRecipeByIdFromCookbookAsync(string userId, string recipeId);
         Task<List<string>> GetAllCategories(string userId);
+
+
     }
 }

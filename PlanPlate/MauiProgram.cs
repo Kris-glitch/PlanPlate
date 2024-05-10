@@ -2,9 +2,11 @@
 using Firebase.Auth;
 using Firebase.Auth.Providers;
 using Firebase.Database;
+using Firebase.Storage;
 using Microsoft.Extensions.Logging;
 using PlanPlate.Data;
 using PlanPlate.Network;
+using PlanPlate.Network.Model;
 using PlanPlate.View;
 using PlanPlate.ViewModels;
 
@@ -45,7 +47,12 @@ namespace PlanPlate
             {
                return new FirebaseClient("https://planplate-89a8f-default-rtdb.europe-west1.firebasedatabase.app/");
             });
-            
+
+            builder.Services.AddSingleton<FirebaseStorage>(sp =>
+            {
+                return new FirebaseStorage("planplate-89a8f.appspot.com");
+            });
+
             builder.Services.AddSingleton<IUser, UserService>();
             builder.Services.AddSingleton<IUserRepository, UserRepository>();
 
@@ -54,7 +61,10 @@ namespace PlanPlate
             builder.Services.AddSingleton<IRecipeRepository, RecipeRepository>();
 
             builder.Services.AddSingleton<ICookbookService, CookbookService>();
+            builder.Services.AddSingleton<IStorageService, CookbookService>();
             builder.Services.AddSingleton<ICookbookRepository, CookbookRepository>();
+            builder.Services.AddSingleton<IMealPlannerService, MealPlannerService>();
+            builder.Services.AddSingleton<IPlannerRepository, PlannerRepository>();
 
             builder.Services.AddSingleton<BaseViewModel>();
             builder.Services.AddSingleton<LoginViewModel>();
@@ -69,6 +79,8 @@ namespace PlanPlate
             builder.Services.AddSingleton<Cookbook>();
             builder.Services.AddTransient<AddRecipeViewModel>();
             builder.Services.AddTransient<AddRecipe>();
+            builder.Services.AddSingleton<PlanViewModel>();
+            builder.Services.AddSingleton<Plan>();
 
 
             return builder.Build();
