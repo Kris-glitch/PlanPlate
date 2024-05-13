@@ -29,6 +29,7 @@
             VerticalOptions="Center"/>
 
         <Entry 
+            ReturnType="Next"
             Placeholder="Username"
             Text="{Binding Username}"
             Keyboard="Text"
@@ -38,6 +39,7 @@
             IsTextPredictionEnabled="True"/>    
 
         <Entry 
+            ReturnType="Next"
             Placeholder="Email"
             Text="{Binding Email}"
             Keyboard="Email"
@@ -47,12 +49,14 @@
 
         <Entry 
             Text="{Binding Password}"
+            ReturnType="Next"
             IsPassword="True"
             Style="{StaticResource LoginEntry}" 
             IsEnabled="True"
             Placeholder="Password"/>
 
         <Entry 
+            ReturnType="Go"
             Text="{Binding ConfirmPassword}"
             IsPassword="True"
             Style="{StaticResource LoginEntry}" 

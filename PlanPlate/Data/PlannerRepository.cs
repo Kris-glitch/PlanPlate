@@ -21,13 +21,13 @@ namespace PlanPlate.Data
             }
         }
 
-        public async Task<DataOrException<IEnumerable<MyRecipe>, Exception>> GetAllRecipesFromPlanner(string userId, DateTime selectedDate, string category)
+        public async Task<DataOrException<MyRecipe, Exception>> GetAllRecipesFromPlanner(string userId, DateTime selectedDate, string category)
         {
-            DataOrException<IEnumerable<MyRecipe>, Exception> result = new();
+            DataOrException<MyRecipe, Exception> result = new();
 
             try
             {
-                var recipesResponse = await _mealPlannerService.GetAllRecipesFromPlanner(userId, selectedDate, category);
+                var recipesResponse = await _mealPlannerService.GetRecipeFromPlanner(userId, selectedDate, category);
 
                 if (recipesResponse != null)
                 {
@@ -47,11 +47,11 @@ namespace PlanPlate.Data
             return result;
         }
 
-        public async Task SaveRecipeToPlannerAsync(string userId, DateTime selectedDate, string category, List<MyRecipe> recipes)
+        public async Task SaveRecipeToPlannerAsync(string userId, DateTime selectedDate, string category, MyRecipe recipe)
         {
             try
             {
-                await _mealPlannerService.SaveRecipeToPlannerAsync(userId, selectedDate, category, recipes);
+                await _mealPlannerService.SaveRecipeToPlannerAsync(userId, selectedDate, category, recipe);
             }
             catch (Exception ex)
             {
@@ -60,17 +60,5 @@ namespace PlanPlate.Data
             }
         }
 
-        public async Task UpdateRecipeInPlannerAsync(string userId, DateTime selectedDate, string category, List<MyRecipe> updatedRecipes)
-        {
-            try
-            {
-                await _mealPlannerService.UpdateRecipeInPlannerAsync(userId , selectedDate , category, updatedRecipes);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred while saving recipe: {ex.Message}");
-                throw;
-            }
-        }
     }
 }

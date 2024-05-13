@@ -2,33 +2,109 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:model="clr-namespace:PlanPlate.Data.Model"
              xmlns:viewmodel="clr-namespace:PlanPlate.ViewModels"
-             x:DataType="model:MyMeal"
+             x:DataType="model:MyRecipe"
              x:Class="PlanPlate.View.RecipeCardView">
+    
 
-    <Frame Style="{StaticResource RecipeeCard}" Padding="0" Margin="0,10,0,0">
-        <Frame.GestureRecognizers>
-            <TapGestureRecognizer 
-            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:DiscoverViewModel}}, Path=GoToRecipeDetailsCommand}"
-            CommandParameter="{Binding Id}"/>
-        </Frame.GestureRecognizers>
-        <StackLayout Orientation="Horizontal">
-            <Frame 
-            CornerRadius="20" 
-            HeightRequest="120" 
-            WidthRequest="120" 
-            HorizontalOptions="Start"
-            VerticalOptions="Center">
-                <Image Source="{Binding Uri}" Aspect="AspectFill" HeightRequest="120" WidthRequest="120"/>
+    <Frame Style="{StaticResource RecipeeCard}"
+           Padding="0"
+           WidthRequest="350"
+           Margin="0,16,0,16"
+           CornerRadius="20">
+
+        <Grid ColumnDefinitions="*,*"
+              RowDefinitions="250,120">
+            <Frame Grid.Row="0"
+                   BackgroundColor="{AppThemeBinding Dark={StaticResource SurfaceDark}, Light={StaticResource Surface}}"
+                   Grid.ColumnSpan="2"
+                   Padding="0"
+                   HorizontalOptions="FillAndExpand"
+                   VerticalOptions="FillAndExpand">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:PlanViewModel}}, Path=GoToRecipeDetailsCommand}"
+                                          CommandParameter="{Binding Id}" />
+                </Frame.GestureRecognizers>
+                <Image Source="{Binding Image}"
+                       Aspect="AspectFill" />
             </Frame>
-            <Label 
-            VerticalOptions="Center"
-            Margin="16,0,0,0"
-            Text="{Binding Name}"
-            TextColor="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
-            Style="{StaticResource SubHeadline}"
-            LineBreakMode="WordWrap"
-            HorizontalOptions="FillAndExpand"
-            VerticalTextAlignment="Center"/>
-        </StackLayout>
+            <Frame Grid.Row="1"
+                   Grid.ColumnSpan="2"
+                   BackgroundColor="{AppThemeBinding Dark={StaticResource SurfaceDark}, Light={StaticResource Surface}}"
+                   HeightRequest="150"
+                   VerticalOptions="FillAndExpand"
+                   HorizontalOptions="FillAndExpand">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:PlanViewModel}}, Path=GoToRecipeDetailsCommand}"
+                                          CommandParameter="{Binding Id}" />
+                </Frame.GestureRecognizers>
+
+                <StackLayout Orientation="Vertical">
+                    <Label VerticalOptions="Start"
+                           Margin="0,0,0,0"
+                           Text="{Binding Name}"
+                           TextColor="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
+                           Style="{StaticResource SubHeadline}"
+                           LineBreakMode="WordWrap"
+                           HorizontalOptions="FillAndExpand"
+                           VerticalTextAlignment="Center" />
+
+                    <Label VerticalOptions="Start"
+                           Margin="0,10,0,0"
+                           Text="{Binding Category, StringFormat='Category: {0}'}"
+                           TextColor="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
+                           Style="{StaticResource LabelStyle}"
+                           LineBreakMode="WordWrap"
+                           HorizontalOptions="FillAndExpand"
+                           VerticalTextAlignment="Center" />
+
+                    <Label VerticalOptions="Start"
+                           Margin="0,0,0,0"
+                           Text="{Binding RecipeBy, StringFormat='Recipe by: {0}'}"
+                           TextColor="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
+                           Style="{StaticResource LabelStyle}"
+                           LineBreakMode="WordWrap"
+                           HorizontalOptions="FillAndExpand"
+                           VerticalTextAlignment="Center" />
+                </StackLayout>
+            </Frame>
+
+            <Frame Grid.Row="1"
+                   Grid.Column="1"
+                   HorizontalOptions="End"
+                   VerticalOptions="End"
+                   IsVisible="True"
+                   HasShadow="True"
+                   Padding="0"
+                   Margin="0,0,20,20"
+                   HeightRequest="50"
+                   WidthRequest="50"
+                   IsClippedToBounds="True"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource Background}, Dark={StaticResource BackgroundDark}}"
+                   CornerRadius="70"
+                   BorderColor="{AppThemeBinding Light={StaticResource Button}, Dark={StaticResource ButtonDark}}">
+                <Image>
+                    <Image.Source>
+                        <FontImageSource FontFamily="FAS"
+                                         Glyph="{StaticResource trash}"
+                                         Color="{AppThemeBinding Light={StaticResource Button}, Dark={StaticResource ButtonDark}}"
+                                         Size="24" />
+                    </Image.Source>
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:PlanViewModel}}, Path=DeleteRecipeFromPlannerCommand}">
+                            <TapGestureRecognizer.CommandParameter>
+                                <MultiBinding Converter="{StaticResource DeleteFromPlannerConverter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="Text"
+                                                 Source="{x:Reference category}" />
+                                        <Binding Source="{Binding Id}" />
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </TapGestureRecognizer.CommandParameter>
+                        </TapGestureRecognizer>
+                    </Image.GestureRecognizers>
+                </Image>
+            </Frame>
+        </Grid>
     </Frame>
+    
 </ContentView>

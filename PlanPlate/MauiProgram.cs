@@ -67,18 +67,25 @@ namespace PlanPlate
             builder.Services.AddSingleton<IPlannerRepository, PlannerRepository>();
 
             builder.Services.AddSingleton<BaseViewModel>();
+
             builder.Services.AddSingleton<LoginViewModel>();
-            builder.Services.AddSingleton<SignupViewModel>();
             builder.Services.AddSingleton<Login>();
+
+            builder.Services.AddSingleton<SignupViewModel>();
             builder.Services.AddSingleton<Signup>();
+
             builder.Services.AddSingleton<DiscoverViewModel>();
             builder.Services.AddSingleton<Discover>();
+
             builder.Services.AddTransient<RecipeDetailsViewModel>();
             builder.Services.AddTransient<RecipeDetails>();
+
             builder.Services.AddSingleton<CookbookViewModel>();
             builder.Services.AddSingleton<Cookbook>();
+
             builder.Services.AddTransient<AddRecipeViewModel>();
             builder.Services.AddTransient<AddRecipe>();
+
             builder.Services.AddSingleton<PlanViewModel>();
             builder.Services.AddSingleton<Plan>();
 

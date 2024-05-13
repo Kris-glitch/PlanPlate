@@ -22,38 +22,36 @@ namespace PlanPlate.Network
             await mealPlanerRef.Child(recipeId).DeleteAsync();
         }
 
-        public async Task<List<MyRecipe>?> GetAllRecipesFromPlanner(string userId, DateTime selectedDate, string category)
+        public async Task<MyRecipe> GetRecipeFromPlanner(string userId, DateTime selectedDate, string category)
         {
             var date = DateFormater.DateTimeToString(selectedDate);
 
-            var mealPlanerRef = _firebaseClient.Child($"mealPlanner/{userId}/{date}/{category}");
+            var mealPlannerRef = _firebaseClient.Child($"mealPlanner/{userId}/{date}/{category}");
 
-            var recipes = await mealPlanerRef.OnceAsync<MyRecipe>();
+            var dataSnapshot = await mealPlannerRef.OnceAsync<object>();
 
-            var recipesList = recipes.Select(r =>
+            MyRecipe? recipe = null;
+
+            foreach (var child in dataSnapshot)
             {
-                var recipe = r.Object;
-                recipe.Id = r.Key;
-                return recipe;
-            }).ToList();
+                if (child.Object is MyRecipe)
+                {
+                    recipe = child.Object as MyRecipe;
+                    break;
+                }
+            }
 
-            return recipesList;
+            return recipe;
         }
 
-        public async Task SaveRecipeToPlannerAsync(string userId, DateTime selectedDate, string category, List<MyRecipe> recipes)
+
+        public async Task SaveRecipeToPlannerAsync(string userId, DateTime selectedDate, string category, MyRecipe recipe)
         {
             var date = DateFormater.DateTimeToString(selectedDate);
 
             var mealPlanerRef = _firebaseClient.Child($"mealPlanner/{userId}/{date}/{category}");
-            await mealPlanerRef.PostAsync(recipes);
+            await mealPlanerRef.PostAsync(recipe);
         }
 
-        public async Task UpdateRecipeInPlannerAsync(string userId, DateTime selectedDate, string category, List<MyRecipe> updatedRecipes)
-        {
-            var date = DateFormater.DateTimeToString(selectedDate);
-
-            var mealPlanerRef = _firebaseClient.Child($"mealPlanner/{userId}/{date}");
-            await mealPlanerRef.Child(category).PutAsync(updatedRecipes);
-        }
     }
 }

@@ -10,6 +10,7 @@ public partial class Cookbook : ContentPage
         InitializeComponent();
         _viewModel = viewModel;
         BindingContext = viewModel;
+        _viewModel.SubscribeToErrorEvents(OnShowError);
     }
 
     protected override async void OnAppearing()
@@ -23,6 +24,20 @@ public partial class Cookbook : ContentPage
 
             _viewModel.InitPerformed = true;
         }        
+    }
+
+    private async void OnShowError(string errorMessage)
+    {
+        await DisplayAlert("Error", errorMessage, "OK");
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+
+        _viewModel.UnsubscribeFromErrorEvents(OnShowError);
+
     }
 
     private void OnCheckedChanged(object sender, CheckedChangedEventArgs e)

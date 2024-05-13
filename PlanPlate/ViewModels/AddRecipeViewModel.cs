@@ -10,10 +10,10 @@ namespace PlanPlate.ViewModels
     public partial class AddRecipeViewModel : BaseViewModel
     {
         private readonly ICookbookRepository _cookbookRepository;
-        private readonly Data.IUserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
         public ObservableCollection<Ingredient>? IngredientsList { get; set; }
 
-        public AddRecipeViewModel(Data.IUserRepository userRepository, ICookbookRepository cookbookRepository) : base(userRepository)
+        public AddRecipeViewModel(IUserRepository userRepository, ICookbookRepository cookbookRepository) : base(userRepository)
         {
             _userRepository = userRepository;
             _cookbookRepository = cookbookRepository;

@@ -23,12 +23,25 @@ namespace PlanPlate.ViewModels
         private readonly IRecipeRepository _recipeRepository;
         private readonly ICookbookRepository _cookbookRepository;
         private readonly IUserRepository _userRepository;
-        public RecipeDetailsViewModel(IUserRepository userRepository, ICookbookRepository cookbookRepository, IRecipeRepository recipeRepository) : base(userRepository)
+        private readonly IPlannerRepository _plannerRepository;
+        public RecipeDetailsViewModel (IUserRepository userRepository, ICookbookRepository cookbookRepository, IRecipeRepository recipeRepository, IPlannerRepository plannerRepository) : base(userRepository)
         {
             _recipeRepository = recipeRepository;
             _cookbookRepository = cookbookRepository;
             _userRepository = userRepository;
+            _plannerRepository = plannerRepository;
+            IsAddToPlannerVisible = false;
+
+            SelectedDate = DateTime.Now;
+
+            DropDownCategories = Enum.GetValues(typeof(PlannerCategory))
+                                      .Cast<PlannerCategory>()
+                                      .Select(category => category.ToString())
+                                      .ToList();
         }
+
+        [ObservableProperty]
+        List<string> dropDownCategories;
 
         [ObservableProperty]
         private ActionType? listType;
@@ -41,6 +54,60 @@ namespace PlanPlate.ViewModels
 
         [ObservableProperty]
         string? recipeId;
+
+        [ObservableProperty]
+        DateTime selectedDate;
+
+        [ObservableProperty]
+        string? selectedCategory;
+
+        [ObservableProperty]
+        bool isAddToPlannerVisible;
+
+        [RelayCommand]
+        private void OpenAddPopup()
+        {
+            IsAddToPlannerVisible = true;
+            OnPropertyChanged(nameof(IsAddToPlannerVisible));
+        }
+
+        [RelayCommand]
+        private void HidePopup()
+        {
+            IsAddToPlannerVisible = false;
+            OnPropertyChanged(nameof(IsAddToPlannerVisible));
+        }
+
+        [RelayCommand]
+        private async Task AddRecipeTpPlanner()
+        {
+            if (SelectedDate == null || SelectedCategory == null)
+            {
+                OnShowError("Please select category and a date");
+                return;
+            }
+
+            var userId = GetUserId();
+            if (userId == null) return;
+
+            try
+            {
+                if (Recipe.Data == null) return;
+
+                await _plannerRepository.SaveRecipeToPlannerAsync(userId, SelectedDate, SelectedCategory, Recipe.Data);
+
+            } catch (Exception ex)
+            {
+                OnShowError(ex.Message);
+            }
+            finally
+            {
+                IsAddToPlannerVisible = false;
+                OnPropertyChanged(nameof(IsAddToPlannerVisible));
+            }
+
+
+        }
 
         [RelayCommand]
         public async Task GetDetails()
@@ -116,6 +183,15 @@ namespace PlanPlate.ViewModels
             }
             return user.Id;
 
+        }
+
+        public void SubscribeToErrorEvents(Action<string> errorHandler)
+        {
+            ShowError += errorHandler;
+        }
+        public void UnsubscribeFromErrorEvents(Action<string> errorHandler)
+        {
+            ShowError -= errorHandler;
         }
     }
 

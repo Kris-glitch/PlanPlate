@@ -74,6 +74,7 @@
             </Frame>
 
             <Entry 
+                ReturnType="Next"
                 Placeholder="Category"
                 Text="{Binding RecipeCategory}"
                 Keyboard="Text"
@@ -83,6 +84,7 @@
                 IsTextPredictionEnabled="True"/>    
 
             <Entry 
+                ReturnType="Next"
                 Placeholder="Title"
                 Text="{Binding RecipeName}"
                 Keyboard="Text"
@@ -92,6 +94,7 @@
                 IsTextPredictionEnabled="True"/>
 
             <Entry 
+                ReturnType="Next"
                 Placeholder="Recipe By:"
                 Text="{Binding RecipeBy}"
                 Keyboard="Text"
@@ -115,6 +118,7 @@
                     <DataTemplate x:DataType="model:Ingredient">
                         <StackLayout Orientation="Vertical">
                             <Entry 
+                                ReturnType="Next"
                                 Margin="0,16,0,0"
                                 Text="{Binding Name}" 
                                 Placeholder="Ingredient" 
@@ -123,14 +127,14 @@
                                 IsEnabled="True" 
                                 IsTextPredictionEnabled="True"/>
                             <StackLayout Orientation="Horizontal">
-                                <Entry 
+                                <Entry   ReturnType="Next"
                                          Margin="0,0,0,5"
                                          Text="{Binding Quantity}" 
                                          Placeholder="Quantity" 
                                          Keyboard="Numeric"
                                          Style="{StaticResource LoginEntry}"
                                          IsEnabled="True"/>
-                                <Entry 
+                                <Entry   ReturnType="Next"
                                          Margin="5,0,0,0"
                                          Text="{Binding Unit}" 
                                          Placeholder="Unit" 
@@ -146,6 +150,7 @@
                     <DataTemplate x:DataType="model:Ingredient">
                         <StackLayout Orientation="Vertical">
                             <Entry 
+                                ReturnType="Next"
                                 Margin="0,16,0,16"
                                 Text="{Binding Name}" 
                                 Placeholder="Ingredient" 
@@ -155,6 +160,7 @@
                                 IsTextPredictionEnabled="True"/>
                             <StackLayout Orientation="Horizontal">
                                 <Entry 
+                                    ReturnType="Next"
                                     Margin="0,0,5,0"
                                     Text="{Binding Quantity}" 
                                     Placeholder="Quantity" 
@@ -162,6 +168,7 @@
                                     Style="{StaticResource LoginEntry}"
                                     IsEnabled="True"/>
                                 <Entry 
+                                    ReturnType="Next"
                                     Margin="5,0,0,0"
                                     Text="{Binding Unit}" 
                                     Placeholder="Units" 

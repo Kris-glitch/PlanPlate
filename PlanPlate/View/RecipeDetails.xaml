@@ -5,12 +5,17 @@
              xmlns:viewmodel="clr-namespace:PlanPlate.ViewModels"
              x:DataType="viewmodel:RecipeDetailsViewModel"
              xmlns:views="clr-namespace:PlanPlate.View"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              Title="{Binding Recipe.Data.Name}">
 
 
     <ScrollView>
-        <VerticalStackLayout Padding="0"
-                             Margin="0,0,0,0">
+        
+        <StackLayout Padding="0"
+                     BackgroundColor="{AppThemeBinding Light={StaticResource Background}, Dark={StaticResource BackgroundDark}}"
+                     Margin="0,0,0,0">
+
+
             <Frame Margin="0,25,0,25"
                    CornerRadius="20"
                    HeightRequest="350"
@@ -23,12 +28,9 @@
                        WidthRequest="350" />
             </Frame>
 
-            <BoxView HeightRequest="20"
-                     VerticalOptions="FillAndExpand" />
-
             <Frame CornerRadius="25"
                    BackgroundColor="{AppThemeBinding Dark={StaticResource SurfaceDark}, Light={StaticResource Surface}}"
-                   Margin="0,0,0,0"
+                   Margin="0,20,0,0"
                    Padding="16"
                    VerticalOptions="EndAndExpand"
                    HorizontalOptions="FillAndExpand">
@@ -36,7 +38,7 @@
                 <Grid x:DataType="viewmodel:RecipeDetailsViewModel"
                       ColumnDefinitions="*,*,*"
                       RowSpacing="0"
-                      BackgroundColor="{AppThemeBinding Light={StaticResource LightBackground}, Dark={StaticResource DarkBackground}}">
+                      BackgroundColor="{AppThemeBinding Light={StaticResource Surface}, Dark={StaticResource SurfaceDark}}">
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -45,8 +47,69 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
+                    <Frame Padding="25"
+                           Grid.Row="1"
+                           Grid.ColumnSpan="3"
+                           CornerRadius="20"
+                           BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundDark}, Light={StaticResource Background}}"
+                           IsVisible="{Binding IsAddToPlannerVisible}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="FillAndExpand">
+                        <Frame.Content>
+                            <StackLayout Orientation="Vertical" Spacing="16">
+                                <Label Text="Add Recipe To Meal Planner"
+                                       Margin="0,25,0,0"
+                                       Style="{StaticResource SubHeadline}"
+                                       TextColor="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="Center" />
+
+                                <Picker Title="Select a category"
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Center"
+                                        TextColor="{AppThemeBinding Dark={StaticResource TextDark}, Light={StaticResource TextLight}}"
+                                        ItemsSource="{Binding DropDownCategories}"
+                                        SelectedItem="{Binding SelectedCategory}"
+                                        BackgroundColor="{AppThemeBinding Dark={StaticResource SurfaceDark}, Light={StaticResource Surface}}" />
+
+                                <DatePicker Date="{Binding SelectedDate, Mode=TwoWay}"
+                                            VerticalOptions="Center"
+                                            BackgroundColor="{AppThemeBinding Dark={StaticResource SurfaceDark}, Light={StaticResource Surface}}"
+                                            MinimumDate="{x:Static sys:DateTime.Now}"
+                                            HorizontalOptions="Center" />
+
+                                <StackLayout Orientation="Horizontal"
+                                             Spacing="20">
+                                    <Button Command="{Binding AddRecipeTpPlannerCommand}"
+                                            VerticalOptions="Start"
+                                            HorizontalOptions="Start"
+                                            Style="{StaticResource ButtonStyle}"
+                                            MinimumHeightRequest="44"
+                                            MinimumWidthRequest="130"
+                                            Margin="20,0,0,0"
+                                            Text="Save"
+                                            IsEnabled="True" />
+                                    <Button Command="{Binding HidePopupCommand}"
+                                            VerticalOptions="Start"
+                                            HorizontalOptions="End"
+                                            Style="{StaticResource ButtonStyle}"
+                                            MinimumHeightRequest="44"
+                                            MinimumWidthRequest="130"
+                                            Margin="0,0,20,0"
+                                            Text="Cancel"
+                                            IsEnabled="True" />
+                                </StackLayout>
+                                
+                                
+                            </StackLayout>
+                        </Frame.Content>
+
+                    </Frame>
+
                     <Button Grid.Row="1"
                             Grid.Column="0"
+                            IsEnabled="True"
+                            Command="{Binding OpenAddPopupCommand}"
                             Margin="0,0,0,0"
                             MinimumHeightRequest="25"
                             MinimumWidthRequest="100"
@@ -55,7 +118,7 @@
                             Text="Plan">
                         <Button.ImageSource>
                             <FontImageSource FontFamily="FAR"
-                                             Glyph="{StaticResource share}"
+                                             Glyph="{StaticResource calendar}"
                                              Color="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
                                              Size="24" />
                         </Button.ImageSource>
@@ -166,7 +229,7 @@
                     <ListView VerticalOptions="EndAndExpand"
                               VerticalScrollBarVisibility="Never"
                               SeparatorVisibility="None"
-                              Margin="0,16,0,0"
+                              Margin="20,16,0,0"
                               Grid.Row="3"
                               Grid.ColumnSpan="2"
                               x:Name="IngredientsListView"
@@ -206,8 +269,8 @@
                     </ListView>
                     <Label VerticalOptions="EndAndExpand"
                            Grid.Row="3"
-                           Grid.ColumnSpan="2"
-                           Margin="0,0,0,0"
+                           Grid.ColumnSpan="3"
+                           Margin="20,0,0,0"
                            Style="{StaticResource LabelStyle}"
                            IsVisible="False"
                            Text="{Binding Recipe.Data.Instructions}">
@@ -228,7 +291,7 @@
                     </Label>
                 </Grid>
             </Frame>
-        </VerticalStackLayout>
+        </StackLayout>
     </ScrollView>
 
 </ContentPage>

@@ -27,6 +27,7 @@
             VerticalOptions="Center"/>
 
         <Entry 
+            ReturnType="Next"
             Placeholder="Email"
             Text="{Binding Email}"
             Keyboard="Email"
@@ -40,6 +41,7 @@
             IsPassword="True"
             Style="{StaticResource LoginEntry}" 
             IsEnabled="True"
+            ReturnType="Go"
             Placeholder="Password"/>
 
         <Button

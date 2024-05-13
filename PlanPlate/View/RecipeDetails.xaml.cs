@@ -20,4 +20,18 @@ public partial class RecipeDetails : ContentPage
 
         await _viewModel.GetDetails();
     }
+
+    private async void OnShowError(string errorMessage)
+    {
+        await DisplayAlert("Error", errorMessage, "OK");
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+
+
+        _viewModel.UnsubscribeFromErrorEvents(OnShowError);
+
+    }
 }

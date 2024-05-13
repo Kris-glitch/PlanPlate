@@ -16,6 +16,7 @@ namespace PlanPlate.ViewModels
         {
             _cookbookRepository = cookbookRepository;
             _userRepository = userRepository;
+           
         }
 
         private bool initPerformed = false;
@@ -229,6 +230,15 @@ namespace PlanPlate.ViewModels
             }
             return user.Id;
 
+        }
+
+        public void SubscribeToErrorEvents(Action<string> errorHandler)
+        {
+            ShowError += errorHandler;
+        }
+        public void UnsubscribeFromErrorEvents(Action<string> errorHandler)
+        {
+            ShowError -= errorHandler;
         }
     }
 }

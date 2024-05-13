@@ -27,6 +27,7 @@ public partial class AddRecipe : ContentPage
     }
     protected override bool OnBackButtonPressed()
     {
+        base.OnBackButtonPressed();
         OnShowAlert("Are you sure you want to go back? Any unsaved changes will be lost.", async result =>
         {
             if (result)
