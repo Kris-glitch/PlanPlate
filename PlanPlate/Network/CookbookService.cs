@@ -70,17 +70,12 @@ namespace PlanPlate.Network
 
         public async Task<List<MyRecipe>?> SearchRecipeFromCookbookAsync(string userId, string name)
         {
-            var userCookbookRef = _firebaseClient.Child($"cookbook/{userId}");
-            var recipes = await userCookbookRef.OrderBy("RecipeName").StartAt(name).EndAt(name + "\uf8ff").OnceAsync<MyRecipe>();
+            var recipeList = await GetAllRecipesFromCookbookAsync(userId);
 
-            var recipesList = recipes.Select(r =>
-            {
-                var recipe = r.Object;
-                recipe.Id = r.Key;
-                return recipe;
-            }).ToList();
+            var result = recipeList.Where(recipe => recipe.Name.Contains(name)).ToList();
 
-            return recipesList;
+            return result;
+
         }
 
         public async Task<MyRecipe?> SearchRecipeByIdFromCookbookAsync(string userId, string recipeId)
@@ -90,8 +85,7 @@ namespace PlanPlate.Network
 
             if (recipeSnapshot != null)
             {
-                
-                recipeSnapshot.Id = recipeId;
+              recipeSnapshot.Id = recipeId;
             }
 
             return recipeSnapshot;

@@ -12,6 +12,8 @@ namespace PlanPlate.ViewModels
     {
         private readonly ICookbookRepository _cookbookRepository;
         private readonly IUserRepository _userRepository;
+
+        private CancellationTokenSource _searchTimerCancellation;
         public CookbookViewModel(IUserRepository userRepository, ICookbookRepository cookbookRepository) : base(userRepository)
         {
             _cookbookRepository = cookbookRepository;
@@ -42,9 +44,6 @@ namespace PlanPlate.ViewModels
         }
 
         [ObservableProperty]
-        string? searchQuery;
-
-        [ObservableProperty]
         bool isRefreshing;
 
         [ObservableProperty]
@@ -52,6 +51,17 @@ namespace PlanPlate.ViewModels
 
         [ObservableProperty]
         DataOrException<IEnumerable<MyRecipe>, Exception>? recipes;
+
+        private string searchQuery;
+        public string SearchQuery
+        {
+            get { return searchQuery; }
+            set
+            {
+                SetProperty(ref searchQuery, value);
+                SearchRecipeFromCookbook();
+            }
+        }
 
         [RelayCommand]
         async Task Refresh()
@@ -151,16 +161,23 @@ namespace PlanPlate.ViewModels
             }
 
         }
-
-        [RelayCommand]
         private async Task SearchRecipeFromCookbook()
         {
             var userId = GetUserId();
             if (userId == null) return;
 
-            if (!string.IsNullOrWhiteSpace(SearchQuery))
+            if (!string.IsNullOrWhiteSpace(SearchQuery) && SearchQuery.Length > 3)
             {
+               
+                _searchTimerCancellation?.Cancel();
+
+              
+                _searchTimerCancellation = new CancellationTokenSource();
+                await Task.Delay(1000, _searchTimerCancellation.Token);
+
                 
+                if (_searchTimerCancellation.IsCancellationRequested)
+                    return;
 
                 try
                 {
@@ -169,7 +186,6 @@ namespace PlanPlate.ViewModels
                     Recipes.Data = response.Data;
                     Recipes.Exception = response.Exception;
                 }
-
                 finally
                 {
                     Recipes.Loading = false;

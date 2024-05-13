@@ -70,8 +70,7 @@
                        IsSpellCheckEnabled="True"
                        IsTextPredictionEnabled="True"
                        IsVisible="True"
-                       Keyboard="Text"
-                       SearchCommand="{Binding PerformSearchCommand}">
+                       Keyboard="Text">
             </SearchBar>
 
             <Label Text="Categories"

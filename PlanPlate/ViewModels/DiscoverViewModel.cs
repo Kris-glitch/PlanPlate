@@ -13,10 +13,18 @@ namespace PlanPlate.ViewModels
     {
         private readonly IRecipeRepository _recipeRepository;
 
+        private CancellationTokenSource _searchTimerCancellation;
+
         public DiscoverViewModel(IUserRepository userRepository, IRecipeRepository recipeRepository) : base(userRepository)
         {
             _recipeRepository = recipeRepository;
-            
+            Meals = new DataOrException<IEnumerable<MyMeal>, Exception>
+            {
+                Data = null,
+                Loading = true,
+                Exception = null
+
+            };
         }
 
         private bool initPerformed = false;
@@ -38,13 +46,21 @@ namespace PlanPlate.ViewModels
         bool isRefreshing;
 
         [ObservableProperty]
-        string? searchQuery;
-
-        [ObservableProperty]
         DataOrException<IEnumerable<MyCategory>, Exception>? categories;
 
         [ObservableProperty]
         DataOrException<IEnumerable<MyMeal>, Exception>? meals;
+
+        private string searchQuery;
+        public string SearchQuery
+        {
+            get { return searchQuery; }
+            set
+            {
+                SetProperty(ref searchQuery, value);
+                SearchRecipeFromCookbook();
+            }
+        }
 
         [RelayCommand]
         async Task Refresh()
@@ -59,18 +75,21 @@ namespace PlanPlate.ViewModels
             OnPropertyChanged(nameof(IsRefreshing));
         }
 
-        [RelayCommand]
-        async Task PerformSearch()
+        private async Task SearchRecipeFromCookbook()
         {
-            if (!string.IsNullOrWhiteSpace(SearchQuery))
-            {
-                Meals = new DataOrException<IEnumerable<MyMeal>, Exception>
-                {
-                    Data = null,
-                    Loading = true,
-                    Exception = null
 
-                };
+            if (!string.IsNullOrWhiteSpace(SearchQuery) && SearchQuery.Length > 3)
+            {
+
+                _searchTimerCancellation?.Cancel();
+
+
+                _searchTimerCancellation = new CancellationTokenSource();
+                await Task.Delay(1000, _searchTimerCancellation.Token);
+
+
+                if (_searchTimerCancellation.IsCancellationRequested)
+                    return;
 
                 try
                 {
@@ -84,8 +103,8 @@ namespace PlanPlate.ViewModels
                     OnPropertyChanged(nameof(Meals));
                 }
             }
-
         }
+
 
         [RelayCommand]
         public async Task GetCategories()
@@ -115,14 +134,6 @@ namespace PlanPlate.ViewModels
         [RelayCommand]
         public async Task SearchMealsByCategory(string category)
         {
-            Meals = new DataOrException<IEnumerable<MyMeal>, Exception>
-            {
-                Data = null,
-                Loading = true,
-                Exception = null
-
-            };
-
             if (Meals != null)
             {
                 Meals.Loading = true;

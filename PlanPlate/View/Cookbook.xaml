@@ -90,7 +90,7 @@
                        IsTextPredictionEnabled="True"
                        IsVisible="True"
                        Keyboard="Text"
-                       SearchCommand="{Binding SearchRecipeFromCookbookCommand}">
+                       >
             </SearchBar>
 
             <Label Text="Categories"

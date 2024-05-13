@@ -28,13 +28,24 @@ public partial class AddRecipe : ContentPage
     protected override bool OnBackButtonPressed()
     {
         base.OnBackButtonPressed();
-        OnShowAlert("Are you sure you want to go back? Any unsaved changes will be lost.", async result =>
+
+        Dispatcher.Dispatch(async () =>
         {
-            if (result)
+            TaskCompletionSource<bool> userResponse = new TaskCompletionSource<bool>();
+
+            OnShowAlert("Are you sure you want to go back? Any unsaved changes will be lost.", result =>
+            {
+                userResponse.SetResult(result);
+            });
+
+            bool leave = await userResponse.Task;
+
+            if (leave)
             {
                 await Shell.Current.GoToAsync("..");
             }
         });
+
         return true;
 
     }
