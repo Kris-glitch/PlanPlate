@@ -24,8 +24,8 @@
     <Color x:Key="Error">#EB9486</Color>
     <Color x:Key="ErrorDark">#E16653</Color>
 
-    <Color x:Key="Accent">#FFF9A5</Color>
-    <Color x:Key="AccentDark">#E7CD63</Color>
+    <Color x:Key="Accent">#ffca5c</Color>
+    <Color x:Key="AccentDark">#FFF9A5</Color>
 
     <Color x:Key="TextLight">#0e1111</Color>
     <Color x:Key="TextDark">#FAF9F6</Color>

@@ -1,23 +1,22 @@
-﻿using System.Collections;
-
-
-namespace PlanPlate.Converters
+﻿namespace PlanPlate.Converters
 {
-    public class CollectionNullOrEmptyConverter : IValueConverter
+    public class NullToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value is ICollection collection)
+            if (value == null)
             {
-                return collection.Count == 0;
+                return false;
             }
-
-            return true;
+            else
+            {
+                return true;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
     }
 }

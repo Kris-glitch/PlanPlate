@@ -1,7 +1,6 @@
 ﻿using PlanPlate.Data.Model;
 using PlanPlate.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Plugin.Maui.Calendar.Models;
 using CommunityToolkit.Mvvm.Input;
 using PlanPlate.View;
 
@@ -29,6 +28,11 @@ namespace PlanPlate.ViewModels
             _plannerRepository = plannerRepository;
             _userRepository = userRepository;
             SelectedDate = DateTime.Now;
+
+            Categories = Enum.GetValues(typeof(PlannerCategory))
+                                      .Cast<PlannerCategory>()
+                                      .Select(category => category.ToString())
+                                      .ToList();
         }
 
         private bool initPerformed = false;
@@ -49,7 +53,7 @@ namespace PlanPlate.ViewModels
 
 
         [ObservableProperty]
-        EventCollection? plannedRecipes;
+        List<string> categories;
 
         [ObservableProperty]
         DateTime selectedDate;
@@ -76,10 +80,10 @@ namespace PlanPlate.ViewModels
         string? categoryToDelete;
 
         [ObservableProperty]
-        string? errorMessage;
+        bool isLabelVisible;
 
         [ObservableProperty]
-        IEnumerable<PlannerCategory>? categories;
+        bool isDataVisible;
 
         [RelayCommand]
         private async Task GoToRecipeDetails(string recipeId)
@@ -114,17 +118,14 @@ namespace PlanPlate.ViewModels
             var userId = GetUserId();
             if (userId == null) return;
 
-            Categories = Enum.GetValues(typeof(PlannerCategory)).Cast<PlannerCategory>();
-
             foreach (var category in Categories)
             {
-                var categoryString = category.ToString();
 
                 IsLoading = true;
 
                 try
                 {
-                    var response = await _plannerRepository.GetAllRecipesFromPlanner(userId, SelectedDate, categoryString);
+                    var response = await _plannerRepository.GetAllRecipesFromPlanner(userId, SelectedDate, category);
                     SetDataAndExceptionForCategory(category, response.Data, response.Exception);
                 }
                 finally
@@ -132,11 +133,25 @@ namespace PlanPlate.ViewModels
                     IsLoading = false;
                 }
             }
+
+            var recipe = BreakfastRecipe;
+
+            if (BreakfastRecipe == null && LunchRecipe == null && DinnerRecipe == null && DessertRecipe == null && OtherRecipe == null) { 
+                IsDataVisible = false;
+                IsLabelVisible = true;
+            } else
+            {
+                IsDataVisible = true;
+                IsLabelVisible = false;
+            }
         }
 
-        private void SetDataAndExceptionForCategory(PlannerCategory category, MyRecipe? data, Exception? exception)
+        private void SetDataAndExceptionForCategory(string category, MyRecipe? data, Exception? exception)
         {
-            switch (category)
+
+            _ = Enum.TryParse<PlannerCategory>(category, out var parsedCategory);
+
+            switch (parsedCategory)
             {
                 case PlannerCategory.Breakfast:
                     BreakfastRecipe = data;
@@ -160,10 +175,6 @@ namespace PlanPlate.ViewModels
                     break;
             }
 
-            if (exception != null)
-            {
-                ErrorMessage = exception.Message;
-            }
         }
     
         private string? GetUserId()

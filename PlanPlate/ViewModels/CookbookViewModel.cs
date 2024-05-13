@@ -16,7 +16,13 @@ namespace PlanPlate.ViewModels
         {
             _cookbookRepository = cookbookRepository;
             _userRepository = userRepository;
-           
+            Recipes = new DataOrException<IEnumerable<MyRecipe>, Exception>
+            {
+                Data = null,
+                Loading = true,
+                Exception = null
+
+            };
         }
 
         private bool initPerformed = false;
@@ -109,14 +115,6 @@ namespace PlanPlate.ViewModels
             var userId = GetUserId();
             if (userId == null) return;
 
-            Recipes = new DataOrException<IEnumerable<MyRecipe>, Exception>
-            {
-                Data = null,
-                Loading = true,
-                Exception = null
-
-            };
-
             try
             {
                 var response = await _cookbookRepository.GetAllRecipesFromCookbook(userId);
@@ -137,14 +135,6 @@ namespace PlanPlate.ViewModels
         {
             var userId = GetUserId();
             if (userId == null) return;
-
-            Recipes = new DataOrException<IEnumerable<MyRecipe>, Exception>
-            {
-                Data = null,
-                Loading = true,
-                Exception = null
-
-            };
 
             try
             {
@@ -170,13 +160,7 @@ namespace PlanPlate.ViewModels
 
             if (!string.IsNullOrWhiteSpace(SearchQuery))
             {
-                Recipes = new DataOrException<IEnumerable<MyRecipe>, Exception>
-                {
-                    Data = null,
-                    Loading = true,
-                    Exception = null
-
-                };
+                
 
                 try
                 {

@@ -28,20 +28,16 @@ namespace PlanPlate.Network
 
             var mealPlannerRef = _firebaseClient.Child($"mealPlanner/{userId}/{date}/{category}");
 
-            var dataSnapshot = await mealPlannerRef.OnceAsync<object>();
+            var dataSnapshot = await mealPlannerRef.OnceAsync<MyRecipe>();
 
-            MyRecipe? recipe = null;
-
-            foreach (var child in dataSnapshot)
+            var recipesList = dataSnapshot.Select(r =>
             {
-                if (child.Object is MyRecipe)
-                {
-                    recipe = child.Object as MyRecipe;
-                    break;
-                }
-            }
+                var recipe = r.Object;
+                recipe.Id = r.Key;
+                return recipe;
+            }).ToList();
 
-            return recipe;
+            return recipesList[0];
         }
 
 
