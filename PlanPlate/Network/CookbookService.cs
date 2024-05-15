@@ -72,7 +72,7 @@ namespace PlanPlate.Network
         {
             var recipeList = await GetAllRecipesFromCookbookAsync(userId);
 
-            var result = recipeList.Where(recipe => recipe.Name.Contains(name)).ToList();
+            var result = recipeList?.Where(recipe => recipe?.Name?.Contains(name) == true).ToList();
 
             return result;
 

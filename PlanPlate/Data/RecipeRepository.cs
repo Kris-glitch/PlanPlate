@@ -29,6 +29,7 @@ namespace PlanPlate.Data
             catch (Exception ex)
             {
                 result.Exception = ex;
+                FirebaseCrashlyticsLogger.LogException(ex);
             }
 
             return result;
@@ -54,6 +55,7 @@ namespace PlanPlate.Data
             catch (Exception ex)
             {
                 result.Exception = ex;
+                FirebaseCrashlyticsLogger.LogException(ex);
             }
             return result;
         }
@@ -78,6 +80,7 @@ namespace PlanPlate.Data
             catch (Exception ex)
             {
                 result.Exception = ex;
+                FirebaseCrashlyticsLogger.LogException(ex);
             }
             return result;
         }
@@ -102,6 +105,7 @@ namespace PlanPlate.Data
             catch (Exception ex)
             {
                 result.Exception = ex;
+                FirebaseCrashlyticsLogger.LogException(ex);
             }
             return result;
         }

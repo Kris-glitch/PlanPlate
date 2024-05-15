@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "383086122966",
+    "firebase_url": "https://planplate-89a8f-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "planplate-89a8f",
+    "storage_bucket": "planplate-89a8f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:383086122966:android:6f88d0cb4dcdf9ce933677",
+        "android_client_info": {
+          "package_name": "com.plan.planplate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIEmVVPT-QXjP6MHMctvBz8DfJ6h_o8PQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

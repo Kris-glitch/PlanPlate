@@ -4,6 +4,7 @@ using Firebase.Auth.Providers;
 using Firebase.Database;
 using Firebase.Storage;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.LifecycleEvents;
 using PlanPlate.Data;
 using PlanPlate.Network;
 using PlanPlate.Network.Model;
@@ -32,6 +33,10 @@ namespace PlanPlate
 
 #if DEBUG
     		builder.Logging.AddDebug();
+#endif
+
+#if ANDROID
+            builder.RegisterFirebase();
 #endif
 
             builder.Services.AddSingleton<FirebaseAuthClient>(sp =>
@@ -91,6 +96,20 @@ namespace PlanPlate
 
 
             return builder.Build();
+        }
+
+        private static MauiAppBuilder RegisterFirebase(this MauiAppBuilder builder)
+        {
+            builder.ConfigureLifecycleEvents(events =>
+            {
+#if ANDROID
+            events.AddAndroid(android => android.OnCreate((activity, bundle) => {
+                Firebase.FirebaseApp.InitializeApp(activity);
+            }));
+#endif
+            });
+
+            return builder;
         }
     }
 }

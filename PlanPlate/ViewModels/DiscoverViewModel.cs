@@ -13,7 +13,7 @@ namespace PlanPlate.ViewModels
     {
         private readonly IRecipeRepository _recipeRepository;
 
-        private CancellationTokenSource _searchTimerCancellation;
+        private CancellationTokenSource? _searchTimerCancellation;
 
         public DiscoverViewModel(IUserRepository userRepository, IRecipeRepository recipeRepository) : base(userRepository)
         {
@@ -51,8 +51,8 @@ namespace PlanPlate.ViewModels
         [ObservableProperty]
         DataOrException<IEnumerable<MyMeal>, Exception>? meals;
 
-        private string searchQuery;
-        public string SearchQuery
+        private string? searchQuery;
+        public string? SearchQuery
         {
             get { return searchQuery; }
             set
@@ -94,12 +94,12 @@ namespace PlanPlate.ViewModels
                 try
                 {
                     var response = await _recipeRepository.SearchRecipe(SearchQuery);
-                    Meals.Data = response.Data;
+                    Meals!.Data = response.Data;
                     Meals.Exception = response.Exception;
                 }
                 finally
                 {
-                    Meals.Loading = false;
+                    Meals!.Loading = false;
                     OnPropertyChanged(nameof(Meals));
                 }
             }

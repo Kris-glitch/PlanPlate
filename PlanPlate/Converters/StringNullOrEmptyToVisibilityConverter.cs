@@ -4,7 +4,7 @@ namespace PlanPlate.Converters
 {
     public class StringNullOrEmptyToVisibilityConverter : IValueConverter, IMarkupExtension
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value is string str)
             {
@@ -13,7 +13,7 @@ namespace PlanPlate.Converters
             return true;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

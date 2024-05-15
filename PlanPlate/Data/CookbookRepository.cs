@@ -30,6 +30,7 @@ namespace PlanPlate.Data
             } catch (Exception ex)
             {
                 result.Exception = ex;
+                FirebaseCrashlyticsLogger.LogException(ex);
             }
 
             return result;
@@ -56,6 +57,7 @@ namespace PlanPlate.Data
             catch (Exception ex)
             {
                 result.Exception = ex;
+                FirebaseCrashlyticsLogger.LogException(ex);
             }
 
             return result;
@@ -82,6 +84,7 @@ namespace PlanPlate.Data
             catch (Exception ex)
             {
                 result.Exception = ex;
+                FirebaseCrashlyticsLogger.LogException(ex);
             }
 
             return result;
@@ -107,6 +110,7 @@ namespace PlanPlate.Data
             catch (Exception ex)
             {
                 result.Exception = ex;
+                FirebaseCrashlyticsLogger.LogException(ex);
             }
 
             return result;
@@ -120,7 +124,7 @@ namespace PlanPlate.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while saving recipe: {ex.Message}");
+                FirebaseCrashlyticsLogger.LogException(ex);
                 throw;
             }
         }
@@ -133,7 +137,7 @@ namespace PlanPlate.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while updating recipe: {ex.Message}");
+                FirebaseCrashlyticsLogger.LogException(ex);
                 throw;
             }
         }
@@ -146,7 +150,7 @@ namespace PlanPlate.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while deleting recipe: {ex.Message}");
+                FirebaseCrashlyticsLogger.LogException(ex);
                 throw;
             }
 
@@ -172,6 +176,7 @@ namespace PlanPlate.Data
             catch (Exception ex)
             {
                 result.Exception = ex;
+                FirebaseCrashlyticsLogger.LogException(ex);
             }
 
             return result;
@@ -185,7 +190,7 @@ namespace PlanPlate.Data
 
             } catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while saving image to storage: {ex.Message}");
+                FirebaseCrashlyticsLogger.LogException(ex);
                 throw;
             }
         }
@@ -198,7 +203,7 @@ namespace PlanPlate.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while saving image to storage: {ex.Message}");
+                FirebaseCrashlyticsLogger.LogException(ex);
                 throw;
             }
         }
