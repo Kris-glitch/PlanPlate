@@ -14,15 +14,15 @@ namespace PlanPlate.Network
             _firebaseClient = firebaseClient;
         }
 
-        public async Task DeleteRecipeFromPlannerAsync(string userId, DateTime selectedDate, string recipeId, string category)
+        public async Task DeleteRecipeFromPlannerAsync(string userId, DateTime selectedDate, string category)
         {
             var date = DateFormater.DateTimeToString(selectedDate);
 
             var mealPlanerRef = _firebaseClient.Child($"mealPlanner/{userId}/{date}/{category}");
-            await mealPlanerRef.Child(recipeId).DeleteAsync();
+            await mealPlanerRef.DeleteAsync();
         }
 
-        public async Task<MyRecipe> GetRecipeFromPlanner(string userId, DateTime selectedDate, string category)
+        public async Task<MyRecipe?> GetRecipeFromPlanner(string userId, DateTime selectedDate, string category)
         {
             var date = DateFormater.DateTimeToString(selectedDate);
 
@@ -30,14 +30,18 @@ namespace PlanPlate.Network
 
             var dataSnapshot = await mealPlannerRef.OnceAsync<MyRecipe>();
 
-            var recipesList = dataSnapshot.Select(r =>
+            if (dataSnapshot != null)
             {
-                var recipe = r.Object;
-                recipe.Id = r.Key;
-                return recipe;
-            }).ToList();
+                var recipesList = dataSnapshot.Select(r =>
+                {
+                    var recipe = r.Object;
+                    recipe.Id = r.Key;
+                    return recipe;
+                }).ToList();
 
-            return recipesList[0];
+                return recipesList[0];
+            }
+            else return null;
         }
 
 

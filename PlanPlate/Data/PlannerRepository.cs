@@ -8,11 +8,11 @@ namespace PlanPlate.Data
     {
         IMealPlannerService _mealPlannerService = mealPlannerService;
 
-        public async Task DeleteRecipeFromPlannerAsync(string userId, DateTime selectedDate, string recipeId, string category)
+        public async Task DeleteRecipeFromPlannerAsync(string userId, DateTime selectedDate, string category)
         {
             try
             {
-                await _mealPlannerService.DeleteRecipeFromPlannerAsync(userId, selectedDate, recipeId, category);
+                await _mealPlannerService.DeleteRecipeFromPlannerAsync(userId, selectedDate, category);
             }
             catch (Exception ex)
             {
@@ -21,23 +21,16 @@ namespace PlanPlate.Data
             }
         }
 
-        public async Task<DataOrException<MyRecipe, Exception>> GetAllRecipesFromPlanner(string userId, DateTime selectedDate, string category)
+        public async Task<DataOrException<MyRecipe?, Exception>> GetAllRecipesFromPlanner(string userId, DateTime selectedDate, string category)
         {
-            DataOrException<MyRecipe, Exception> result = new();
+            DataOrException<MyRecipe?, Exception> result = new();
 
             try
             {
                 var recipesResponse = await _mealPlannerService.GetRecipeFromPlanner(userId, selectedDate, category);
 
-                if (recipesResponse != null)
-                {
-
-                    result.Data = recipesResponse;
-                }
-                else
-                {
-                    result.Data = null;
-                }
+                result.Data = recipesResponse;
+                
             }
             catch (Exception ex)
             {

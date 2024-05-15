@@ -81,7 +81,7 @@ namespace PlanPlate.ViewModels
         [RelayCommand]
         private async Task AddRecipeTpPlanner()
         {
-            if (SelectedDate == null || SelectedCategory == null)
+            if (SelectedCategory == null)
             {
                 OnShowError("Please select category and a date");
                 return;
@@ -90,22 +90,25 @@ namespace PlanPlate.ViewModels
             var userId = GetUserId();
             if (userId == null) return;
 
-            try
+            if (Recipe != null)
             {
-                if (Recipe.Data == null) return;
+                try
+                {
+                    if (Recipe.Data == null) return;
 
-                await _plannerRepository.SaveRecipeToPlannerAsync(userId, SelectedDate, SelectedCategory, Recipe.Data);
+                    await _plannerRepository.SaveRecipeToPlannerAsync(userId, SelectedDate, SelectedCategory, Recipe.Data);
 
-            } catch (Exception ex)
-            {
-                OnShowError(ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    OnShowError(ex.Message);
+                }
+                finally
+                {
+                    IsAddToPlannerVisible = false;
+                    OnPropertyChanged(nameof(IsAddToPlannerVisible));
+                }
             }
-            finally
-            {
-                IsAddToPlannerVisible = false;
-                OnPropertyChanged(nameof(IsAddToPlannerVisible));
-            }
-
 
         }
 
@@ -170,6 +173,21 @@ namespace PlanPlate.ViewModels
                     break;
             }
 
+        }
+
+        [RelayCommand]
+        async Task ShareRecipe()
+        {
+            if (Recipe == null) return;
+            if (Recipe.Data == null) return;
+
+            var text = RecipeFormater.FormatRecipe(Recipe.Data);
+
+            await Share.Default.RequestAsync(new ShareTextRequest
+            {
+                Text = text,
+                Title = "Share Your Recipe"
+            });
         }
 
         private string? GetUserId()

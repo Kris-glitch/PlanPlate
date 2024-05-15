@@ -38,6 +38,25 @@ namespace PlanPlate.ViewModels
         string? recipeImageUri;
 
         [RelayCommand]
+        async Task BackArrowPressed()
+        {
+          TaskCompletionSource<bool> userResponse = new TaskCompletionSource<bool>();
+
+            OnShowAlert("Are you sure you want to go back? Any unsaved changes will be lost.", result =>
+            {
+                userResponse.SetResult(result);
+            });
+
+            bool leave = await userResponse.Task;
+
+            if (leave)
+            {
+                await Shell.Current.GoToAsync("..");
+            }
+        }
+
+
+        [RelayCommand]
         async Task AddImage()
         {
             await CheckPermissions();
@@ -154,7 +173,7 @@ namespace PlanPlate.ViewModels
             return true;
         }
 
-    private bool ValidateEntries()
+        private bool ValidateEntries()
         {
             if (RecipeImageUri == null)
             {

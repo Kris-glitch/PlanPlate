@@ -1,22 +1,20 @@
-﻿namespace PlanPlate.Converters
+﻿
+namespace PlanPlate.Converters
 {
-    public class NullToVisibilityConverter : IValueConverter
+    public class IntToBooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value == null)
+            if (value is int count)
             {
-                return false;
+                return count == 0;
             }
-            else
-            {
-                return true;
-            }
+            return Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

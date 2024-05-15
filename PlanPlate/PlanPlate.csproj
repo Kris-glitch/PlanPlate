@@ -40,10 +40,7 @@
 
 		<ItemGroup>
 			<!-- App Icon -->
-			<MauiIcon Include="Resources\AppIcon\ppicon.svg" ForegroundFile="Resources\AppIcon\ppappiconfig.svg" Color="#FFFFFF" />
-			<EmbeddedResource Include="Resources\Fonts\Font Awesome 6 Brands-Regular-400.otf" />
-			<EmbeddedResource Include="Resources\Fonts\Font Awesome 6 Free-Regular-400.otf" />
-			<EmbeddedResource Include="Resources\Fonts\Font Awesome 6 Free-Solid-900.otf" />
+			<MauiIcon Include="Resources\AppIcon\ppicon.svg" ForegroundFile="Resources\AppIcon\ppappiconfig.svg" Color="#FFFFFF" BaseSize="10,10" />
 
 			<!-- Splash Screen -->
 			<MauiSplashScreen Include="Resources\Splash\ppsplash.svg" Color="#91AB82" />
@@ -59,17 +56,11 @@
 		</ItemGroup>
 
 		<ItemGroup>
-			<MauiFont Remove="Resources\Fonts\Font Awesome 6 Brands-Regular-400.otf" />
-			<MauiFont Remove="Resources\Fonts\Font Awesome 6 Free-Regular-400.otf" />
-			<MauiFont Remove="Resources\Fonts\Font Awesome 6 Free-Solid-900.otf" />
-		</ItemGroup>
-
-		<ItemGroup>
 			<None Remove="Resources\AppIcon\ppappiconfig.svg" />
 			<None Remove="Resources\AppIcon\ppicon.svg" />
-			<None Remove="Resources\Fonts\Font Awesome 6 Brands-Regular-400.otf" />
-			<None Remove="Resources\Fonts\Font Awesome 6 Free-Regular-400.otf" />
-			<None Remove="Resources\Fonts\Font Awesome 6 Free-Solid-900.otf" />
+			<None Remove="Resources\Fonts\fab.otf" />
+			<None Remove="Resources\Fonts\far.otf" />
+			<None Remove="Resources\Fonts\fas.otf" />
 			<None Remove="Resources\Fonts\Outfit-Bold.ttf" />
 			<None Remove="Resources\Fonts\Outfit-Regular.ttf" />
 			<None Remove="Resources\Fonts\Outfit-VariableFont.ttf" />

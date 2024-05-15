@@ -10,11 +10,10 @@
 
 
     <ScrollView>
-        
+
         <StackLayout Padding="0"
                      BackgroundColor="{AppThemeBinding Light={StaticResource Background}, Dark={StaticResource BackgroundDark}}"
                      Margin="0,0,0,0">
-
 
             <Frame Margin="0,25,0,25"
                    CornerRadius="20"
@@ -31,11 +30,13 @@
             <Frame CornerRadius="25"
                    BackgroundColor="{AppThemeBinding Dark={StaticResource SurfaceDark}, Light={StaticResource Surface}}"
                    Margin="0,20,0,0"
-                   Padding="16"
-                   VerticalOptions="EndAndExpand"
-                   HorizontalOptions="FillAndExpand">
+                   HorizontalOptions="FillAndExpand"
+                   VerticalOptions="FillAndExpand"
+                   Padding="16">
 
                 <Grid x:DataType="viewmodel:RecipeDetailsViewModel"
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand"
                       ColumnDefinitions="*,*,*"
                       RowSpacing="0"
                       BackgroundColor="{AppThemeBinding Light={StaticResource Surface}, Dark={StaticResource SurfaceDark}}">
@@ -117,8 +118,8 @@
                             Style="{StaticResource ButtonStyle}"
                             Text="Plan">
                         <Button.ImageSource>
-                            <FontImageSource FontFamily="FAR"
-                                             Glyph="{StaticResource calendar}"
+                            <FontImageSource FontFamily="FAS"
+                                             Glyph="{StaticResource calendarplus}"
                                              Color="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
                                              Size="24" />
                         </Button.ImageSource>
@@ -131,6 +132,7 @@
                             MinimumWidthRequest="100"
                             HorizontalOptions="Center"
                             Style="{StaticResource ButtonStyle}"
+                            Command="{Binding ShareRecipeCommand}"
                             Text="Share">
                         <Button.ImageSource>
                             <FontImageSource FontFamily="FAR"
@@ -138,6 +140,7 @@
                                              Color="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
                                              Size="24" />
                         </Button.ImageSource>
+                        
                     </Button>
 
                     <Button Grid.Row="1"
@@ -226,7 +229,8 @@
                                                   CommandParameter="{x:Static viewmodel:ActionType.Instructions}" />
                         </Label.GestureRecognizers>
                     </Label>
-                    <ListView VerticalOptions="EndAndExpand"
+                    
+                    <ListView VerticalOptions="StartAndExpand"
                               VerticalScrollBarVisibility="Never"
                               SeparatorVisibility="None"
                               Margin="20,16,0,0"
@@ -267,7 +271,7 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <Label VerticalOptions="EndAndExpand"
+                    <Label VerticalOptions="StartAndExpand"
                            Grid.Row="3"
                            Grid.ColumnSpan="3"
                            Margin="20,0,0,0"

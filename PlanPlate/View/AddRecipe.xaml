@@ -13,6 +13,10 @@
             <local:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
+        
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding BackArrowPressedCommand}" />
+    </Shell.BackButtonBehavior>
 
     <ScrollView>
         <VerticalStackLayout Padding="16">
@@ -180,8 +184,8 @@
                                     HasShadow="True"
                                     Margin="5,0,20,0"
                                     Padding="0"
-                                    HeightRequest="30"
-                                    WidthRequest="30"
+                                    HeightRequest="32"
+                                    WidthRequest="32"
                                     HorizontalOptions="EndAndExpand"
                                     IsClippedToBounds="True"
                                     BackgroundColor="Transparent" 
@@ -195,7 +199,7 @@
                                         <ImageButton.Source>
                                             <FontImageSource
                                                 FontFamily="FAR"
-                                                Glyph="{StaticResource trash}"
+                                                Glyph="{StaticResource minus}"
                                                 Color="{AppThemeBinding Light={StaticResource Button}, Dark={StaticResource ButtonDark}}"
                                                 Size="24"/>
                                         </ImageButton.Source>

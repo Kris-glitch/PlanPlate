@@ -27,7 +27,6 @@ public partial class AddRecipe : ContentPage
     }
     protected override bool OnBackButtonPressed()
     {
-        base.OnBackButtonPressed();
 
         Dispatcher.Dispatch(async () =>
         {

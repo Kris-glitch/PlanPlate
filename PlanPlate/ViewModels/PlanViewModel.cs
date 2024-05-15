@@ -3,6 +3,7 @@ using PlanPlate.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PlanPlate.View;
+using System.Collections.ObjectModel;
 
 
 namespace PlanPlate.ViewModels
@@ -13,14 +14,21 @@ namespace PlanPlate.ViewModels
         Lunch,
         Dinner,
         Dessert,
+        Salad,
+        Snacks,
         Other
     }
-    
+
     public partial class PlanViewModel : BaseViewModel
     {
 
         private readonly IPlannerRepository _plannerRepository;
         private readonly IUserRepository _userRepository;
+
+        private readonly List<string> categories = Enum.GetValues(typeof(PlannerCategory))
+                                      .Cast<PlannerCategory>()
+                                      .Select(category => category.ToString())
+                                      .ToList();
 
         public PlanViewModel(IUserRepository userRepository, IPlannerRepository plannerRepository) : base(userRepository)
         {
@@ -28,11 +36,6 @@ namespace PlanPlate.ViewModels
             _plannerRepository = plannerRepository;
             _userRepository = userRepository;
             SelectedDate = DateTime.Now;
-
-            Categories = Enum.GetValues(typeof(PlannerCategory))
-                                      .Cast<PlannerCategory>()
-                                      .Select(category => category.ToString())
-                                      .ToList();
         }
 
         private bool initPerformed = false;
@@ -51,39 +54,14 @@ namespace PlanPlate.ViewModels
             }
         }
 
-
-        [ObservableProperty]
-        List<string> categories;
+        public ObservableCollection<RecipeGroup>? GroupOfRecipes { get; set; }
 
         [ObservableProperty]
         DateTime selectedDate;
 
         [ObservableProperty]
-        MyRecipe? breakfastRecipe;
-
-        [ObservableProperty]
-        MyRecipe? lunchRecipe;
-
-        [ObservableProperty]
-        MyRecipe? dinnerRecipe;
-
-        [ObservableProperty]
-        MyRecipe? dessertRecipe;
-
-        [ObservableProperty]
-        MyRecipe? otherRecipe;
-
-        [ObservableProperty]
         bool isLoading;
 
-        [ObservableProperty]
-        string? categoryToDelete;
-
-        [ObservableProperty]
-        bool isLabelVisible;
-
-        [ObservableProperty]
-        bool isDataVisible;
 
         [RelayCommand]
         private async Task GoToRecipeDetails(string recipeId)
@@ -94,89 +72,68 @@ namespace PlanPlate.ViewModels
             }
         }
         [RelayCommand]
-        public async Task DeleteBreakfastRecipeFromPlanner(string recipeId)
+        public async Task DeleteRecipeFromPlanner(string category)
         {
             var userId = GetUserId();
             if (userId == null) return;
 
+            if (category == null) return;
+
             try
             {
-                await _plannerRepository.DeleteRecipeFromPlannerAsync(userId, SelectedDate, recipeId, CategoryToDelete); //not sure for this need to recheck how to do 
+                await _plannerRepository.DeleteRecipeFromPlannerAsync(userId, SelectedDate, category); 
                
             }
             catch (Exception ex)
             {
                 OnShowError(ex.Message);
             }
-            
+            finally
+            {
+                await GetAllRecipesFromPlanner();
+            }
+
         }
 
         [RelayCommand]
         public async Task GetAllRecipesFromPlanner()
         {
 
+            GroupOfRecipes = new ObservableCollection<RecipeGroup>();
+
             var userId = GetUserId();
             if (userId == null) return;
 
-            foreach (var category in Categories)
+            IsLoading = true;
+            
+            try
             {
-
-                IsLoading = true;
-
-                try
+                foreach (var category in categories)
                 {
                     var response = await _plannerRepository.GetAllRecipesFromPlanner(userId, SelectedDate, category);
                     SetDataAndExceptionForCategory(category, response.Data, response.Exception);
                 }
-                finally
-                {
-                    IsLoading = false;
-                }
             }
-
-            var recipe = BreakfastRecipe;
-
-            if (BreakfastRecipe == null && LunchRecipe == null && DinnerRecipe == null && DessertRecipe == null && OtherRecipe == null) { 
-                IsDataVisible = false;
-                IsLabelVisible = true;
-            } else
+            finally
             {
-                IsDataVisible = true;
-                IsLabelVisible = false;
+                IsLoading = false;
             }
         }
 
         private void SetDataAndExceptionForCategory(string category, MyRecipe? data, Exception? exception)
         {
+            var recipes = new List<MyRecipe>();
 
-            _ = Enum.TryParse<PlannerCategory>(category, out var parsedCategory);
-
-            switch (parsedCategory)
+            if (data != null)
             {
-                case PlannerCategory.Breakfast:
-                    BreakfastRecipe = data;
-                    OnPropertyChanged(nameof(BreakfastRecipe));
-                    break;
-                case PlannerCategory.Lunch:
-                    LunchRecipe = data;
-                    OnPropertyChanged(nameof(LunchRecipe));
-                    break;
-                case PlannerCategory.Dinner:
-                    DinnerRecipe = data;
-                    OnPropertyChanged(nameof(DinnerRecipe));
-                    break;
-                case PlannerCategory.Dessert:
-                    DessertRecipe = data;
-                    OnPropertyChanged(nameof(DessertRecipe));
-                    break;
-                case PlannerCategory.Other:
-                    OtherRecipe = data;
-                    OnPropertyChanged(nameof(OtherRecipe));
-                    break;
+                recipes.Add(data);
             }
 
+            GroupOfRecipes?.Add(new RecipeGroup(category, recipes));
+
+            OnPropertyChanged(nameof(GroupOfRecipes));
         }
-    
+
         private string? GetUserId()
         {
             var user = _userRepository.IsUserLoggedIn().Data;

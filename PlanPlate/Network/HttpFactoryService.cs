@@ -16,7 +16,7 @@ namespace PlanPlate.Network
                 var httpClient = new HttpClient();
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 return httpClient;
-            }, LazyThreadSafetyMode.ExecutionAndPublication);
+            });
         }
 
         public HttpClient CreateHttpClient()

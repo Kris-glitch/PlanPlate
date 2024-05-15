@@ -2,10 +2,14 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <x:String x:Key="plus">&#x2b;</x:String>
-    <x:String x:Key="trash">&#xf1f8;</x:String>
-    <x:String x:Key="share">&#xf08e;</x:String>
-    <x:String x:Key="edit">&#xf304;</x:String>
-    <x:String x:Key="calendar">&#xf274;</x:String>
+    <x:String x:Key="trash">&#xf82a;</x:String>
+    <x:String x:Key="share">&#xf1d8;</x:String>
+    <x:String x:Key="edit">&#xf044;</x:String>
+    <x:String x:Key="calendar">&#xf271;</x:String>
+    <x:String x:Key="calendarminus">&#xf272;</x:String>
+    <x:String x:Key="calendarplus">&#xf271;</x:String>
+    <x:String x:Key="minus">&#x002d;</x:String>
+    <x:String x:Key="shoppinglist">&#xf07a;</x:String> 
 
     <Style TargetType="TabBar"
            x:Key="TabBarStyle">

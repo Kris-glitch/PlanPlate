@@ -12,12 +12,15 @@ namespace PlanPlate.ViewModels
     {
         private readonly ICookbookRepository _cookbookRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IPlannerRepository _plannerRepository;
 
         private CancellationTokenSource _searchTimerCancellation;
-        public CookbookViewModel(IUserRepository userRepository, ICookbookRepository cookbookRepository) : base(userRepository)
+        public CookbookViewModel(IUserRepository userRepository, ICookbookRepository cookbookRepository, IPlannerRepository plannerRepository) : base(userRepository)
         {
             _cookbookRepository = cookbookRepository;
             _userRepository = userRepository;
+            _plannerRepository = plannerRepository;
+
             Recipes = new DataOrException<IEnumerable<MyRecipe>, Exception>
             {
                 Data = null,
@@ -25,6 +28,17 @@ namespace PlanPlate.ViewModels
                 Exception = null
 
             };
+
+            IsAddToPlannerVisible = false;
+
+
+            DropDownCategories = Enum.GetValues(typeof(PlannerCategory))
+                                      .Cast<PlannerCategory>()
+                                      .Select(category => category.ToString())
+                                      .ToList();
+
+            SelectedDate = DateTime.Now;
+            
         }
 
         private bool initPerformed = false;
@@ -42,6 +56,10 @@ namespace PlanPlate.ViewModels
 
             }
         }
+        public MyRecipe Recipe { get; set; }
+
+        [ObservableProperty]
+        bool isNoItemsVisible;
 
         [ObservableProperty]
         bool isRefreshing;
@@ -52,6 +70,18 @@ namespace PlanPlate.ViewModels
         [ObservableProperty]
         DataOrException<IEnumerable<MyRecipe>, Exception>? recipes;
 
+        [ObservableProperty]
+        List<string> dropDownCategories;
+
+        [ObservableProperty]
+        DateTime selectedDate;
+
+        [ObservableProperty]
+        string? selectedCategory;
+
+        [ObservableProperty]
+        bool isAddToPlannerVisible;
+
         private string searchQuery;
         public string SearchQuery
         {
@@ -61,6 +91,59 @@ namespace PlanPlate.ViewModels
                 SetProperty(ref searchQuery, value);
                 SearchRecipeFromCookbook();
             }
+        }
+
+        [RelayCommand]
+        private void OpenAddPopup(MyRecipe recipe)
+        {
+            if (recipe != null) Recipe = recipe;
+            IsAddToPlannerVisible = true;
+            OnPropertyChanged(nameof(IsAddToPlannerVisible));
+        }
+
+        [RelayCommand]
+        private void HidePopup()
+        {
+            IsAddToPlannerVisible = false;
+            OnPropertyChanged(nameof(IsAddToPlannerVisible));
+        }
+
+        [RelayCommand]
+        private async Task AddRecipeToPlanner()
+        {
+            if (SelectedCategory == null)
+            {
+                OnShowError("Please select category and a date");
+                IsAddToPlannerVisible = false;
+                return;
+            }
+
+            var userId = GetUserId();
+            if (userId == null)
+            {
+                IsAddToPlannerVisible = false;
+                return; 
+            }
+
+            if (Recipe != null)
+            {
+                try
+                {
+                    
+                    await _plannerRepository.SaveRecipeToPlannerAsync(userId, SelectedDate, SelectedCategory, Recipe);
+
+                }
+                catch (Exception ex)
+                {
+                    OnShowError(ex.Message);
+                }
+                finally
+                {
+                    IsAddToPlannerVisible = false;
+                    OnPropertyChanged(nameof(IsAddToPlannerVisible));
+                }
+            }
+
         }
 
         [RelayCommand]
@@ -129,8 +212,16 @@ namespace PlanPlate.ViewModels
             {
                 var response = await _cookbookRepository.GetAllRecipesFromCookbook(userId);
 
+                if (response == null && response.Exception == null) { 
+                    IsNoItemsVisible = true; 
+                } else
+                {
+                    IsNoItemsVisible = false;
+                }
+
                 Recipes.Data = response.Data;
                 Recipes.Exception = response.Exception;
+
             }
 
             finally

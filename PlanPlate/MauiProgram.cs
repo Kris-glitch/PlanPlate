@@ -25,9 +25,9 @@ namespace PlanPlate
                     fonts.AddFont("Outfit-VariableFont.ttf", "OutfitVariableFont");
                     fonts.AddFont("Outfit-Bold.ttf", "OutfitBold");
                     fonts.AddFont("Outfit-Regular.ttf", "OutfitRegular");
-                    fonts.AddFont("Font Awesome 6 Brands-Regular-400.otf", "FAB");
-                    fonts.AddFont("Font Awesome 6 Free-Regular-400.otf", "FAR");
-                    fonts.AddFont("Font Awesome 6 Free-Solid-900.otf", "FAS");
+                    fonts.AddFont("fab.otf", "FAB");
+                    fonts.AddFont("far.otf", "FAR");
+                    fonts.AddFont("fas.otf", "FAS");
                 });
 
 #if DEBUG

@@ -4,12 +4,11 @@
              xmlns:viewmodel="clr-namespace:PlanPlate.ViewModels"
              x:DataType="viewmodel:CookbookViewModel"
              xmlns:views="clr-namespace:PlanPlate.View"
-             xmlns:local="clr-namespace:PlanPlate.Converters"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              x:Class="PlanPlate.View.Cookbook"
              Title="My Recipes">
 
     <ContentPage.Resources>
-        <local:InvertedVisibilityConverter x:Key="InvertedVisibilityConverter" />
         <ControlTemplate x:Key="FrameRadioTemplate">
             <Border Stroke="Transparent"
                     MinimumHeightRequest="30"
@@ -101,6 +100,66 @@
                    VerticalOptions="Start"
                    HorizontalOptions="Start" />
 
+            <Frame x:Name="PopupAddToCalendar"
+                   Padding="25"
+                   Grid.Row="3"
+                   CornerRadius="20"
+                   BackgroundColor="{AppThemeBinding Dark={StaticResource SurfaceDark}, Light={StaticResource Surface}}"
+                   IsVisible="{Binding IsAddToPlannerVisible}"
+                   VerticalOptions="Center"
+                   HorizontalOptions="FillAndExpand">
+                <Frame.Content>
+                    <StackLayout Orientation="Vertical"
+                                 Spacing="16">
+                        <Label Text="Add Recipe To Meal Planner"
+                               Margin="0,25,0,0"
+                               Style="{StaticResource SubHeadline}"
+                               TextColor="{AppThemeBinding Light={StaticResource TextLight}, Dark={StaticResource TextDark}}"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center" />
+
+                        <Picker Title="Select a category"
+                                VerticalOptions="Center"
+                                HorizontalOptions="Center"
+                                TextColor="{AppThemeBinding Dark={StaticResource TextDark}, Light={StaticResource TextLight}}"
+                                ItemsSource="{Binding DropDownCategories}"
+                                SelectedItem="{Binding SelectedCategory}"
+                                BackgroundColor="{AppThemeBinding Dark={StaticResource SurfaceDark}, Light={StaticResource Surface}}" />
+
+                        <DatePicker Date="{Binding SelectedDate, Mode=TwoWay}"
+                                    VerticalOptions="Center"
+                                    BackgroundColor="{AppThemeBinding Dark={StaticResource SurfaceDark}, Light={StaticResource Surface}}"
+                                    MinimumDate="{x:Static sys:DateTime.Now}"
+                                    HorizontalOptions="Center" />
+
+                        <StackLayout Orientation="Horizontal"
+                                     Spacing="20">
+                            <Button Command="{Binding AddRecipeToPlannerCommand}"
+                                    VerticalOptions="Start"
+                                    HorizontalOptions="Start"
+                                    Style="{StaticResource ButtonStyle}"
+                                    MinimumHeightRequest="44"
+                                    MinimumWidthRequest="130"
+                                    Margin="20,0,0,0"
+                                    Text="Save"
+                                    IsEnabled="True" />
+                            <Button Command="{Binding HidePopupCommand}"
+                                    VerticalOptions="Start"
+                                    HorizontalOptions="End"
+                                    Style="{StaticResource ButtonStyle}"
+                                    MinimumHeightRequest="44"
+                                    MinimumWidthRequest="130"
+                                    Margin="0,0,20,0"
+                                    Text="Cancel"
+                                    IsEnabled="True" />
+                        </StackLayout>
+
+
+                    </StackLayout>
+                </Frame.Content>
+
+            </Frame>
+
             <ScrollView Orientation="Horizontal"
                         Grid.Row="3"
                         HorizontalScrollBarVisibility="Never">
@@ -137,6 +196,13 @@
                    VerticalOptions="Center"
                    HorizontalOptions="Center" />
 
+            <Label Grid.Row="4"
+                   Text="There are no recipes in your cookbook yet. Add a recipe."
+                   TextColor="{AppThemeBinding Dark={StaticResource SecondaryDark}, Light={StaticResource Secondary}}"
+                   IsVisible="{Binding IsNoItemsVisible}"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center" />
+
             <CollectionView Grid.Row="4"
                             ItemsSource="{Binding Recipes.Data}"
                             IsVisible="{Binding Recipes.Data, Converter={StaticResource VisibilityConverter}}"
@@ -144,13 +210,7 @@
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             Margin="0,0,0,0">
-                <CollectionView.EmptyView>
-                    <Label Grid.Row="4"
-                           Text="There are no recipes in your cookbook yet. Add a recipe."
-                           TextColor="{AppThemeBinding Dark={StaticResource SecondaryDark}, Light={StaticResource Secondary}}"
-                           VerticalOptions="Center"
-                           HorizontalOptions="Center" />
-                </CollectionView.EmptyView>
+
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:MyRecipe">
                         <SwipeView>
@@ -242,18 +302,28 @@
                                            HeightRequest="50"
                                            WidthRequest="50"
                                            IsClippedToBounds="True"
-                                           BackgroundColor="{AppThemeBinding Light={StaticResource Background}, Dark={StaticResource BackgroundDark}}"
+                                           BackgroundColor="Transparent"
                                            CornerRadius="70"
-                                           BorderColor="{AppThemeBinding Light={StaticResource Button}, Dark={StaticResource ButtonDark}}">
-                                        <Image>
-                                            <Image.Source>
-                                                <FontImageSource FontFamily="FAS"
-                                                                 Glyph="{StaticResource calendar}"
-                                                                 Color="{AppThemeBinding Light={StaticResource Button}, Dark={StaticResource ButtonDark}}"
-                                                                 Size="24" />
-                                            </Image.Source>
-                                        </Image>
+                                           BorderColor="Transparent">
+                                        <StackLayout>
+                                            <Image Margin="10,8,10,10"
+                                                   HorizontalOptions="End"
+                                                   VerticalOptions="End">
+                                                <Image.Source>
+                                                    <FontImageSource FontFamily="FAS"
+                                                                     Glyph="{StaticResource calendarplus}"
+                                                                     Color="{AppThemeBinding Light={StaticResource Button}, Dark={StaticResource ButtonDark}}"
+                                                                     Size="35" />
+                                                </Image.Source>
+                                            </Image>
+                                        </StackLayout>
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CookbookViewModel}}, Path=OpenAddPopupCommand}" 
+                                                                  CommandParameter="{Binding .}"/>
+                                        </Frame.GestureRecognizers>
                                     </Frame>
+                                    
+                                    
                                 </Grid>
                             </Frame>
                         </SwipeView>
