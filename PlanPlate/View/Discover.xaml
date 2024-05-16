@@ -82,7 +82,7 @@
 
             <ScrollView Orientation="Horizontal"
                         HorizontalScrollBarVisibility="Never">
-                <HorizontalStackLayout Margin="0,10,0,10"
+                <HorizontalStackLayout Margin="0,10,0,0"
                                        Spacing="10"
                                        BindableLayout.ItemsSource="{Binding Categories.Data}">
                     <HorizontalStackLayout.Resources>
@@ -101,22 +101,22 @@
                 </HorizontalStackLayout>
             </ScrollView>
 
-            <ActivityIndicator IsRunning="{Binding Meals.Loading}"
-                               IsVisible="{Binding Meals.Loading}"
-                               Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
-                               VerticalOptions="Center"
-                               HorizontalOptions="Center" />
-            
             <Label Text="{Binding ErrorMessage}"
                    IsVisible="{Binding Meals.Exception, Converter={StaticResource VisibilityConverter}}"
                    TextColor="{AppThemeBinding Dark={StaticResource ErrorDark}, Light={StaticResource Error}}"
                    FontSize="20"
                    VerticalTextAlignment="Center"
                    HorizontalTextAlignment="Center"
-                   Margin="30"
+                   Margin="10,0,10,0"
                    FontFamily="OutfitRegular"
                    VerticalOptions="Center"
                    HorizontalOptions="Center" />
+
+            <ActivityIndicator IsRunning="{Binding Meals.Loading}"
+                               IsVisible="{Binding Meals.Loading}"
+                               Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center" />
 
             <CollectionView ItemsSource="{Binding Meals.Data}"
                             IsVisible="{Binding Meals.Data, Converter={StaticResource VisibilityConverter}}"

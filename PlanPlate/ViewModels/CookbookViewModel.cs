@@ -165,7 +165,10 @@ namespace PlanPlate.ViewModels
         [RelayCommand]
         private async Task GoToAddRecipe()
         {
-            await Shell.Current.GoToAsync($"{nameof(AddRecipe)}");
+            await Shell.Current.GoToAsync($"{nameof(AddRecipe)}", new Dictionary<string, object?>
+            {
+                {"Recipe", null }
+            });
         }
 
         [RelayCommand]

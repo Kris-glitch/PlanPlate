@@ -3,10 +3,14 @@ using CommunityToolkit.Mvvm.Input;
 using PlanPlate.Data;
 using PlanPlate.Data.Model;
 using PlanPlate.Utils;
+using PlanPlate.View;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 using System.Collections.ObjectModel;
 
 namespace PlanPlate.ViewModels
 {
+    [QueryProperty("Recipe", "Recipe")]
     public partial class AddRecipeViewModel : BaseViewModel
     {
         private readonly ICookbookRepository _cookbookRepository;
@@ -18,9 +22,14 @@ namespace PlanPlate.ViewModels
             _userRepository = userRepository;
             _cookbookRepository = cookbookRepository;
             IngredientsList = [new Ingredient()];
+            
         }
 
         private FileResult? PhotoFromGallery { get; set; }
+        private bool? IsEdit { get; set; }
+
+        [ObservableProperty]
+        MyRecipe? recipe;
 
         [ObservableProperty]
         string? recipeCategory;
@@ -51,7 +60,7 @@ namespace PlanPlate.ViewModels
 
             if (leave)
             {
-                await Shell.Current.GoToAsync("..");
+                await GoBack();
             }
         }
 
@@ -64,18 +73,33 @@ namespace PlanPlate.ViewModels
         }
         private async Task CheckPermissions()
         {
-            var status = await Permissions.CheckStatusAsync<Permissions.Photos>();
-            if (status != PermissionStatus.Granted)
+            try
             {
-                status = await Permissions.RequestAsync<Permissions.Photos>();
-                if (status != PermissionStatus.Granted)
-                {
-                    OnShowError("Cannot access media library without permission.");
-                    return;
-                }
-            }
 
-            await AccessMediaLibrary();
+                Plugin.Permissions.Abstractions.PermissionStatus status = await CrossPermissions.Current.CheckPermissionStatusAsync <MediaLibraryPermission>();
+
+                if (status != Plugin.Permissions.Abstractions.PermissionStatus.Granted)
+                {
+                    if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Location))
+                    {
+                        OnShowError("Cannot access media library without permission.");
+                    }
+
+                    status = await CrossPermissions.Current.RequestPermissionAsync<LocationPermission>();
+
+                    if (status != Plugin.Permissions.Abstractions.PermissionStatus.Granted)
+                    {
+                        OnShowError("Cannot access media library without permission.");
+                        return;
+                    }
+                }
+
+                await AccessMediaLibrary();
+            }
+            catch(Exception ex)
+            {
+                OnShowError(ExceptionHandler.HandleExceptionForUI(ex));
+            } 
         }
 
         private async Task AccessMediaLibrary()
@@ -107,6 +131,7 @@ namespace PlanPlate.ViewModels
         {
             IngredientsList?.Add(new Ingredient());
         }
+
         [RelayCommand]
         private void DeleteIngredient(Ingredient ingredient)
         {
@@ -145,8 +170,15 @@ namespace PlanPlate.ViewModels
                         RecipeBy = RecipeBy
                     };
 
-                    await _cookbookRepository.SaveCookbookRecipe(recipeToSave, userId);
-                    await AddRecipeViewModel.GoToCookbook();
+                    if (IsEdit == true)
+                    {
+                        await _cookbookRepository.UpdateCookbookRecipe(recipeToSave, Recipe!.Id, userId);
+                    } else
+                    {
+                        await _cookbookRepository.SaveCookbookRecipe(recipeToSave, userId);
+                    }
+                    
+                    await GoBack();
 
                 }
             }
@@ -157,9 +189,33 @@ namespace PlanPlate.ViewModels
 
         }
 
-        private static async Task GoToCookbook()
+        private async Task GoBack()
         {
             await Shell.Current.GoToAsync("..");
+        }
+
+        public void CheckIfEditRecipe()
+        {
+            if (Recipe != null)
+            {
+                IsEdit = true;
+
+                RecipeName = Recipe.Name;
+                RecipeImageUri = Recipe.Image;
+                RecipeCategory = Recipe.Category;
+                RecipeBy = Recipe.RecipeBy;
+                RecipeInstructions = Recipe.Instructions;
+                
+                if (Recipe.Ingredients != null)
+                {
+                    IngredientsList?.Clear();
+
+                    foreach (var ingredient in Recipe.Ingredients)
+                    {
+                        IngredientsList?.Add(ingredient);
+                    }
+                }
+            }
         }
 
         private bool ValidateUser()

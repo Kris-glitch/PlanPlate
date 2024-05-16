@@ -21,12 +21,12 @@
                    FontSize="20"
                    VerticalTextAlignment="Center"
                    HorizontalTextAlignment="Center"
-                   Margin="30"
+                   Margin="10"
                    FontFamily="OutfitRegular"
                    VerticalOptions="Center"
                    HorizontalOptions="Center" />
 
-            <Frame Margin="0,25,0,25"
+            <Frame Margin="0,0,0,25"
                    IsVisible="{Binding Recipe.Data, Converter={StaticResource VisibilityConverter}}"
                    CornerRadius="20"
                    HeightRequest="350"
@@ -94,7 +94,7 @@
 
                                 <StackLayout Orientation="Horizontal"
                                              Spacing="20">
-                                    <Button Command="{Binding AddRecipeTpPlannerCommand}"
+                                    <Button Command="{Binding AddRecipeToPlannerCommand}"
                                             VerticalOptions="Start"
                                             HorizontalOptions="Start"
                                             Style="{StaticResource ButtonStyle}"
@@ -163,6 +163,7 @@
                             MinimumWidthRequest="100"
                             HorizontalOptions="Center"
                             Style="{StaticResource ButtonStyle}"
+                            Command="{Binding UpdateRecipeCommand}"
                             Text="Edit">
                         <Button.Triggers>
                             <DataTrigger TargetType="Button"

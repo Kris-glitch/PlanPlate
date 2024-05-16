@@ -25,6 +25,13 @@ public partial class AddRecipe : ContentPage
         bool result = await DisplayAlert("Confirmation", message, "Yes", "No");
         callback?.Invoke(result);
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        _viewModel.CheckIfEditRecipe();
+    }
+        
     protected override bool OnBackButtonPressed()
     {
 

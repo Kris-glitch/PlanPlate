@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using PlanPlate.Data;
 using PlanPlate.Data.Model;
 using PlanPlate.Utils;
+using PlanPlate.View;
 
 namespace PlanPlate.ViewModels
 {
@@ -199,6 +200,18 @@ namespace PlanPlate.ViewModels
             {
                 Text = text,
                 Title = "Share Your Recipe"
+            });
+        }
+
+        [RelayCommand]
+        async Task UpdateRecipe()
+        {
+            if (Recipe == null) return;
+            if (Recipe.Data == null) return;
+
+            await Shell.Current.GoToAsync($"{nameof(AddRecipe)}", new Dictionary<string, object>
+            {
+                {"Recipe", Recipe.Data}
             });
         }
 

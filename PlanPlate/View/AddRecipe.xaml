@@ -62,7 +62,7 @@
                             </Image>
                         </Frame>
                     </StackLayout>
-                    <Image Source="{Binding RecipeImageUri}"
+                    <Image Source="{Binding RecipeImageUri, Mode=TwoWay}"
                            Aspect="AspectFill"
                            HeightRequest="300"
                            WidthRequest="300">
@@ -80,7 +80,7 @@
             <Entry 
                 ReturnType="Next"
                 Placeholder="Category"
-                Text="{Binding RecipeCategory}"
+                Text="{Binding RecipeCategory, Mode=TwoWay}"
                 Keyboard="Text"
                 Margin="0,32,0,0"
                 Style="{StaticResource LoginEntry}"
@@ -90,7 +90,7 @@
             <Entry 
                 ReturnType="Next"
                 Placeholder="Title"
-                Text="{Binding RecipeName}"
+                Text="{Binding RecipeName, Mode=TwoWay}"
                 Keyboard="Text"
                 Margin="0,16,0,0"
                 Style="{StaticResource LoginEntry}"
@@ -100,7 +100,7 @@
             <Entry 
                 ReturnType="Next"
                 Placeholder="Recipe By:"
-                Text="{Binding RecipeBy}"
+                Text="{Binding RecipeBy, Mode=TwoWay}"
                 Keyboard="Text"
                 Margin="0,16,0,0"
                 Style="{StaticResource LoginEntry}"
@@ -109,7 +109,7 @@
 
             <Editor 
                 Placeholder="Instructions"
-                Text="{Binding RecipeInstructions}"
+                Text="{Binding RecipeInstructions, Mode=TwoWay}"
                 Keyboard="Chat"
                 MaxLength="500"
                 Margin="0,16,0,0"
@@ -117,14 +117,15 @@
                 IsEnabled="True" 
                 IsTextPredictionEnabled="True"/>
 
-            <StackLayout BindableLayout.ItemsSource="{Binding IngredientsList}">
+            <StackLayout BindableLayout.ItemsSource="{Binding IngredientsList, Mode=TwoWay}">
+                
                 <BindableLayout.EmptyViewTemplate>
                     <DataTemplate x:DataType="model:Ingredient">
                         <StackLayout Orientation="Vertical">
                             <Entry 
                                 ReturnType="Next"
                                 Margin="0,16,0,0"
-                                Text="{Binding Name}" 
+                                Text="{Binding Name, Mode=TwoWay}" 
                                 Placeholder="Ingredient" 
                                 Keyboard="Text"
                                 Style="{StaticResource LoginEntry}"
@@ -133,14 +134,14 @@
                             <StackLayout Orientation="Horizontal">
                                 <Entry   ReturnType="Next"
                                          Margin="0,0,0,5"
-                                         Text="{Binding Quantity}" 
+                                         Text="{Binding Quantity, Mode=TwoWay}" 
                                          Placeholder="Quantity" 
                                          Keyboard="Numeric"
                                          Style="{StaticResource LoginEntry}"
                                          IsEnabled="True"/>
                                 <Entry   ReturnType="Next"
                                          Margin="5,0,0,0"
-                                         Text="{Binding Unit}" 
+                                         Text="{Binding Unit, Mode=TwoWay}" 
                                          Placeholder="Unit" 
                                          Keyboard="Text" 
                                          Style="{StaticResource LoginEntry}"
@@ -150,13 +151,14 @@
                         </StackLayout>
                     </DataTemplate>
                 </BindableLayout.EmptyViewTemplate>
+                
                 <BindableLayout.ItemTemplate>
                     <DataTemplate x:DataType="model:Ingredient">
                         <StackLayout Orientation="Vertical">
                             <Entry 
                                 ReturnType="Next"
                                 Margin="0,16,0,16"
-                                Text="{Binding Name}" 
+                                Text="{Binding Name, Mode=TwoWay}" 
                                 Placeholder="Ingredient" 
                                 Keyboard="Text"
                                 Style="{StaticResource LoginEntry}"
@@ -166,7 +168,7 @@
                                 <Entry 
                                     ReturnType="Next"
                                     Margin="0,0,5,0"
-                                    Text="{Binding Quantity}" 
+                                    Text="{Binding Quantity, Mode=TwoWay}" 
                                     Placeholder="Quantity" 
                                     Keyboard="Numeric"
                                     Style="{StaticResource LoginEntry}"
@@ -174,7 +176,7 @@
                                 <Entry 
                                     ReturnType="Next"
                                     Margin="5,0,0,0"
-                                    Text="{Binding Unit}" 
+                                    Text="{Binding Unit, Mode=TwoWay}" 
                                     Placeholder="Units" 
                                     Keyboard="Text" 
                                     Style="{StaticResource LoginEntry}"
@@ -237,14 +239,11 @@
                 </BindableLayout.ItemTemplate>
             </StackLayout>
 
-            <Button
-                Command="{Binding SaveRecipeCommand}"
-                Style="{StaticResource ButtonStyle}"
-                Margin="20,40,20,0"
-                Text="Save" 
-                IsEnabled="True"
-            />
-        
+            <Button Command="{Binding SaveRecipeCommand}"
+                    Style="{StaticResource ButtonStyle}"
+                    Margin="20,40,20,0"
+                    Text="Save"
+                    IsEnabled="True" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

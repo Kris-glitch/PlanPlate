@@ -192,7 +192,7 @@
             
             <Label Grid.Row="4"
                    Text="{Binding ErrorMessage}"
-                   IsVisible="{Binding Meals.Exception, Converter={StaticResource VisibilityConverter}}"
+                   IsVisible="{Binding Recipes.Exception, Converter={StaticResource VisibilityConverter}}"
                    TextColor="{AppThemeBinding Dark={StaticResource ErrorDark}, Light={StaticResource Error}}"
                    FontSize="20"
                    VerticalTextAlignment="Center"
