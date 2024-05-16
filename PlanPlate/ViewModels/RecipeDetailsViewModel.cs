@@ -44,6 +44,9 @@ namespace PlanPlate.ViewModels
         List<string> dropDownCategories;
 
         [ObservableProperty]
+        string? errorMessage;
+
+        [ObservableProperty]
         private ActionType? listType;
 
         [ObservableProperty]
@@ -79,7 +82,7 @@ namespace PlanPlate.ViewModels
         }
 
         [RelayCommand]
-        private async Task AddRecipeTpPlanner()
+        private async Task AddRecipeToPlanner()
         {
             if (SelectedCategory == null)
             {
@@ -101,7 +104,7 @@ namespace PlanPlate.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    OnShowError(ex.Message);
+                    OnShowError(ExceptionHandler.HandleExceptionForUI(ex));
                 }
                 finally
                 {
@@ -130,18 +133,27 @@ namespace PlanPlate.ViewModels
 
                     var response = await _recipeRepository.GetRecipeDetails(RecipeId);
 
-                    if (response.Data == null && response.Exception == null)
+                    if (response != null)
                     {
-                        var userId = GetUserId();
-                        if (userId == null) return;
+                         if (response.Data == null && response.Exception == null)
+                        {
+                            var userId = GetUserId();
+                            if (userId == null) return;
 
-                        RecipeType = RecipeFrom.Cookbook;
+                            RecipeType = RecipeFrom.Cookbook;
 
-                        response = await _cookbookRepository.SearchRecipeByIdFromCookbookAsync(userId, RecipeId);
+                            response = await _cookbookRepository.SearchRecipeByIdFromCookbookAsync(userId, RecipeId);
+                        }
+
+                        if (response.Exception != null)
+                        {
+                            ErrorMessage = ExceptionHandler.HandleExceptionForUI(response.Exception);
+                        }
+
+                        Recipe.Data = response.Data;
+                        Recipe.Exception = response.Exception;
                     }
 
-                    Recipe.Data = response.Data;
-                    Recipe.Exception = response.Exception;
                 }
                 finally
                 {

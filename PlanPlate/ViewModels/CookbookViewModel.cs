@@ -14,7 +14,7 @@ namespace PlanPlate.ViewModels
         private readonly IUserRepository _userRepository;
         private readonly IPlannerRepository _plannerRepository;
 
-        private CancellationTokenSource _searchTimerCancellation;
+        private CancellationTokenSource? _searchTimerCancellation;
         public CookbookViewModel(IUserRepository userRepository, ICookbookRepository cookbookRepository, IPlannerRepository plannerRepository) : base(userRepository)
         {
             _cookbookRepository = cookbookRepository;
@@ -56,7 +56,10 @@ namespace PlanPlate.ViewModels
 
             }
         }
-        public MyRecipe Recipe { get; set; }
+        public MyRecipe? Recipe { get; set; }
+
+        [ObservableProperty]
+        string? errorMessage;
 
         [ObservableProperty]
         bool isNoItemsVisible;
@@ -82,8 +85,8 @@ namespace PlanPlate.ViewModels
         [ObservableProperty]
         bool isAddToPlannerVisible;
 
-        private string searchQuery;
-        public string SearchQuery
+        private string? searchQuery;
+        public string? SearchQuery
         {
             get { return searchQuery; }
             set
@@ -135,7 +138,7 @@ namespace PlanPlate.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    OnShowError(ex.Message);
+                    OnShowError(ExceptionHandler.HandleExceptionForUI(ex));
                 }
                 finally
                 {
@@ -208,20 +211,28 @@ namespace PlanPlate.ViewModels
             var userId = GetUserId();
             if (userId == null) return;
 
+            if (Recipes == null) return;
+
             try
             {
                 var response = await _cookbookRepository.GetAllRecipesFromCookbook(userId);
 
-                if (response == null && response.Exception == null) { 
-                    IsNoItemsVisible = true; 
-                } else
+                if (response != null)
                 {
-                    IsNoItemsVisible = false;
+                    Recipes.Data = response.Data;
+                    Recipes.Exception = response.Exception;
+
+                    if (response.Exception == null && response.Data == null)
+                    {
+                        IsNoItemsVisible = true;
+
+                    } else if (response.Exception != null)
+                    {
+                        
+                        ErrorMessage = ExceptionHandler.HandleExceptionForUI(response.Exception);
+                        IsNoItemsVisible = false;
+                    }
                 }
-
-                Recipes.Data = response.Data;
-                Recipes.Exception = response.Exception;
-
             }
 
             finally
@@ -236,13 +247,23 @@ namespace PlanPlate.ViewModels
         {
             var userId = GetUserId();
             if (userId == null) return;
+            if (Recipes == null) return;
 
             try
             {
                 var response = await _cookbookRepository.GetRecipesByCategoryFromCookbook(userId, category);
 
-                Recipes.Data = response.Data;
-                Recipes.Exception = response.Exception;
+                if (response != null)
+                {
+                    Recipes.Data = response.Data;
+                    Recipes.Exception = response.Exception;
+
+                    if (response.Exception != null)
+                    {
+                        ErrorMessage = ExceptionHandler.HandleExceptionForUI(response.Exception);
+                    }
+                }
+
             }
 
             finally
@@ -256,6 +277,7 @@ namespace PlanPlate.ViewModels
         {
             var userId = GetUserId();
             if (userId == null) return;
+            if (Recipes == null) return;
 
             if (!string.IsNullOrWhiteSpace(SearchQuery) && SearchQuery.Length > 3)
             {
@@ -274,8 +296,16 @@ namespace PlanPlate.ViewModels
                 {
                     var response = await _cookbookRepository.SearchRecipeFromCookbook(userId, SearchQuery);
 
-                    Recipes.Data = response.Data;
-                    Recipes.Exception = response.Exception;
+                    if (response != null)
+                    {
+                        Recipes.Data = response.Data;
+                        Recipes.Exception = response.Exception;
+
+                        if (response.Exception != null)
+                        {
+                            ErrorMessage = ExceptionHandler.HandleExceptionForUI(response.Exception);
+                        }
+                    }
                 }
                 finally
                 {
@@ -297,14 +327,7 @@ namespace PlanPlate.ViewModels
             }
             catch (Exception ex) 
             {
-                Recipes = new DataOrException<IEnumerable<MyRecipe>, Exception>
-                {
-                    Data = null,
-                    Loading = true,
-                    Exception = null
-
-                };
-                Recipes.Exception = ex;
+                OnShowError(ExceptionHandler.HandleExceptionForUI(ex));
             }
 
             await GetAllRecipesFromCookbook();

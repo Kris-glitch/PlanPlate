@@ -106,9 +106,15 @@
                                Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
                                VerticalOptions="Center"
                                HorizontalOptions="Center" />
-            <Label Text="{Binding Meals.Exception.Message}"
+            
+            <Label Text="{Binding ErrorMessage}"
                    IsVisible="{Binding Meals.Exception, Converter={StaticResource VisibilityConverter}}"
                    TextColor="{AppThemeBinding Dark={StaticResource ErrorDark}, Light={StaticResource Error}}"
+                   FontSize="20"
+                   VerticalTextAlignment="Center"
+                   HorizontalTextAlignment="Center"
+                   Margin="30"
+                   FontFamily="OutfitRegular"
                    VerticalOptions="Center"
                    HorizontalOptions="Center" />
 

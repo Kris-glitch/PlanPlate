@@ -152,7 +152,7 @@ namespace PlanPlate.ViewModels
             }
             catch (Exception ex)
             {
-                OnShowError(ex.Message);
+                OnShowError(ExceptionHandler.HandleExceptionForUI(ex));
             }
 
         }

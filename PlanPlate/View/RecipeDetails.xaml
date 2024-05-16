@@ -15,7 +15,19 @@
                      BackgroundColor="{AppThemeBinding Light={StaticResource Background}, Dark={StaticResource BackgroundDark}}"
                      Margin="0,0,0,0">
 
+            <Label Text="{Binding ErrorMessage}"
+                   IsVisible="{Binding Recipe.Exception, Converter={StaticResource VisibilityConverter}}"
+                   TextColor="{AppThemeBinding Dark={StaticResource ErrorDark}, Light={StaticResource Error}}"
+                   FontSize="20"
+                   VerticalTextAlignment="Center"
+                   HorizontalTextAlignment="Center"
+                   Margin="30"
+                   FontFamily="OutfitRegular"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center" />
+
             <Frame Margin="0,25,0,25"
+                   IsVisible="{Binding Recipe.Data, Converter={StaticResource VisibilityConverter}}"
                    CornerRadius="20"
                    HeightRequest="350"
                    WidthRequest="350"
@@ -28,6 +40,7 @@
             </Frame>
 
             <Frame CornerRadius="25"
+                   IsVisible="{Binding Recipe.Data, Converter={StaticResource VisibilityConverter}}"
                    BackgroundColor="{AppThemeBinding Dark={StaticResource SurfaceDark}, Light={StaticResource Surface}}"
                    Margin="0,20,0,0"
                    HorizontalOptions="FillAndExpand"

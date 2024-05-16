@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PlanPlate.Data;
+using PlanPlate.Utils;
 using PlanPlate.View;
 
 namespace PlanPlate.ViewModels
@@ -46,7 +47,7 @@ namespace PlanPlate.ViewModels
 
             if (response.Exception != null)
             {
-                OnShowError(response.Exception.Message);
+                OnShowError(ExceptionHandler.HandleExceptionForUI(response.Exception));
                 return;
             }
             else

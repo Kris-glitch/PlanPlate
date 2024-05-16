@@ -189,10 +189,16 @@
                                Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"
                                VerticalOptions="Center"
                                HorizontalOptions="Center" />
+            
             <Label Grid.Row="4"
-                   Text="{Binding Recipes.Exception.Message}"
-                   IsVisible="{Binding Recipes.Exception, Converter={StaticResource VisibilityConverter}}"
+                   Text="{Binding ErrorMessage}"
+                   IsVisible="{Binding Meals.Exception, Converter={StaticResource VisibilityConverter}}"
                    TextColor="{AppThemeBinding Dark={StaticResource ErrorDark}, Light={StaticResource Error}}"
+                   FontSize="20"
+                   VerticalTextAlignment="Center"
+                   HorizontalTextAlignment="Center"
+                   Margin="30"
+                   FontFamily="OutfitRegular"
                    VerticalOptions="Center"
                    HorizontalOptions="Center" />
 

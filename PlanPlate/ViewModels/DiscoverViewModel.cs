@@ -46,6 +46,9 @@ namespace PlanPlate.ViewModels
         bool isRefreshing;
 
         [ObservableProperty]
+        string? errorMessage;
+
+        [ObservableProperty]
         DataOrException<IEnumerable<MyCategory>, Exception>? categories;
 
         [ObservableProperty]
@@ -96,6 +99,12 @@ namespace PlanPlate.ViewModels
                     var response = await _recipeRepository.SearchRecipe(SearchQuery);
                     Meals!.Data = response.Data;
                     Meals.Exception = response.Exception;
+
+                    if (response.Exception != null)
+                    {
+                        ErrorMessage = ExceptionHandler.HandleExceptionForUI(response.Exception);
+                    }
+                   
                 }
                 finally
                 {
@@ -122,6 +131,11 @@ namespace PlanPlate.ViewModels
 
                 Categories.Data = response.Data;
                 Categories.Exception = response.Exception;
+
+                if (response.Exception != null)
+                {
+                    ErrorMessage = ExceptionHandler.HandleExceptionForUI(response.Exception);
+                }
             }
 
             finally
@@ -142,8 +156,18 @@ namespace PlanPlate.ViewModels
                 {
                     var response = await _recipeRepository.SearchByCategory(category);
 
-                    Meals.Data = response.Data;
-                    Meals.Exception = response.Exception;
+                    if (response != null)
+                    {
+                        Meals.Data = response.Data;
+                        Meals.Exception = response.Exception;
+
+                        if (response.Exception != null)
+                        {
+                            ErrorMessage = ExceptionHandler.HandleExceptionForUI(response.Exception);
+                        }
+                    }
+
+                    
                 }
                 finally
                 {

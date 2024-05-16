@@ -21,8 +21,8 @@
     <Color x:Key="Surface">#FAF9F6</Color>
     <Color x:Key="SurfaceDark">#353839</Color>
 
-    <Color x:Key="Error">#EB9486</Color>
-    <Color x:Key="ErrorDark">#E16653</Color>
+    <Color x:Key="Error">#E16653</Color>
+    <Color x:Key="ErrorDark">#EB9486</Color>
 
     <Color x:Key="Accent">#ffca5c</Color>
     <Color x:Key="AccentDark">#FFF9A5</Color>

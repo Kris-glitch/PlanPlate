@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PlanPlate.View;
 using System.Collections.ObjectModel;
+using PlanPlate.Utils;
 
 
 namespace PlanPlate.ViewModels
@@ -62,7 +63,6 @@ namespace PlanPlate.ViewModels
         [ObservableProperty]
         bool isLoading;
 
-
         [RelayCommand]
         private async Task GoToRecipeDetails(string recipeId)
         {
@@ -71,6 +71,7 @@ namespace PlanPlate.ViewModels
                 await Shell.Current.GoToAsync($"{nameof(RecipeDetails)}?recipeId={recipeId}");
             }
         }
+
         [RelayCommand]
         public async Task DeleteRecipeFromPlanner(string category)
         {
@@ -86,7 +87,7 @@ namespace PlanPlate.ViewModels
             }
             catch (Exception ex)
             {
-                OnShowError(ex.Message);
+                OnShowError(ExceptionHandler.HandleExceptionForUI(ex));
             }
             finally
             {
