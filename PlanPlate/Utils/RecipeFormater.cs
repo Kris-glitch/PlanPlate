@@ -19,12 +19,10 @@ namespace PlanPlate.Utils
             sb.AppendLine($" ");
 
             sb.AppendLine("Ingredients:");
+
             if (recipe.Ingredients != null)
             {
-                foreach (var ingredient in recipe.Ingredients)
-                {
-                    sb.AppendLine($"{ingredient.Quantity} {ingredient.Unit} {ingredient.Name}");
-                }
+                sb.AppendLine(FormatIngredients(recipe.Ingredients));
             }
 
             sb.AppendLine($" ");
@@ -37,5 +35,19 @@ namespace PlanPlate.Utils
 
             return sb.ToString();
         }
+
+        public static string FormatIngredients(List<Ingredient> ingredients)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var ingredient in ingredients)
+            {
+                sb.AppendLine($"{ingredient.Quantity} {ingredient.Unit} {ingredient.Name}");
+            }
+
+            return sb.ToString();
+        }
+
+
     }
 }

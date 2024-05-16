@@ -9,5 +9,6 @@ namespace PlanPlate.Data
         Task SaveRecipeToPlannerAsync(string userId, DateTime selectedDate, string category, MyRecipe recipe);
         Task DeleteRecipeFromPlannerAsync(string userId, DateTime selectedDate, string category);
         Task<DataOrException<MyRecipe?, Exception>> GetAllRecipesFromPlanner(string userId, DateTime selectedDate, string category);
+        Task<List<MyRecipe?>> GetWeeklyRecipesFromPlanner(string userId, List<string> week);
     }
 }

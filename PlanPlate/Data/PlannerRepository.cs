@@ -3,7 +3,7 @@ using PlanPlate.Network.Model;
 using PlanPlate.Utils;
 
 namespace PlanPlate.Data
-{ 
+{
     class PlannerRepository(IMealPlannerService mealPlannerService) : IPlannerRepository
     {
         IMealPlannerService _mealPlannerService = mealPlannerService;
@@ -30,7 +30,7 @@ namespace PlanPlate.Data
                 var recipesResponse = await _mealPlannerService.GetRecipeFromPlanner(userId, selectedDate, category);
 
                 result.Data = recipesResponse;
-                
+
             }
             catch (Exception ex)
             {
@@ -54,5 +54,17 @@ namespace PlanPlate.Data
             }
         }
 
+        public async Task<List<MyRecipe?>> GetWeeklyRecipesFromPlanner(string userId, List<string> week)
+        {
+            try
+            {
+                return await _mealPlannerService.GetWeeklyRecipesFromPlanner(userId, week);
+            }
+            catch (Exception ex)
+            {
+                FirebaseCrashlyticsLogger.LogException(ex);
+                throw;
+            }
+        }
     }
 }

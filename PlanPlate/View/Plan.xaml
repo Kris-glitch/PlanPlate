@@ -16,6 +16,7 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem IsEnabled="True"
+                     Command="{Binding CreateShoppingListCommand}"
                      Order="Primary"
                      Priority="0">
             <ToolbarItem.IconImageSource>

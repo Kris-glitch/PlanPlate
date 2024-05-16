@@ -121,6 +121,44 @@ namespace PlanPlate.ViewModels
             }
         }
 
+        [RelayCommand]
+        async Task CreateShoppingList()
+        {
+            var userId = GetUserId();
+            if (userId == null) return;
+
+            var weekDates = DateFormater.GetWeekDates(SelectedDate);
+
+            try
+            {
+                IsLoading = true;
+                var response = await _plannerRepository.GetWeeklyRecipesFromPlanner(userId, weekDates);
+
+                if (response != null)
+                {
+                    var ingredientsList = ShoppingListMaker.GetIngredientsFromRecipes(response);
+                    var shoppingList = ShoppingListMaker.CreateShoppingList(ingredientsList);
+
+                    var formatedShoppingList = RecipeFormater.FormatIngredients(shoppingList);
+
+                    await Share.Default.RequestAsync(new ShareTextRequest
+                    {
+                        Text = formatedShoppingList,
+                        Title = "My weekly shopping list"
+                    });
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                OnShowError(ExceptionHandler.HandleExceptionForUI(ex));
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
         private void SetDataAndExceptionForCategory(string category, MyRecipe? data, Exception? exception)
         {
             var recipes = new List<MyRecipe>();
