@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:model="clr-namespace:PlanPlate.Data.Model"
              xmlns:viewmodel="clr-namespace:PlanPlate.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="viewmodel:CookbookViewModel"
              xmlns:views="clr-namespace:PlanPlate.View"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
@@ -192,7 +193,7 @@
             
             <Label Grid.Row="4"
                    Text="{Binding ErrorMessage}"
-                   IsVisible="{Binding Recipes.Exception, Converter={StaticResource VisibilityConverter}}"
+                   IsVisible="{Binding Recipes.Exception, Converter={toolkit:IsNotNullConverter}}"
                    TextColor="{AppThemeBinding Dark={StaticResource ErrorDark}, Light={StaticResource Error}}"
                    FontSize="20"
                    VerticalTextAlignment="Center"
@@ -211,7 +212,7 @@
 
             <CollectionView Grid.Row="4"
                             ItemsSource="{Binding Recipes.Data}"
-                            IsVisible="{Binding Recipes.Data, Converter={StaticResource VisibilityConverter}}"
+                            IsVisible="{Binding Recipes.Data, Converter={toolkit:IsNotNullConverter}}"
                             ItemsLayout="VerticalList"
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"

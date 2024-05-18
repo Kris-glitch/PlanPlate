@@ -53,7 +53,6 @@ namespace PlanPlate.Network
 
         public async Task<IEnumerable<Meal>?> SearchByCategory(string categoryName)
         {
-            
             HttpResponseMessage? response = await httpClient.GetAsync($"{BaseUrl}/filter.php?c={categoryName}");
 
             response.EnsureSuccessStatusCode();

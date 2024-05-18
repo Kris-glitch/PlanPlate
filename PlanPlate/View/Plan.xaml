@@ -1,6 +1,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:Plugin.Maui.Calendar.Controls;assembly=Plugin.Maui.Calendar"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:model="clr-namespace:PlanPlate.Data.Model"
              xmlns:converters="clr-namespace:PlanPlate.Converters"
              xmlns:viewmodel="clr-namespace:PlanPlate.ViewModels"
@@ -87,7 +88,7 @@
             <CollectionView.ItemTemplate>
                 
                 <DataTemplate x:DataType="model:MyRecipe">
-                    <Frame IsVisible="{Binding ., Converter={StaticResource VisibilityConverter}}"
+                    <Frame IsVisible="{Binding ., Converter={toolkit:IsNotNullConverter}}"
                            Style="{StaticResource RecipeeCard}"
                            Padding="0"
                            WidthRequest="350"
@@ -167,7 +168,7 @@
 
                         <Button Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:PlanViewModel}}, Path=DeleteRecipeFromPlannerCommand}"
                                 CommandParameter="{Binding Category}"
-                                IsVisible="{Binding Count, Converter={StaticResource VisibilityConverter}}"
+                                IsVisible="{Binding Count, Converter={toolkit:IsNotNullConverter}}"
                                 Style="{StaticResource ButtonStyle}"
                                 Margin="10,10,10,10"
                                 VerticalOptions="Center"

@@ -2,7 +2,9 @@
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Firebase.Crashlytics;
 using Plugin.Permissions;
+using System.Diagnostics;
 
 namespace PlanPlate
 {
@@ -11,8 +13,15 @@ namespace PlanPlate
     {
 
         protected override void OnCreate(Bundle? savedInstanceState)
-        { 
+        {
             base.OnCreate(savedInstanceState);
+
+            Firebase.FirebaseApp.InitializeApp(this);
+
+            FirebaseCrashlytics.Instance.SetCrashlyticsCollectionEnabled(true);
+
+            FirebaseCrashlytics.Instance.SetUserId("user1234rr56");
+
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
