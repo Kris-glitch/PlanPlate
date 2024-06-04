@@ -36,14 +36,13 @@
 			<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 			<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 			<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+			<DefaultLanguage>en</DefaultLanguage>
+			<Platforms>AnyCPU;x64</Platforms>
 		</PropertyGroup>
 
 		<ItemGroup>
 			<!-- App Icon -->
-			<MauiIcon Include="Resources\AppIcon\ppicon.svg" 
-					  ForegroundFile="Resources\AppIcon\ppappiconfig.svg" 
-					  Color="#FFFFFF" 
-					  BaseSize="5,5" />
+			<MauiIcon Include="Resources\AppIcon\ppicon.svg" ForegroundFile="Resources\AppIcon\ppappiconfig.svg" Color="#FFFFFF" BaseSize="5,5" />
 
 			<!-- Splash Screen -->
 			<MauiSplashScreen Include="Resources\Splash\ppsplash.svg" Color="#91AB82" />
