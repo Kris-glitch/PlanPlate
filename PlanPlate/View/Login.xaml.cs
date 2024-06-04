@@ -4,7 +4,6 @@ namespace PlanPlate.View;
 
 public partial class Login : ContentPage
 {
-
     private readonly LoginViewModel _viewModel;
     public Login(LoginViewModel viewModel)
 	{
@@ -23,10 +22,7 @@ public partial class Login : ContentPage
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-
-
         _viewModel.UnsubscribeFromErrorEvents(OnShowError);
-
     }
 
 }

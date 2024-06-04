@@ -94,6 +94,9 @@ namespace PlanPlate
             builder.Services.AddSingleton<PlanViewModel>();
             builder.Services.AddSingleton<Plan>();
 
+            builder.Services.AddSingleton<SettingsViewModel>();
+            builder.Services.AddSingleton<Settings>();
+
 
             return builder.Build();
         }
