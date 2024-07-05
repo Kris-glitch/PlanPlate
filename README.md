@@ -23,13 +23,13 @@ Data Binding: Data binding is extensively used to connect the UI components with
 
 Resource Management: Resource management practices, such as using resource dictionaries for styles and themes, ensure a consistent and customizable user interface throughout the app.
 
-![splash](https://github.com/Kris-glitch/PlanPlate/assets/78586563/30202406-4d77-44d7-bb1a-71d61d2704b4)
-![signup](https://github.com/Kris-glitch/PlanPlate/assets/78586563/833bbdcc-5c7e-4c82-b7c7-d247332f010d)
-![discover](https://github.com/Kris-glitch/PlanPlate/assets/78586563/b3f08c37-5c5c-45e1-8d3c-3afb285008e7)
-![plan](https://github.com/Kris-glitch/PlanPlate/assets/78586563/bb0cf999-0ff9-49f3-aa1e-27720413722e)
-![details](https://github.com/Kris-glitch/PlanPlate/assets/78586563/0fa27e8d-6481-43f0-a71a-1e97a78a64a2)
-![details2](https://github.com/Kris-glitch/PlanPlate/assets/78586563/164d35f1-4179-4074-a314-86d6c58e1f36)
-![cookbook](https://github.com/Kris-glitch/PlanPlate/assets/78586563/b8df0c93-9737-4865-bbe1-ded488f2ca21)
-![new](https://github.com/Kris-glitch/PlanPlate/assets/78586563/291e5600-d60e-47c2-a5d4-6ed0bd18e7c3)
-![save](https://github.com/Kris-glitch/PlanPlate/assets/78586563/587346d2-607c-4aaa-9ff4-dd17784dce4f)
-![shopping](https://github.com/Kris-glitch/PlanPlate/assets/78586563/cef04dba-11e5-4835-ad90-1e925631cb42)
+![splash](https://github.com/Kris-glitch/PlanPlate/assets/78586563/672160eb-14e3-4651-9852-4ca3fcc60bd0)
+![signup](https://github.com/Kris-glitch/PlanPlate/assets/78586563/a1ee05a5-a3e4-4c38-b143-d7fa0e5de4b0)
+![discover](https://github.com/Kris-glitch/PlanPlate/assets/78586563/97094d95-cc77-47f4-98d9-42b3464431d1)
+![new](https://github.com/Kris-glitch/PlanPlate/assets/78586563/4dd5a96b-8319-4b0c-a151-bc52e03c021e)
+![cookbook](https://github.com/Kris-glitch/PlanPlate/assets/78586563/df9e613a-7ddd-4e51-bd0c-75de37ff2b90)
+![save](https://github.com/Kris-glitch/PlanPlate/assets/78586563/e87cb73b-bcb8-4ea5-b73e-0c9daec8bfc9)
+![plan](https://github.com/Kris-glitch/PlanPlate/assets/78586563/69cf7aab-cffc-4ea9-9be7-e01044644231)
+![details](https://github.com/Kris-glitch/PlanPlate/assets/78586563/8a806d27-3ff8-42c2-a077-50776caf8993)
+![details2](https://github.com/Kris-glitch/PlanPlate/assets/78586563/0fe3f893-18af-493f-bcc5-64b96b41cc09)
+![shopping](https://github.com/Kris-glitch/PlanPlate/assets/78586563/29c4ebab-0881-4c5d-85a8-1c5343d3bade)
