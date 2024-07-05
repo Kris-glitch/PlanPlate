@@ -1,5 +1,5 @@
 # PlanPlate- .NET Maui App
-PlanPlate is a recipe app that uses public API for the recipe information and Firebase for user authentication, database and crashlytics. It is written in C# using .NET Maui. Uses MVVM architecture pattern and depeendency injection. Upon launching the app, users are greeted with a splash screen, leading them into the login/signup interface. The homepage has a bottom navigation bar and a search bar. You can navigate between the discover tab that relies on the public Api, the cookbook tab that relies on the Firebase database and represents users recipes and the Plan tab that also saves the plan in Firebase. The user has also options to add or edit recipe in its cookbook or generate a shopping list of ingredients. 
+PlanPlate is a recipe app that uses public API for recipe information and Firebase for user authentication, database, and Crashlytics. It is written in C# using .NET Maui. Uses MVVM architecture pattern and dependency injection. Upon launching the app, users are greeted with a splash screen, leading them to the login/signup interface. The homepage has a bottom navigation bar and a search bar. You can navigate between the discover tab which relies on the public API, the Cookbook tab which depends on the Firebase database and represents the user's recipes, and the Plan tab which also saves the plan in Firebase. The user can also add or edit recipes in its cookbook or generate a shopping list of ingredients. 
 
 Key Technologies:
 
@@ -11,17 +11,18 @@ Dependency Injection: Utilizing dependency injection promotes a modular and scal
 
 Firebase Auth and Firebase Database: Firebase provides robust authentication and real-time database capabilities, empowering WhispersInk with secure user authentication and efficient data management, while Firebase Crashlytics offers robust crash reporting and analytics.
 
-Public API Integration:PlanPlate integrates with a public API to fetch detailed recipe information, providing users with a vast collection of recipes.
+Public API Integration: PlanPlate integrates with a public API to fetch detailed recipe information, providing users with a vast collection of recipes.
 
 Shell Navigation: Using .NET MAUI Shell for navigation, PlanPlate provides a streamlined and structured navigation experience, making it easier for users to explore the app's features.
 
-XAML for UI Development: XAML is used for designing the user interface, enabling a declarative approach to building the app's visual elements. This ensures a clean and maintainable UI codebase.
+XAML for UI Development: XAML designs the user interface, enabling a declarative approach to building the app's visual elements. This ensures a clean and maintainable UI codebase.
 
 Asynchronous Programming: Utilizing asynchronous programming techniques, such as async/await, ensures that PlanPlate remains responsive and performs efficiently, even when handling network operations and data processing.
 
 Data Binding: Data binding is extensively used to connect the UI components with the underlying data models, facilitating real-time updates and a dynamic user experience.
 
 Resource Management: Resource management practices, such as using resource dictionaries for styles and themes, ensure a consistent and customizable user interface throughout the app.
+
 ![splash](https://github.com/Kris-glitch/PlanPlate/assets/78586563/30202406-4d77-44d7-bb1a-71d61d2704b4)
 ![signup](https://github.com/Kris-glitch/PlanPlate/assets/78586563/833bbdcc-5c7e-4c82-b7c7-d247332f010d)
 ![discover](https://github.com/Kris-glitch/PlanPlate/assets/78586563/b3f08c37-5c5c-45e1-8d3c-3afb285008e7)
