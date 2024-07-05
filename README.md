@@ -1,5 +1,5 @@
 # PlanPlate- .NET Maui App
-PlanPlate is a recipe app that uses public API for recipe information and Firebase for user authentication, database, and Crashlytics. It is written in C# using .NET Maui. Uses MVVM architecture pattern and dependency injection. Upon launching the app, users are greeted with a splash screen, leading them to the login/signup interface. The homepage has a bottom navigation bar and a search bar. You can navigate between the discover tab which relies on the public API, the Cookbook tab which depends on the Firebase database and represents the user's recipes, and the Plan tab which also saves the plan in Firebase. The user can also add or edit recipes in its cookbook or generate a shopping list of ingredients. 
+PlanPlate is a recipe app that uses public API for recipe information and Firebase for user authentication, database, and Crashlytics. It is written in C# using .NET Maui. Uses MVVM architecture pattern and dependency injection. Upon launching the app, users are greeted with a splash screen, leading them to the login/signup interface. The homepage has a bottom navigation bar and a search bar. You can navigate between the Discover tab which relies on the public API, the Cookbook tab which depends on the Firebase database and represents the user's recipes, and the Plan tab which also saves the plan in Firebase. The user can also add or edit recipes in its cookbook or generate a shopping list of ingredients. 
 
 Key Technologies:
 
@@ -26,10 +26,10 @@ Resource Management: Resource management practices, such as using resource dicti
 ![splash](https://github.com/Kris-glitch/PlanPlate/assets/78586563/30202406-4d77-44d7-bb1a-71d61d2704b4)
 ![signup](https://github.com/Kris-glitch/PlanPlate/assets/78586563/833bbdcc-5c7e-4c82-b7c7-d247332f010d)
 ![discover](https://github.com/Kris-glitch/PlanPlate/assets/78586563/b3f08c37-5c5c-45e1-8d3c-3afb285008e7)
+![plan](https://github.com/Kris-glitch/PlanPlate/assets/78586563/bb0cf999-0ff9-49f3-aa1e-27720413722e)
 ![details](https://github.com/Kris-glitch/PlanPlate/assets/78586563/0fa27e8d-6481-43f0-a71a-1e97a78a64a2)
 ![details2](https://github.com/Kris-glitch/PlanPlate/assets/78586563/164d35f1-4179-4074-a314-86d6c58e1f36)
 ![cookbook](https://github.com/Kris-glitch/PlanPlate/assets/78586563/b8df0c93-9737-4865-bbe1-ded488f2ca21)
-![save](https://github.com/Kris-glitch/PlanPlate/assets/78586563/587346d2-607c-4aaa-9ff4-dd17784dce4f)
 ![new](https://github.com/Kris-glitch/PlanPlate/assets/78586563/291e5600-d60e-47c2-a5d4-6ed0bd18e7c3)
-![plan](https://github.com/Kris-glitch/PlanPlate/assets/78586563/bb0cf999-0ff9-49f3-aa1e-27720413722e)
+![save](https://github.com/Kris-glitch/PlanPlate/assets/78586563/587346d2-607c-4aaa-9ff4-dd17784dce4f)
 ![shopping](https://github.com/Kris-glitch/PlanPlate/assets/78586563/cef04dba-11e5-4835-ad90-1e925631cb42)
