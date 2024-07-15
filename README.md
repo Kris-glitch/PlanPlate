@@ -9,7 +9,7 @@ The MVVM: (Model-View-ViewModel) architecture pattern ensures a clear separation
 
 Dependency Injection: Utilizing dependency injection promotes a modular and scalable codebase, making the app easier to manage and test.
 
-Firebase Auth and Firebase Database: Firebase provides robust authentication and real-time database capabilities, empowering WhispersInk with secure user authentication and efficient data management, while Firebase Crashlytics offers robust crash reporting and analytics.
+Firebase Auth and Firebase Database: Firebase provides robust authentication and real-time database capabilities, providing secure user authentication and efficient data management, while Firebase Crashlytics offers robust crash reporting and analytics.
 
 Public API Integration: PlanPlate integrates with a public API to fetch detailed recipe information, providing users with a vast collection of recipes.
 
